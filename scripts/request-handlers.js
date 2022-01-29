@@ -1,7 +1,6 @@
 "use strict";
 const mysql = require("mysql");
 const options = require("./connection-options.json");
-
 /**
  * Função para retornar a lista de pessoas da BD.
  * @param {*} req 
@@ -11,7 +10,7 @@ const options = require("./connection-options.json");
  function getClients(req, res) {
     var connection = mysql.createConnection(options);
     connection.connect();
-    var query = "SELECT clientId, clientName, clientUsername, clientPassword, clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients";
+    var query = "SELECT clientId, clientName, clientUsername, clientPassword, clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A'";
     connection.query(query, function (err, rows) {
         if (err) {
             res.json({"message": "error", "error": err });
@@ -73,12 +72,11 @@ function createUpdateCliente(req, res) {
     let gender = req.body.gender;
     let phone = req.body.phone;
     let birthdate = req.body.birthDate;
-    let sql = (req.method === 'PUT') ? "UPDATE clients SET clientName = ?, clientPassword = ?, clientBirthDate = ? , clientAddress = ? , clientZipCode = ? , clientDocument = ? , clientEmail = ? , clientGender = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientPassword, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate) VALUES (?,?,md5(?),?,?,?,?,?,?,?)";
+    let sql = (req.method === 'PUT') ? "UPDATE clients SET clientName = ?, clientPassword = ?, clientBirthDate = ? , clientAddress = ? , clientZipCode = ? , clientDocument = ? , clientEmail = ? , clientGender = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientPassword, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState) VALUES (?,?,md5(?),?,?,?,?,?,?,?,'A')";
     connection.connect(function (err) {
         if (err) throw err;
     let password = req.body.password;
-    //clientId, clientName, clientUsername, clientPassword, clientAddress,clientZipCode,clientDocument,clientEmail,clientGender,clientFone,birthDate
-        connection.query(sql, [ name, username, password, address, zipCode, documentId, email, gender, phone, birthdate, req.params.id], function (err, rows) {
+    connection.query(sql, [ name, username, password, address, zipCode, documentId, email, gender, phone, birthdate, req.params.id], function (err, rows) {
             if (err) {
                 res.sendStatus(500);
             } else {
@@ -89,28 +87,9 @@ function createUpdateCliente(req, res) {
 }
 module.exports.createUpdateCliente = createUpdateCliente;
 
-function createUpdatePerson(req, res) {
-    /** @todo Completar */
-    let connection = mysql.createConnection(options);
-    let name = req.body.name;
-    let birthday = req.body.birthDate;
-    let idCountry = req.body.idCountry;
-    let sql = (req.method === 'PUT') ? "UPDATE person SET name = ?, birthdate = ? , idCountry = ? WHERE id = ?" : "INSERT INTO person(name, birthdate, idCountry) VALUES (?,?,?)";
-    connection.connect(function (err) {
-        if (err) throw err;
-        connection.query(sql, [name, birthday, idCountry, req.params.id], function (err, rows) {
-            if (err) {
-                res.sendStatus(500);
-            } else {
-                res.send(rows);
-            }
-        });
-    });
-}
-module.exports.createUpdatePerson = createUpdatePerson;
 
-function removePerson(req, res) {
-    let query = 'DELETE FROM person WHERE id = ?';
+function removeCliente(req, res) {
+    let query = "UPDATE clients SET clientState ='I' WHERE id = ?";
     let connection = mysql.createConnection(options);
     connection.connect(function (err) {
         if (err) throw err;
@@ -124,5 +103,5 @@ function removePerson(req, res) {
     });
 }
 
-module.exports.removePerson = removePerson;
+module.exports.removeCliente = removeCliente;
 

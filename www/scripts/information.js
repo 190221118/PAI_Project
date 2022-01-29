@@ -15,6 +15,20 @@ class Information {
         this.clients = [];
         this.genders = ['F','M'];
     }
+    
+    /*função valida campo(s)*/
+    validadeForm(args) {
+        let result = true;
+        args.forEach(function(item,index,array) {
+            if (item === "")
+                result = false;
+        });
+        if (!result) {
+            alert("todos os parametros devem ser preenchidos!");
+            return false;
+        }
+        else {return true;}
+    }
 
     /**
      * coloca a palavra "home" no div titulo e limpa o div informação
@@ -123,13 +137,27 @@ class Information {
         const idgender = genderList.options[genderList.selectedIndex].value;
         const phone = document.getElementById('phone').value;
 
+        let args = [];
+        args.push(name);
+        args.push(username);
+        args.push(password);
+        args.push(birthDate);
+        args.push(address);
+        args.push(zipCode);
+        args.push(documentId);
+        args.push(email);
+        args.push(idgender);
+        args.push(phone);
+
         const client = new Client(id, name,username, password, birthDate, address, zipCode, documentId, email, idgender, phone);
         if (acao === 'create') {
-            this.postClient(client);
+            if (this.validadeForm(args)){
+                this.postClient(client);
+            } 
         } else if (acao === 'update') {
-            this.putPerson(client);
+            this.putClient(client);
         } else if (acao === 'delete') {
-            this.deletePerson(client);
+            this.deletClient(client);
         }
     }
 
@@ -149,30 +177,31 @@ class Information {
         xhr.send(JSON.stringify(client));
     }
 
-    putPerson(person){
+    putClient(client){
         const self = this;
         const xhr = new XMLHttpRequest();
-        xhr.open('PUT', '/person/' + person.id);
+        xhr.open('PUT', '/client/' + client.id);
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                self.people[self.people.findIndex(i => i.id === person.id)] = person;
+                self.people[self.people.findIndex(i => i.id === client.id)] = client;
                 self.showPerson();
             }
         }
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(person));
     }
-    deletePerson(person){
+
+    deleteClient(client){
         const self = this;
         const xhr = new XMLHttpRequest();
-        xhr.open('DELETE', '/person/' + person.id);
+        xhr.open('DELETE', '/client/' + client.id);
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                self.people.splice(self.people.findIndex(i => i.id === person.id), 1);
+                self.people.splice(self.people.findIndex(i => i.id === client.id), 1);
                 self.showPerson();
             }
         };
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(person));
+        xhr.send(JSON.stringify(client));
     }
 }

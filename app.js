@@ -28,7 +28,7 @@ app.post("/client", requestHandlers.createUpdateCliente);
 app.put("/client/:id", requestHandlers.createUpdateCliente);
 
 // delete Person
-app.delete("/person/:id", requestHandlers.removePerson);
+app.delete("/Client/:id", requestHandlers.removeCliente);
 
 
 

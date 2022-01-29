@@ -22,6 +22,7 @@ CREATE TABLE `clients` (
   `clientGender` varchar(1) NOT NULL,
   `clientFone` varchar(50) NOT NULL,
   `clientBirthDate` datetime NOT NULL,
+  `clientState` varchar(1) NOT NULL,
    PRIMARY KEY (clientId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
