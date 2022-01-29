@@ -1,0 +1,89 @@
+body{
+	font-family: Arial, Helvetica, sans-serif;
+	background:#fff;
+	margin:0;
+}
+
+#headerTitle{
+	text-align: center;
+}
+
+nav {
+	background:rgb(109, 109, 109);
+	padding: 20px;
+}
+
+.menu {
+	margin: 0;
+}
+
+.menu li{
+	display:inline-block;
+}
+
+.menu li a{
+  	display: block;
+	font-size: 0.8em;
+	text-transform: uppercase;
+	padding: 0px 20px;
+	color: #FFF;
+	font-weight: 600;
+	text-decoration: none;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+	margin: auto;
+}
+
+th, td {
+    text-align: left;
+	padding: 8px;
+	border: 1px solid black;
+}
+
+/*#formClient {
+	display: none;
+	text-align: center;
+}*/
+label {
+	display: block;
+	padding: 5px;
+}
+
+#formClient {
+	display: none;
+	width: 550px;
+	margin: 5px;
+	align-content: center;
+	background:rgb(109, 109, 109);
+  }
+label {
+	color: white;
+	text-align: right;
+}
+input {
+	display: inline-block;
+	padding-left: 10px;
+	width: 250px;
+	text-align: left;
+}
+
+/*.input {
+	width: 30%;
+    height: 34px;    
+    padding-left: 5px;
+    box-sizing: border-box;
+	text-align: left;
+}
+
+.column {
+    float: left;
+    height: 41px;    
+}
+
+.label {
+    padding-top: 7px;
+    text-align: left;    
+}*/

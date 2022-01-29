@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Final Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="styles/style.css" />
+    <script src="scripts/country.js"></script>
+    <script src="scripts/client.js"></script>
+    <script src="scripts/information.js"></script>
+    <script src="scripts/main.js"></script>
+</head>
+
+<body>
+    <nav>
+        <ul class="menu">
+            <li><a id="menuHome" href="javascript: info.showHome();">Home</a></li>
+            <li><a id="menuClient" href="javascript: info.showClients();">Clients</a></li>
+            <li><a id="menuCountry" href="javascript: info.showCountry();">Country</a></li>
+        </ul>
+    </nav>
+    <main>
+        <article>
+            <h1 id="headerTitle">Home</h1>
+            <div id="divInformation"></div>
+            <form id="formClient"  action="javascript:info.processingClient('create');">
+                <br/>
+                <label for="id">Id:
+                    <input id="id" type="text" />
+                </label>
+                <label for="id">Name:
+                    <input id="name" type="text" placeholder="Introduza o nome">
+                </label>
+                <label for="id">UserName:
+                    <input id="username" type="text" placeholder="Introduza o username">
+                </label>
+                <label for="id">Password:
+                    <input id="password" type="password" placeholder="Introduza a password">
+                </label>
+                <label for="id">Address:
+                    <input id="address" type="text" placeholder="Introduza a morada">
+                </label>
+                <label for="id">ZipCode:
+                    <input id="zipcode" type="text" placeholder="Introduza o código postal">
+                </label>
+                <label for="id">DocumentId:
+                    <input id="documentId" type="text" placeholder="Introduza o documento de identificação">
+                </label>
+                <label for="id">E-mail:
+                    <input id="email" type="text" placeholder="Introduza o email">
+                </label>
+                <label for="gender">Gender:
+                    <select id="gender"></select>
+                </label>
+                <label for="id">Phone Number:
+                    <input  id="phone" type="text" placeholder="Introduza número de telefone">
+                </label>
+                <label  for="id">Birth date:
+                    <input id="birthdate" type="date" placeholder="Introduza a data de nascimento">
+                </label>
+                <input  id="Save" type="submit" value="Save" />
+                <input  id="clean" type="reset" value="clean" />
+            </form>
+        </article>
+    </main>
+</body>
+
+</html>
