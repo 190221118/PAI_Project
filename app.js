@@ -23,6 +23,8 @@ app.put("/client/:id", requestHandlers.createUpdateCliente);
 // delete client
 app.delete("/Client/:id", requestHandlers.removeCliente);
 
+// login
+app.get("/getLogin/:username/:password", requestHandlers.getLogin);
 
 
 app.listen(8082, function () {

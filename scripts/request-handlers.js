@@ -24,7 +24,7 @@ module.exports.getClients = getClients;
 function getClientById(req, res) {
     var connection = mysql.createConnection(options);
     connection.connect();
-    var query = "SELECT clientId, clientName, clientUsername, clientPassword, clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A' and clientId = ?";
+    var query = "SELECT clientId, clientName, clientUsername, clientPassword, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A' and clientId = ?";
     connection.query(query, [req.params.id], function (err, rows) {
         if (err) {
             res.json({"message": "error", "error": err });
@@ -34,20 +34,6 @@ function getClientById(req, res) {
     });
 }
 module.exports.getClientById = getClientById;
-
-function getPeople(req, res) {
-    var connection = mysql.createConnection(options);
-    connection.connect();
-    var query = "SELECT id, name, birthDate, idCountry FROM person";
-    connection.query(query, function (err, rows) {
-        if (err) {
-            res.json({"message": "error", "error": err });
-        } else {
-            res.json({"message": "success", "person": rows });
-        }
-    });
-}
-module.exports.getPeople = getPeople;
 
 /**
  * Função para criar ou atualizar clientes da BD.
@@ -99,3 +85,16 @@ function removeCliente(req, res) {
 
 module.exports.removeCliente = removeCliente;
 
+function getLogin(req, res) {
+    var connection = mysql.createConnection(options);
+    connection.connect();
+    var query = "fun_login_validation(?,?)";
+    connection.query(query, [req.params.username, req.params.password], function (err, rows) {
+        if (err) {
+            res.json({"message": "error", "error": err });
+        } else {
+            res.json({"message": "success", "login": rows });
+        }
+    });
+}
+module.exports.getLogin = getLogin;

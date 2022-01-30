@@ -6,10 +6,19 @@
  * @params {Event} event - objeto que representará o evento
  */
 window.onload = function (event) {
-    var info = new Information("divInformation");
-    info.getClients();
-    window.info = info;
+    var infoClients = new InformationClients("divInformation");
+    infoClients.getClients();
+    window.infoClients = infoClients;
+
+    var login = new Login("login");
+    window.login = login;
 };
+
+const worker = new Worker('scripts/worker.js');
+worker.addEventListener('message',d=>{
+
+           
+});
 /**
  * Função que valida se os campos do formulario estao preenchidos (facilitador de DOM)
  * @param {string[]} args - array de argumentos

@@ -2,20 +2,19 @@
 
 /** 
 * @class Guarda toda informação necessaria na execução do exercicio 
-* @constructs Informacao
+* @constructs InformationClients
 * @param {string} id - id do elemento HTML que contém a informação.
 * 
 * @property {string} id - id do elemento HTML que contém a informação.
 * @property {client[]} clients - Array de objetos do tipo client, para guardar todas as pessoas do nosso sistema
-  @property {string[]} genders - Array de objetos do tipo client, para guardar todas as pessoas do nosso sistema
+  @property {string[]} genders - Array de objetos do tipo gender, para guardar todas as pessoas do nosso sistema
 */
-class Information {
+class InformationClients {
     constructor(id) {
         this.id = id;
         this.clients = [];
         this.genders = ['F','M'];
     }
-
     /**
      * coloca a palavra "home" no div titulo e limpa o div informação
      */
@@ -28,7 +27,8 @@ class Information {
         /** @todo Tarefa 2 */
         /** Limpar o conteúdo */
         document.getElementById("divInformation").style.display="none";    
-        document.getElementById("formClient").style.display = "none";   
+        document.getElementById("formClient").style.display = "none";
+        document.getElementById("formLogin").style.display = "block"; 
         let cleanDiv= document.createElement("div");
         replaceChilds("divInformation",cleanDiv);
     }
@@ -42,10 +42,9 @@ class Information {
         /** Actualizar o título */
         document.getElementById("headerTitle").textContent="Clients";
         document.getElementById("divInformation").style.display="block";
-        document.getElementById("formClient").style.display = "none"; 
+        document.getElementById("formClient").style.display = "none";
+        document.getElementById("formLogin").style.display = "none"; 
 
-        /** @todo Tarefa 2 */
-        /** Mostrar o conteúdo */
         let clientTable = document.createElement("table");
         clientTable.setAttribute("id", "clientTable");
         let th = tableLine(new Client(),true);
@@ -53,7 +52,6 @@ class Information {
         this.clients.forEach(p=>{
             let tr = tableLine(p);
             clientTable.appendChild(tr);
-            
         });
         replaceChilds("divInformation",clientTable);
 
@@ -61,14 +59,17 @@ class Information {
         var rows = table.getElementsByTagName("tr");
 
         for(var i = 0; i < rows.length; i++){
-	        var row = rows[i];
+            var row = rows[i];
 
             row.addEventListener("click", function(){
-  	        //Adicionar ao atual
-		    selLinha(this, false); //Selecione apenas um
+            //Adicionar ao atual
+            selLinha(this, false); //Selecione apenas um
             //selLinha(this, true); //Selecione quantos quiser
-	        });
+            });
         }
+
+        /** @todo Tarefa 2 */
+        /** Mostrar o conteúdo */
         
         function deleteClientEventHandler() {
             document.getElementById('formClient').action = 'javascript:info.processingClient("delete");';
@@ -113,7 +114,7 @@ class Information {
     /**
      * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client através do verbo GET, usando pedidos assincronos e JSON
      */
-     getClients() {
+    getClients() {
         let clients = this.clients;
         var xhr = new XMLHttpRequest();
         xhr.responseType="json";
@@ -132,19 +133,27 @@ class Information {
     /**
      * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client por id através do verbo GET, usando pedidos assincronos e JSON
      */
-     getClientById(id) {
+    getClientById(id) {
+
+        var tableElement = document.getElementById("clientTable");
+        tableElement = document.createElement("table");
+        tableElement.setAttribute("id", "clientTable");
+
+        let clients = this.clients;
+        clients.length = 0;
         var xhr = new XMLHttpRequest();
         xhr.responseType="json";
-        xhr.open('GET', '/clientById' + id, true);
+        xhr.open('GET', '/clientById/' + id, true);
         xhr.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
-                this.clientUpdate = xhr.response.client;
-                // info.forEach(p => {
-                //     clients.push(p);
-                // });
+                let info = xhr.response.client;
+                info.forEach(p => {
+                    clients.push(p);
+                });
             }
         };
-        xhr.send();
+        xhr.send(tableElement);
+        this.showClients();
     }
 
     /**
@@ -185,6 +194,7 @@ class Information {
             } 
         } else if (acao === 'update') {
             this.putClient(client);
+            
         } else if (acao === 'delete') {
             this.deletClient(client);
         }
@@ -214,6 +224,7 @@ class Information {
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 self.clients[self.clients.findIndex(i => i.id === client.id)] = client;
+                self.getClientById(client.id);
                 self.showClients();
             }
         }
