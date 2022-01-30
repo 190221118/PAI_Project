@@ -7,10 +7,10 @@ const options = require("./connection-options.json");
  * @param {*} res 
  */
 
- function getClients(req, res) {
+function getClients(req, res) {
     var connection = mysql.createConnection(options);
     connection.connect();
-    var query = "SELECT clientId, clientName, clientUsername, clientPassword, clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A'";
+    var query = "SELECT clientId, clientName, clientUsername, clientPassword, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A'";
     connection.query(query, function (err, rows) {
         if (err) {
             res.json({"message": "error", "error": err });
@@ -20,6 +20,20 @@ const options = require("./connection-options.json");
     });
 }
 module.exports.getClients = getClients;
+
+function getClientById(req, res) {
+    var connection = mysql.createConnection(options);
+    connection.connect();
+    var query = "SELECT clientId, clientName, clientUsername, clientPassword, clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A' and clientId = ?";
+    connection.query(query, [req.params.id], function (err, rows) {
+        if (err) {
+            res.json({"message": "error", "error": err });
+        } else {
+            res.json({"message": "success", "client": rows });
+        }
+    });
+}
+module.exports.getClientById = getClientById;
 
 function getPeople(req, res) {
     var connection = mysql.createConnection(options);
@@ -34,26 +48,6 @@ function getPeople(req, res) {
     });
 }
 module.exports.getPeople = getPeople;
-
-/**
- * Função para retornar a lista de países da BD.
- * @param {*} req 
- * @param {*} res 
- */
-function getCountries(req, res) {
-    /** @todo Completar */
-    var connection = mysql.createConnection(options);
-    connection.connect();
-    var query = "SELECT id, name, shortname FROM country";
-    connection.query(query, function (err, rows) {
-        if (err) {
-            res.json({"message": "error", "error": err });
-        } else {
-            res.json({"message": "success", "country": rows });
-        }
-    });
-}
-module.exports.getCountries = getCountries;
 
 /**
  * Função para criar ou atualizar clientes da BD.
@@ -72,7 +66,7 @@ function createUpdateCliente(req, res) {
     let gender = req.body.gender;
     let phone = req.body.phone;
     let birthdate = req.body.birthDate;
-    let sql = (req.method === 'PUT') ? "UPDATE clients SET clientName = ?, clientPassword = ?, clientBirthDate = ? , clientAddress = ? , clientZipCode = ? , clientDocument = ? , clientEmail = ? , clientGender = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientPassword, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState) VALUES (?,?,md5(?),?,?,?,?,?,?,?,'A')";
+    let sql = (req.method === 'PUT') ? "UPDATE clients SET clientName = ?, clientUsername = ?, clientPassword = ?, clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientPassword, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState) VALUES (?,?,md5(?),?,?,?,?,?,?,?,'A')";
     connection.connect(function (err) {
         if (err) throw err;
     let password = req.body.password;

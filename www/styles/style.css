@@ -59,6 +59,7 @@ label {
 	align-content: center;
 	background:rgb(109, 109, 109);
   }
+
 label {
 	color: white;
 	text-align: right;
@@ -69,6 +70,49 @@ input {
 	width: 250px;
 	text-align: left;
 }
+
+#clientTable{
+	width:100%;
+	margin:0 auto;
+	border:0;
+	box-shadow: 0 5px 30px darkgrey;
+	border-spacing: 0;
+}
+  
+#clientTable thead th{
+	font-weight: bold;
+	background-color: black;
+	color:white;
+	
+	padding:5px 10px;
+}
+  
+#clientTable tr td{
+	padding:5px 10px;
+	text-align: center;
+	
+	cursor: pointer; /**importante para não mostrar cursor de texto**/
+}
+  
+#clientTable tr td:last-child{
+	text-align: right;
+}
+
+/**Cores**/
+#clientTable tr:nth-child(odd){
+	background-color: #eee;
+}
+
+/**Cor quando passar por cima**/
+#clientTable tr:hover td{
+	background-color: #feffb7;
+}
+
+/**Cor quando selecionado**/
+#clientTable tr.selecionado td{
+	background-color: #aff7ff;
+}
+
 
 /*.input {
 	width: 30%;

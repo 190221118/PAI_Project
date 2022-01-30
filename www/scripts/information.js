@@ -15,20 +15,6 @@ class Information {
         this.clients = [];
         this.genders = ['F','M'];
     }
-    
-    /*função valida campo(s)*/
-    validadeForm(args) {
-        let result = true;
-        args.forEach(function(item,index,array) {
-            if (item === "")
-                result = false;
-        });
-        if (!result) {
-            alert("todos os parametros devem ser preenchidos!");
-            return false;
-        }
-        else {return true;}
-    }
 
     /**
      * coloca a palavra "home" no div titulo e limpa o div informação
@@ -56,18 +42,33 @@ class Information {
         /** Actualizar o título */
         document.getElementById("headerTitle").textContent="Clients";
         document.getElementById("divInformation").style.display="block";
-        document.getElementById("formClient").style.display = "none";   
-        
+        document.getElementById("formClient").style.display = "none"; 
+
         /** @todo Tarefa 2 */
         /** Mostrar o conteúdo */
         let clientTable = document.createElement("table");
+        clientTable.setAttribute("id", "clientTable");
         let th = tableLine(new Client(),true);
         clientTable.appendChild(th);
         this.clients.forEach(p=>{
             let tr = tableLine(p);
             clientTable.appendChild(tr);
+            
         });
         replaceChilds("divInformation",clientTable);
+
+        var table = document.getElementById("clientTable");
+        var rows = table.getElementsByTagName("tr");
+
+        for(var i = 0; i < rows.length; i++){
+	        var row = rows[i];
+
+            row.addEventListener("click", function(){
+  	        //Adicionar ao atual
+		    selLinha(this, false); //Selecione apenas um
+            //selLinha(this, true); //Selecione quantos quiser
+	        });
+        }
         
         function deleteClientEventHandler() {
             document.getElementById('formClient').action = 'javascript:info.processingClient("delete");';
@@ -81,7 +82,7 @@ class Information {
 
         function updateClientEventHandler() {
             document.getElementById('formClient').action = 'javascript:info.processingClient("update");';
-            setupForm();
+            loadClient();
         }
 
         function setupForm(){
@@ -95,6 +96,16 @@ class Information {
             });
         }
 
+        function loadClient(){
+            document.getElementById('formClient').reset();
+            self.genders.forEach ( (e) => {
+                document.getElementById('gender').options.add(new Option(e));
+            });
+            if (selected())
+            document.getElementById('formClient').style.display = 'block';
+            
+        }
+
         createButton("divInformation", newClientEventHandler, 'New Client');
         createButton("divInformation", deleteClientEventHandler, 'Delete Client');
         createButton("divInformation", updateClientEventHandler, 'Update Client');
@@ -102,7 +113,7 @@ class Information {
     /**
      * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client através do verbo GET, usando pedidos assincronos e JSON
      */
-     getClient() {
+     getClients() {
         let clients = this.clients;
         var xhr = new XMLHttpRequest();
         xhr.responseType="json";
@@ -113,6 +124,24 @@ class Information {
                 info.forEach(p => {
                     clients.push(p);
                 });
+            }
+        };
+        xhr.send();
+    }
+
+    /**
+     * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client por id através do verbo GET, usando pedidos assincronos e JSON
+     */
+     getClientById(id) {
+        var xhr = new XMLHttpRequest();
+        xhr.responseType="json";
+        xhr.open('GET', '/clientById' + id, true);
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                this.clientUpdate = xhr.response.client;
+                // info.forEach(p => {
+                //     clients.push(p);
+                // });
             }
         };
         xhr.send();
@@ -151,7 +180,7 @@ class Information {
 
         const client = new Client(id, name,username, password, birthDate, address, zipCode, documentId, email, idgender, phone);
         if (acao === 'create') {
-            if (this.validadeForm(args)){
+            if (validadeForm(args)){
                 this.postClient(client);
             } 
         } else if (acao === 'update') {
@@ -181,14 +210,15 @@ class Information {
         const self = this;
         const xhr = new XMLHttpRequest();
         xhr.open('PUT', '/client/' + client.id);
+        
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                self.people[self.people.findIndex(i => i.id === client.id)] = client;
-                self.showPerson();
+                self.clients[self.clients.findIndex(i => i.id === client.id)] = client;
+                self.showClients();
             }
         }
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(person));
+        xhr.send(JSON.stringify(client));
     }
 
     deleteClient(client){

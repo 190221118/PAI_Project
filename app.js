@@ -11,23 +11,16 @@ app.use(express.static("www"));
 // Client
 app.get("/clients", requestHandlers.getClients);
 
-// People
-//app.get("/person", requestHandlers.getPeople);
-
-// Countries
-/** @todo Completar */
-app.get("/country", requestHandlers.getCountries);
-
-
+app.get("/clientById/:id", requestHandlers.getClientById);
 // post Client
 /** @todo Completar */
 app.post("/client", requestHandlers.createUpdateCliente);
 
-// put Person
+// put client
 /** @todo Completar */
 app.put("/client/:id", requestHandlers.createUpdateCliente);
 
-// delete Person
+// delete client
 app.delete("/Client/:id", requestHandlers.removeCliente);
 
 

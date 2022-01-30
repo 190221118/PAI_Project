@@ -7,10 +7,25 @@
  */
 window.onload = function (event) {
     var info = new Information("divInformation");
-    info.getClient();
+    info.getClients();
     window.info = info;
 };
-
+/**
+ * Função que valida se os campos do formulario estao preenchidos (facilitador de DOM)
+ * @param {string[]} args - array de argumentos
+ */
+function validadeForm(args) {
+    let result = true;
+    args.forEach(function(item,index,array) {
+        if (item.trim() === "" || item == null)
+            result = false;
+    });
+    if (!result) {
+        alert("todos os parametros devem ser preenchidos!");
+        return false;
+    }
+    else {return true;}
+}
 /**
  * Função que substitui todos os elementos filhos de um elemento HTML por um novo elemento HTML (facilitador de DOM)
  * @param {string} id - id do elemento HTML para o qual se pretende substituir os filhos.
@@ -46,6 +61,54 @@ function tableLine(object, headerFormat) {
     }
     return tr;
 };
+
+/**
+Caso passe true, você pode selecionar multiplas linhas.
+Caso passe false, você só pode selecionar uma linha por vez.
+**/
+function selLinha(linha, multiplos){
+    if(!multiplos){
+        var linhas = linha.parentElement.getElementsByTagName("tr");
+          for(var i = 0; i < linhas.length; i++){
+             var linha_ = linhas[i];
+             linha_.classList.remove("selecionado");    
+          }
+    }
+    linha.classList.toggle("selecionado");
+}
+/**
+ * Função que retorna o id da linha selecionada
+ */
+function selected(){
+    let table = document.getElementById("clientTable");
+	let selecteds = table.getElementsByClassName("selecionado");
+    //Verificar se eestá selecionado
+    if(selecteds.length < 1){
+  	    alert("Selecione pelo menos uma linha");
+        return false;
+    }
+
+    for(var i = 0; i < selecteds.length; i++){
+        var selected = selecteds[i];
+        selected = selected.getElementsByTagName("td");
+
+        document.getElementById("id").value = selected[0].textContent;
+        document.getElementById('name').value = selected[1].textContent;
+        document.getElementById('username').value = selected[2].textContent;
+        document.getElementById('password').value = selected[3].textContent;
+        document.getElementById('birthdate').value = selected[4].textContent;
+        document.getElementById('address').value = selected[5].textContent;
+        document.getElementById('zipcode').value = selected[6].textContent;
+        document.getElementById('documentId').value = selected[7].textContent;
+        document.getElementById('email').value = selected[8].textContent;
+        //document.getElementById('gender').value = selected[9].textContent;
+        var comboGender = document.getElementById("gender");
+        document.getElementById('gender').options[comboGender.selectedIndex].value = selected[9].textContent;
+     
+        document.getElementById('phone').value = selected[10].textContent;
+    }
+    return true;
+}
 
 /**
  * Função genérica que cria um botão HTML, dá-lhe um evento e coloca-o na árvore de nós
