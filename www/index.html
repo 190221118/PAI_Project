@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="styles/style.css" />
     <script src="scripts/client.js"></script>
     <script src="scripts/informationClients.js"></script>
+    <script src="scripts/login.js"></script>
     <script src="scripts/main.js"></script>
 </head>
 
@@ -23,64 +24,66 @@
         <article>
             <h1 id="headerTitle">Home</h1>
             <div class="content">      
-                <!--FORMULÁRIO DE LOGIN-->
+            <!--FORMULÁRIO DE LOGIN-->
                 <div id="login">
-                <form id="formLogin" action="javascript:login.processingLogin();"> 
-                <h2>Login</h2> 
-                <p> 
-                    <label class="labelLogin" for="username_login">Seu nome</label>
-                    <input class="inputLogin" id="username_login" name="nome_login" required="required" type="text" placeholder="ex. username"/>
-                </p>
-                    
-                <p> 
-                    <label class="labelLogin" for="password_login">Sua senha</label>
-                    <input class="inputLogin" id="password_login" name="password_login" required="required" type="password" placeholder="ex. senha" /> 
-                </p>
-                    
-                <p> 
-                    <input class="inputLogin" type="checkbox" name="manterlogado" id="manterlogado" value="" /> 
-                    <label class="labelLogin" for="manterlogado">Manter-me logado</label>
-                </p>
-                    
-                <p> 
-                    <input class="inputLogin" type="submit" value="Logar" /> 
-                </p>
-                </form>
+                    <form id="formLogin" action="javascript:login.processingLogin();"> 
+                    <h2>Login</h2> 
+                    <p> 
+                        <label class="labelLogin" for="username_login">Seu nome</label>
+                        <input class="inputLogin" id="username_login" name="nome_login" required="required" type="text" placeholder="ex. username"/>
+                    </p>
+
+                    <p> 
+                        <label class="labelLogin" for="password_login">Sua senha</label>
+                        <input class="inputLogin" id="password_login" name="password_login" required="required" type="password" placeholder="ex. senha" /> 
+                    </p>
+
+                    <p> 
+                        <input class="inputLogin" type="checkbox" name="manterlogado" id="manterlogado" value="" /> 
+                        <label class="labelLogin" for="manterlogado">Manter-me logado</label>
+                    </p>
+
+                    <p> 
+                        <input class="inputLogin" type="submit" value="Logar" /> 
+                    </p>
+                    </form>
+                </div>
             </div>
             <div id="divInformation"></div>
             <form id="formClient"  action="javascript:infoClients.processingClient('create');">
+                <h2>Clientes</h2>
                 <br/>
                 <label class="labelClient" for="id">Id:
                     <input id="id" type="text" />
                 </label>
-                <label class="labelClient" for="id">Name:
+                <label class="labelClient" for="name">Name:
                     <input id="name" type="text" placeholder="Introduza o nome">
                 </label>
-                <label class="labelClient" for="id">UserName:
+                <label class="labelClient" for="username">UserName:
                     <input id="username" type="text" placeholder="Introduza o username">
                 </label>
-                <label class="labelClient" for="id">Password:
+                <label class="labelClient" for="password">Password:
                     <input id="password" type="password" placeholder="Introduza a password">
                 </label>
-                <label class="labelClient" for="id">Address:
+                <label class="labelClient" for="address">Address:
                     <input id="address" type="text" placeholder="Introduza a morada">
                 </label>
-                <label class="labelClient" for="id">ZipCode:
+                <label class="labelClient" for="zipcode">ZipCode:
                     <input id="zipcode" type="text" placeholder="Introduza o código postal">
                 </label>
-                <label class="labelClient" for="id">DocumentId:
+                <label class="labelClient" for="documentId">DocumentId:
                     <input id="documentId" type="text" placeholder="Introduza o documento de identificação">
                 </label>
-                <label class="labelClient"  for="id">E-mail:
+                <label class="labelClient"  for="email">E-mail:
                     <input id="email" type="text" placeholder="Introduza o email">
                 </label>
                 <label class="labelClient"  for="gender">Gender:
                     <select id="gender"></select>
                 </label>
-                <label class="labelClient" for="id">Phone Number:
+                <label class="labelClient" for="phone">Phone Number:
                     <input  id="phone" type="text" placeholder="Introduza número de telefone">
                 </label>
-                <label class="labelClient" for="id">Birth date:
+                <label class="labelClient" for="birthdate">Birth date:
                     <input id="birthdate" type="date" placeholder="Introduza a data de nascimento">
                 </label>
                 <input  id="Save" type="submit" value="Save" />

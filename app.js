@@ -24,7 +24,7 @@ app.put("/client/:id", requestHandlers.createUpdateCliente);
 app.delete("/Client/:id", requestHandlers.removeCliente);
 
 // login
-app.get("/getLogin/:username/:password", requestHandlers.getLogin);
+app.post("/postLogin/:username/:password", requestHandlers.postLogin);
 
 
 app.listen(8082, function () {

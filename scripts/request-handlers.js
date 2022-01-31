@@ -52,7 +52,7 @@ function createUpdateCliente(req, res) {
     let gender = req.body.gender;
     let phone = req.body.phone;
     let birthdate = req.body.birthDate;
-    let sql = (req.method === 'PUT') ? "UPDATE clients SET clientName = ?, clientUsername = ?, clientPassword = ?, clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientPassword, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState) VALUES (?,?,md5(?),?,?,?,?,?,?,?,'A')";
+    let sql = (req.method === 'PUT') ? "UPDATE clients SET clientName = ?, clientUsername = ?, clientPassword = md5(?), clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientPassword, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState) VALUES (?,?,md5(?),?,?,?,?,?,?,?,'A')";
     connection.connect(function (err) {
         if (err) throw err;
     let password = req.body.password;
@@ -85,16 +85,25 @@ function removeCliente(req, res) {
 
 module.exports.removeCliente = removeCliente;
 
-function getLogin(req, res) {
+function postLogin(req, res) {
+
     var connection = mysql.createConnection(options);
-    connection.connect();
-    var query = "fun_login_validation(?,?)";
-    connection.query(query, [req.params.username, req.params.password], function (err, rows) {
-        if (err) {
-            res.json({"message": "error", "error": err });
-        } else {
-            res.json({"message": "success", "login": rows });
-        }
+    let sql = "SELECT count(1) AS RETORNO  FROM clients  WHERE clientUsername = ? AND clientPassword = MD5(?)";
+
+    connection.connect(function (err) {
+        if (err) throw err;
+
+    let username = req.params.username;
+    let password = req.params.password;
+
+    connection.query(sql, [ username, password], function (err, rows, results) {
+            if (err) {
+                res.sendStatus(500);
+            } else {
+                res.send({"message": "success", "login": rows ,"results":results } );
+            }
+        });
     });
 }
-module.exports.getLogin = getLogin;
+
+module.exports.postLogin = postLogin;

@@ -41,7 +41,14 @@ class InformationClients {
         /** @todo Tarefa 1 */
         /** Actualizar o título */
         document.getElementById("headerTitle").textContent="Clients";
-        document.getElementById("divInformation").style.display="block";
+        if (sessionStorage.getItem("login") === null) {
+            document.getElementById("divInformation").style.display="none";
+            return;
+        }
+        else {
+            document.getElementById("divInformation").style.display="block";
+        }
+
         document.getElementById("formClient").style.display = "none";
         document.getElementById("formLogin").style.display = "none"; 
 
@@ -72,17 +79,17 @@ class InformationClients {
         /** Mostrar o conteúdo */
         
         function deleteClientEventHandler() {
-            document.getElementById('formClient').action = 'javascript:info.processingClient("delete");';
+            document.getElementById('formClient').action = 'javascript:infoClients.processingClient("delete");';
             setupForm();
         }
 
         function newClientEventHandler() {
-            document.getElementById('formClient').action = 'javascript:info.processingClient("create");';
+            document.getElementById('formClient').action = 'javascript:infoClients.processingClient("create");';
             setupForm();
         }
 
         function updateClientEventHandler() {
-            document.getElementById('formClient').action = 'javascript:info.processingClient("update");';
+            document.getElementById('formClient').action = 'javascript:infoClients.processingClient("update");';
             loadClient();
         }
 
