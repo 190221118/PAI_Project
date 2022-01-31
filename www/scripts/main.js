@@ -104,6 +104,7 @@ function selected(){
         document.getElementById("id").value = selected[0].textContent;
         document.getElementById('name').value = selected[1].textContent;
         document.getElementById('username').value = selected[2].textContent;
+        document.getElementById("username").setAttribute("readonly", "readonly");
         document.getElementById('password').value = selected[3].textContent;
         document.getElementById('birthdate').value = selected[4].textContent;
         document.getElementById('address').value = selected[5].textContent;
@@ -133,3 +134,32 @@ function selected(){
     button.addEventListener('click', eventHandler);
     fatherNode.appendChild(button);
 }
+
+function sessionStorageGravar(arg) { 
+    var text = document.getElementById(arg).value; 
+    sessionStorage.setItem(arg, text); 
+} 
+function sessionStorageObter(arg) { 
+    return sessionStorage.getItem(arg); 
+} 
+function sessionStorageLimpar(arg) { 
+    sessionStorage.removeItem(arg); 
+    //document.getElementById("Data").value = ""; 
+} 
+// function sessionStorageItemGravar() { 
+//     var text = document.getElementById("item").value; 
+//     sessionStorage.setItem("item", text); 
+//     var text = document.getElementById("quantidade").value; 
+//     sessionStorage.setItem("quantidade", text); 
+// } 
+// function sessionStorageObterLoja(){
+
+//     let divs = document.querySelectorAll('loja');
+//     let nome = sessionStorage.getItem("item");
+
+//     divs.forEach((ds,index) => {
+
+//     ds.value = nome; 
+
+//     });
+// }

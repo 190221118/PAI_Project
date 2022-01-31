@@ -29,7 +29,7 @@ class Login {
         if (validadeForm(args)){
             const login = new Login(username, password);
             this.postLogin(username,password);
-            if (sessionStorage.getItem("login") === null) 
+            if (sessionStorageObter("username_login") === null) 
                 document.getElementById("formLogin").style.display = "block";
             else
                 document.getElementById("formLogin").style.display = "none";
@@ -47,14 +47,37 @@ class Login {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 let infoLogin = xhr.response.login[0].RETORNO;
                 if (infoLogin === 1){
-                    sessionStorage.setItem('login','{username:' + username + '}');
+                    sessionStorageGravar("username_login");
                     alert("Login ok!");
+                    showHomeLogin();
                     return true;
                 }alert("Login Not ok!");
-                sessionStorage.removeItem('login');
+                sessionStorageLimpar("username_login");
                 return false;            
             }
         };
         xhr.send();
     }
+    /**
+     * Função que que remove a session storage 
+    */
+    logOff() {
+        sessionStorageLimpar("username_login");
+        document.getElementById("menuLogin").style.display = "none";
+    }
+
+    showHomeLogin() {
+        document.getElementById("headerTitle").textContent="Home";
+        document.getElementById("divInformation").style.display="none";    
+        document.getElementById("formClient").style.display = "none";
+        if (sessionStorageObter("username_login") === null) {
+                document.getElementById("formLogin").style.display = "block";
+                document.getElementById("menuLogin").style.display = "none";
+        }
+        else {
+                document.getElementById("formLogin").style.display = "none";
+                document.getElementById("menuLogin").style.display = "block";
+        }
+    }
+
 }

@@ -18,6 +18,7 @@
         <ul class="menu">
             <li><a id="menuHome" href="javascript: infoClients.showHome();">Home</a></li>
             <li><a id="menuClient" href="javascript: infoClients.showClients();">Clients</a></li>
+            <li><a id="menuLogin" href="javascript: login.logOff();">Log Off</a></li>
         </ul>
     </nav>
     <main>
@@ -54,7 +55,7 @@
                 <h2>Clientes</h2>
                 <br/>
                 <label class="labelClient" for="id">Id:
-                    <input id="id" type="text" />
+                    <input id="id" type="text" readonly/>
                 </label>
                 <label class="labelClient" for="name">Name:
                     <input id="name" type="text" placeholder="Introduza o nome">

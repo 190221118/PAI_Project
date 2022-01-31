@@ -28,7 +28,14 @@ class InformationClients {
         /** Limpar o conteúdo */
         document.getElementById("divInformation").style.display="none";    
         document.getElementById("formClient").style.display = "none";
-        document.getElementById("formLogin").style.display = "block"; 
+        if (sessionStorageObter("username_login") === null) {
+                document.getElementById("formLogin").style.display = "block";
+                document.getElementById("menuLogin").style.display = "none";
+        }
+        else {
+                document.getElementById("formLogin").style.display = "none";
+                document.getElementById("menuLogin").style.display = "block";
+        }
         let cleanDiv= document.createElement("div");
         replaceChilds("divInformation",cleanDiv);
     }
@@ -41,7 +48,7 @@ class InformationClients {
         /** @todo Tarefa 1 */
         /** Actualizar o título */
         document.getElementById("headerTitle").textContent="Clients";
-        if (sessionStorage.getItem("login") === null) {
+        if (sessionStorageObter("username_login")  === null) {
             document.getElementById("divInformation").style.display="none";
             return;
         }
@@ -51,6 +58,7 @@ class InformationClients {
 
         document.getElementById("formClient").style.display = "none";
         document.getElementById("formLogin").style.display = "none"; 
+        
 
         let clientTable = document.createElement("table");
         clientTable.setAttribute("id", "clientTable");
@@ -98,6 +106,7 @@ class InformationClients {
             document.getElementById('formClient').reset();
             //document.getElementById('formClient').innerHTML = '';
             document.getElementById('gender').options.length = 0;
+            document.getElementById("username").readOnly = false;
 
             self.genders.forEach ( (e) => {
                 document.getElementById('gender').options.add(new Option(e));
