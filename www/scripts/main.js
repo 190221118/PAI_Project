@@ -134,7 +134,7 @@ function selected(){
     button.addEventListener('click', eventHandler);
     fatherNode.appendChild(button);
 }
-
+// session
 function sessionStorageGravar(arg) { 
     var text = document.getElementById(arg).value; 
     sessionStorage.setItem(arg, text); 
@@ -144,6 +144,17 @@ function sessionStorageObter(arg) {
 } 
 function sessionStorageLimpar(arg) { 
     sessionStorage.removeItem(arg); 
+    //document.getElementById("Data").value = ""; 
+} 
+// local storage
+function localStorageGravar(arg,obj) { 
+    localStorage.setItem(arg, obj);
+} 
+function localStorageObter(arg) { 
+    return localStorage.getItem(arg); 
+} 
+function localStorageLimpar(arg) { 
+    localStorage.removeItem(arg);
     //document.getElementById("Data").value = ""; 
 } 
 // function sessionStorageItemGravar() { 

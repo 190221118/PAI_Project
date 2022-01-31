@@ -48,32 +48,6 @@ INSERT INTO `clients`
 ( `clientName`, `clientUsername`, `clientPassword`, `clientAddress`, `clientZipCode`, `clientDocument`, `clientEmail`, `clientGender`, `clientFone`, `clientBirthDate`) VALUES
 ('Yasmin', 'yhage', '1234', 'rua','8888','4534343','yashes20@yahoo.com.br','F','89898','1981-06-22 15:40:00');
 
-INSERT INTO `country` (`id`, `name`, `shortName`) VALUES
-(1, 'Portugal', 'PT');
-
-DROP TABLE IF EXISTS `person`;
-CREATE TABLE `person` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `birthDate` datetime NOT NULL,
-  `idCountry` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf16;
-
-INSERT INTO `person` (`id`, `name`, `birthDate`, `idCountry`) VALUES
-(1, 'Rui', '1986-05-06 00:00:00', 1);
-
-
-
-
-ALTER TABLE `person`
-  ADD PRIMARY KEY (`id`);
-
-
-ALTER TABLE `country`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
-ALTER TABLE `person`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

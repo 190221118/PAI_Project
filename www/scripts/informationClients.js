@@ -150,7 +150,7 @@ class InformationClients {
      * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client por id através do verbo GET, usando pedidos assincronos e JSON
      */
     getClientById(id) {
-
+        const self = this;
         var tableElement = document.getElementById("clientTable");
         tableElement = document.createElement("table");
         tableElement.setAttribute("id", "clientTable");
@@ -166,10 +166,11 @@ class InformationClients {
                 info.forEach(p => {
                     clients.push(p);
                 });
+                localStorageGravar("client",JSON.stringify(clients));
+                self.showClients();
             }
         };
         xhr.send(tableElement);
-        this.showClients();
     }
 
     /**

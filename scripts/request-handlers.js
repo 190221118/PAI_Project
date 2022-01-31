@@ -88,7 +88,7 @@ module.exports.removeCliente = removeCliente;
 function postLogin(req, res) {
 
     var connection = mysql.createConnection(options);
-    let sql = "SELECT count(1) AS RETORNO  FROM clients  WHERE clientUsername = ? AND clientPassword = MD5(?)";
+    let sql = "SELECT count(1) AS retorno, clientId AS id FROM clients  WHERE clientUsername = ? AND clientPassword = MD5(?)";
 
     connection.connect(function (err) {
         if (err) throw err;
@@ -100,7 +100,7 @@ function postLogin(req, res) {
             if (err) {
                 res.sendStatus(500);
             } else {
-                res.send({"message": "success", "login": rows ,"results":results } );
+                res.send({"message": "success", "login": rows, "results":results} );
             }
         });
     });
