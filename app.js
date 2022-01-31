@@ -20,8 +20,8 @@ app.post("/client", requestHandlers.createUpdateCliente);
 /** @todo Completar */
 app.put("/client/:id", requestHandlers.createUpdateCliente);
 
-// delete client
-app.delete("/Client/:id", requestHandlers.removeCliente);
+// update client to inactive
+app.put("/client/:id", requestHandlers.removeCliente);
 
 // login
 app.post("/postLogin/:username/:password", requestHandlers.postLogin);

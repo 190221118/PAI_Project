@@ -88,7 +88,7 @@ class InformationClients {
         
         function deleteClientEventHandler() {
             document.getElementById('formClient').action = 'javascript:infoClients.processingClient("delete");';
-            setupForm();
+            loadClient();
         }
 
         function newClientEventHandler() {
@@ -132,6 +132,12 @@ class InformationClients {
      */
     getClients() {
         let clients = this.clients;
+        clients.length = 0;
+
+        var tableElement = document.getElementById("clientTable");
+        tableElement = document.createElement("table");
+        tableElement.setAttribute("id", "clientTable");
+
         var xhr = new XMLHttpRequest();
         xhr.responseType="json";
         xhr.open("GET", "/clients", true);
@@ -143,7 +149,7 @@ class InformationClients {
                 });
             }
         };
-        xhr.send();
+        xhr.send(tableElement);
     }
 
     /**
@@ -213,7 +219,7 @@ class InformationClients {
             this.putClient(client);
             
         } else if (acao === 'delete') {
-            this.deletClient(client);
+            this.deleteClient(client);
         }
     }
 
@@ -224,8 +230,10 @@ class InformationClients {
         xhr.open('POST', '/client');
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                const newClient = new Client(xhr.response.id, client.name, client.username, client.password, client.birthDate, client.address, client.zipCode, client.documentId, client.email, client.idgender, client.phone);
-                self.clients.push(newClient);
+                let id = xhr.response.client.insertId;
+                self.getClientById(id);
+                //const newClient = new Client(xhr.response.id, client.name, client.username, client.password, client.birthDate, client.address, client.zipCode, client.documentId, client.email, client.idgender, client.phone);
+                //self.clients.push(newClient);
                 self.showClients();
             }
         }
@@ -252,11 +260,11 @@ class InformationClients {
     deleteClient(client){
         const self = this;
         const xhr = new XMLHttpRequest();
-        xhr.open('DELETE', '/client/' + client.id);
+        xhr.open('PUT', '/client/' + client.id);
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                self.people.splice(self.people.findIndex(i => i.id === client.id), 1);
-                self.showPerson();
+                self.clients.splice(self.clients.findIndex(i => i.id === client.id), 1);
+                self.showClients();
             }
         };
         xhr.setRequestHeader('Content-Type', 'application/json');

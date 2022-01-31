@@ -50,8 +50,13 @@ class Login {
                 let retorno = xhr.response.login[0].retorno;
                 if (retorno > 0) {
                     let id = xhr.response.login[0].id;
+                    let type = xhr.response.login[0].type;
+
                     sessionStorageGravar("username_login");
+                
                     localStorageGravar("id",id);
+                    localStorageGravar("type",type);
+
                     alert("Login ok!");
                     self.showHomeLogin();
                     return true;
@@ -67,6 +72,7 @@ class Login {
     */
     logOff() {
         sessionStorageLimpar("username_login");
+        localStorageLimpar("client");
         document.getElementById("menuLogin").style.display = "none";
     }
 
@@ -82,7 +88,11 @@ class Login {
                 document.getElementById("formLogin").style.display = "none";
                 document.getElementById("menuLogin").style.display = "block";
                 let id = localStorageObter("id");
-                infoClients.getClientById(id);
+                let type = localStorageObter("type");
+                if (type === "Client") 
+                    infoClients.getClientById(id);
+                else
+                    infoClients.getClients();
         }
     }
 

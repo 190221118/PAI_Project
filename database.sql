@@ -23,7 +23,8 @@ CREATE TABLE `clients` (
   `clientFone` varchar(50) NOT NULL,
   `clientBirthDate` datetime NOT NULL,
   `clientState` varchar(1) NOT NULL,
-   PRIMARY KEY (clientId)
+  `clientType` varchar(20) NOT NULL,
+   PRIMARY KEY (clientId,clientUsername)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
 SET GLOBAL log_bin_trust_function_creators = 1;
@@ -45,8 +46,8 @@ CREATE FUNCTION `fun_login_validation`(p_clientUsername VARCHAR(20)
  END$$
  
 INSERT INTO `clients` 
-( `clientName`, `clientUsername`, `clientPassword`, `clientAddress`, `clientZipCode`, `clientDocument`, `clientEmail`, `clientGender`, `clientFone`, `clientBirthDate`) VALUES
-('Yasmin', 'yhage', '1234', 'rua','8888','4534343','yashes20@yahoo.com.br','F','89898','1981-06-22 15:40:00');
+( `clientName`, `clientUsername`, `clientPassword`, `clientAddress`, `clientZipCode`, `clientDocument`, `clientEmail`, `clientGender`, `clientFone`, `clientBirthDate`,`clientState`,`clientType`) VALUES
+('Yasmin', 'yhage', md5('1234'), 'rua','8888','4534343','yashes20@yahoo.com.br','F','89898','1981-06-22 15:40:00','A','Admin');
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

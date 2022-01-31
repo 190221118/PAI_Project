@@ -52,15 +52,15 @@ function createUpdateCliente(req, res) {
     let gender = req.body.gender;
     let phone = req.body.phone;
     let birthdate = req.body.birthDate;
-    let sql = (req.method === 'PUT') ? "UPDATE clients SET clientName = ?, clientUsername = ?, clientPassword = md5(?), clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientPassword, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState) VALUES (?,?,md5(?),?,?,?,?,?,?,?,'A')";
+    let sql = (req.method === 'PUT') ? "UPDATE clients SET clientName = ?, clientUsername = ?, clientPassword = md5(?), clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientPassword, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState, clientType) VALUES (?,?,md5(?),?,?,?,?,?,?,?,'A','Client')";
     connection.connect(function (err) {
         if (err) throw err;
     let password = req.body.password;
-    connection.query(sql, [ name, username, password, address, zipCode, documentId, email, gender, phone, birthdate, req.params.id], function (err, rows) {
+    connection.query(sql, [ name, username, password, address, zipCode, documentId, email, gender, phone, birthdate, req.params.id], function (err, rows, results) {
             if (err) {
                 res.sendStatus(500);
             } else {
-                res.send(rows);
+                res.send({"message": "success", "client": rows, "results":results });
             }
         });
     });
@@ -73,11 +73,11 @@ function removeCliente(req, res) {
     let connection = mysql.createConnection(options);
     connection.connect(function (err) {
         if (err) throw err;
-        connection.query(query, [req.params.id], function (err) {
+        connection.query(query, [req.params.id], function (err, rows, results) {
             if (err) {
-                res.sendStatus(404);
+                res.sendStatus(500);
             } else {
-                res.sendStatus(200);
+                res.send({"message": "success", "client": rows, "results":results });
             }
         });
     });
@@ -88,7 +88,7 @@ module.exports.removeCliente = removeCliente;
 function postLogin(req, res) {
 
     var connection = mysql.createConnection(options);
-    let sql = "SELECT count(1) AS retorno, clientId AS id FROM clients  WHERE clientUsername = ? AND clientPassword = MD5(?)";
+    let sql = "SELECT count(1) AS retorno, clientId AS id , IFNULL(clientType,'Client') AS type FROM clients  WHERE clientUsername = ? AND clientPassword = MD5(?) AND clientState <> 'I'";
 
     connection.connect(function (err) {
         if (err) throw err;

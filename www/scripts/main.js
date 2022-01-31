@@ -134,7 +134,7 @@ function selected(){
     button.addEventListener('click', eventHandler);
     fatherNode.appendChild(button);
 }
-// session
+// session storage
 function sessionStorageGravar(arg) { 
     var text = document.getElementById(arg).value; 
     sessionStorage.setItem(arg, text); 
