@@ -40,7 +40,7 @@ class InformationClients {
     /**
      * coloca a palavra "Client" no div titulo e cria dinamicamente uma tabela com a informação dos clientes
      */
-     showClients(acao) {
+    showClients(acao) {
         let self = this;
         let type = localStorageObter("type");
         
@@ -107,6 +107,7 @@ class InformationClients {
         function setupForm(){
             document.getElementById('formClient').style.display = 'block';
             document.getElementById('formClient').reset();
+            document.getElementById('fileClient').value = "";
             //document.getElementById('formClient').innerHTML = '';
             document.getElementById('gender').options.length = 0;
             document.getElementById("username").readOnly = false;
@@ -132,34 +133,6 @@ class InformationClients {
             createButton("divInformation", newClientEventHandler, 'New Client');
             createButton("divInformation", deleteClientEventHandler, 'Delete Client');
             //createButton("divInformation", selectAllClientEventHandler, 'Select All');
-        }
-    }
-
-    selectAll(){
-        let self = this;
-        self.getClients();
-
-        let clientTable = document.createElement("table");
-        clientTable.setAttribute("id", "clientTable");
-        let th = tableLine(new Client(),true);
-        clientTable.appendChild(th);
-        this.clients.forEach(p=>{
-            let tr = tableLine(p);
-            clientTable.appendChild(tr);
-        });
-        replaceChilds("divInformation",clientTable);
-
-        var table = document.getElementById("clientTable");
-        var rows = table.getElementsByTagName("tr");
-
-        for(var i = 0; i < rows.length; i++){
-            var row = rows[i];
-
-            row.addEventListener("click", function(){
-            //Adicionar ao atual
-            selLinha(this, false); //Selecione apenas um
-            //selLinha(this, true); //Selecione quantos quiser
-            });
         }
     }
     /**
@@ -280,7 +253,13 @@ class InformationClients {
 
     putClient(client){
         const self = this;
+        let formData = new FormData();
+        let f = document.getElementById("fileClient").files[0];
+        formData.append('file', document.getElementById("fileClient").files[0]);
+        formData.append('client', JSON.stringify(client));
+
         const xhr = new XMLHttpRequest();
+        xhr.responseType="json";
         xhr.open('PUT', '/client/' + client.id);
         
         xhr.onreadystatechange = function () {
@@ -290,10 +269,10 @@ class InformationClients {
                 self.showClients("update");
             }
         }
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(client));
+        //xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(formData);
     }
-
+    
     deleteClient(client){
         const self = this;
         const xhr = new XMLHttpRequest();

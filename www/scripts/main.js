@@ -16,11 +16,6 @@ window.onload = function (event) {
     
 };
 
-const worker = new Worker('scripts/worker.js');
-worker.addEventListener('message',d=>{
-
-           
-});
 /**
  * Função que valida se os campos do formulario estao preenchidos (facilitador de DOM)
  * @param {string[]} args - array de argumentos
@@ -159,20 +154,57 @@ function localStorageLimpar(arg) {
     localStorage.removeItem(arg);
     //document.getElementById("Data").value = ""; 
 } 
-// function sessionStorageItemGravar() { 
-//     var text = document.getElementById("item").value; 
-//     sessionStorage.setItem("item", text); 
-//     var text = document.getElementById("quantidade").value; 
-//     sessionStorage.setItem("quantidade", text); 
-// } 
-// function sessionStorageObterLoja(){
 
-//     let divs = document.querySelectorAll('loja');
-//     let nome = sessionStorage.getItem("item");
+//carregar imagem
+const input = document.getElementById('fileClient');
+const canvas = document.getElementById('canvas');
 
-//     divs.forEach((ds,index) => {
+const worker = new Worker('scripts/worker.js'); 
 
-//     ds.value = nome; 
+worker.addEventListener('message',d=>{
+    let canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const imgData = d.data; 
+    ctx.putImageData(imgData,0,0);
+});
 
-//     });
-// }
+function applyFilter(){
+    const canvas = document.getElementById('canvas');
+    const canvasCtx = canvas.getContext('2d');
+    const imgData = canvasCtx.getImageData(0,0, canvas.width, canvas.height);
+    worker.postMessage(imgData);
+}
+
+function inputChange(e) {    
+    
+    if (e.target.files.length === 0)return;
+        const file=e.target.files[0];
+        processImage(file);
+}
+
+async function processImage(file){
+    const bitmap = await createImageBitmap(file);
+    // Load an image of intrinsic size 300x227 in CSS pixels
+    const canvas = document.getElementById('canvas');
+    const canvasCtx = canvas.getContext('2d');
+    bitmap.onload = drawImageActualSize(canvas.width,canvas.height,canvasCtx);
+    
+    function drawImageActualSize(width,height) {
+        // Use the intrinsic size of image in CSS pixels for the canvas element
+        bitmap.resizeWidth =width;
+        bitmap.resizeHeight =height;
+        canvasCtx.drawImage(bitmap, 0, 0, width, height);
+    }
+    applyFilter();
+}
+
+function addDiv(marca, modelo, logo){
+    let div = document.createElement("div");
+    div.textContent = marca + " " + modelo;
+    let img = document.createElement("img");
+    img.src = logo;
+    img.style.height = "40px";
+    img.style.width = "40px";
+    document.getElementById("marcasDisponiveis").appendChild(div);
+    document.getElementById("marcasDisponiveis").appendChild(img)
+}

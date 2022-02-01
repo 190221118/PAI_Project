@@ -24,7 +24,7 @@
     <main>
         <article>
             <h1 id="headerTitle">Home</h1>
-            <div class="content">      
+            <!--<div class="content">    -->  
             <!--FORMULÁRIO DE LOGIN-->
                 <div id="login">
                     <form id="formLogin" action="javascript:login.processingLogin();"> 
@@ -48,7 +48,7 @@
                         <input class="inputLogin" type="submit" value="Logar" /> 
                     </p>
                     </form>
-                </div>
+                <!-- </div> -->
             </div>
             <div id="divInformation"></div>
             <form id="formClient"  action="javascript:infoClients.processingClient('create');">
@@ -86,6 +86,10 @@
                 <label class="labelClient" for="birthdate">Birth date:
                     <input id="birthdate" type="date" placeholder="Introduza a data de nascimento">
                 </label>
+                <div id="fileInput">
+                    <input type="file" id="fileClient" onchange="inputChange(event)">
+                    <canvas class="container" id="canvas" width="300" height="227"></canvas>
+                </div>
                 <input  id="Save" type="submit" value="Save" />
                 <input  id="clean" type="reset" value="clean" />
             </form>
