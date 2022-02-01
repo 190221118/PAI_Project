@@ -7,11 +7,13 @@
  */
 window.onload = function (event) {
     var infoClients = new InformationClients("divInformation");
-    infoClients.getClients();
+    //infoClients.getClients();
     window.infoClients = infoClients;
 
     var login = new Login("login");
+    login.logOff();
     window.login = login;
+    
 };
 
 const worker = new Worker('scripts/worker.js');

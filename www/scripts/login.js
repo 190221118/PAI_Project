@@ -30,10 +30,6 @@ class Login {
         if (validadeForm(args)){
             const login = new Login(username, password);
             this.postLogin(username,password);
-            if (sessionStorageObter("username_login") === null) 
-                document.getElementById("formLogin").style.display = "block";
-            else
-                document.getElementById("formLogin").style.display = "none";
         }
         
     }
@@ -72,8 +68,12 @@ class Login {
     */
     logOff() {
         sessionStorageLimpar("username_login");
-        localStorageLimpar("client");
+        localStorageLimpar("id");
+        localStorageLimpar("type");
+        localStorageLimpar("clients");
         document.getElementById("menuLogin").style.display = "none";
+        document.getElementById("divInformation").style.display="none";    
+        document.getElementById("formClient").style.display = "none";
     }
 
     showHomeLogin() {
@@ -87,12 +87,17 @@ class Login {
         else {
                 document.getElementById("formLogin").style.display = "none";
                 document.getElementById("menuLogin").style.display = "block";
+                document.getElementById("menuLogin").textContent = "Log Off";
+
                 let id = localStorageObter("id");
                 let type = localStorageObter("type");
-                if (type === "Client") 
+                if (type === "Client") {
                     infoClients.getClientById(id);
-                else
+                }
+                else{
                     infoClients.getClients();
+                }
+                //localStorageGravar("client",JSON.stringify(infoClients.clients));
         }
     }
 

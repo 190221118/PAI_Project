@@ -36,16 +36,18 @@ class InformationClients {
                 document.getElementById("formLogin").style.display = "none";
                 document.getElementById("menuLogin").style.display = "block";
         }
-        let cleanDiv= document.createElement("div");
-        replaceChilds("divInformation",cleanDiv);
     }
     /**
      * coloca a palavra "Client" no div titulo e cria dinamicamente uma tabela com a informação dos clientes
      */
-     showClients() {
+     showClients(acao) {
         let self = this;
-        /** @todo Completar */
-        /** @todo Tarefa 1 */
+        let type = localStorageObter("type");
+        
+        // permissao para ver todos os clientes
+        if (type === "Admin" && acao === "select") {
+            infoClients.getClients();
+        }
         /** Actualizar o título */
         document.getElementById("headerTitle").textContent="Clients";
         if (sessionStorageObter("username_login")  === null) {
@@ -55,10 +57,11 @@ class InformationClients {
         else {
             document.getElementById("divInformation").style.display="block";
         }
-
         document.getElementById("formClient").style.display = "none";
         document.getElementById("formLogin").style.display = "none"; 
-        
+
+        let cleanDiv= document.createElement("div");
+        replaceChilds("divInformation",cleanDiv);
 
         let clientTable = document.createElement("table");
         clientTable.setAttribute("id", "clientTable");
@@ -122,18 +125,50 @@ class InformationClients {
             document.getElementById('formClient').style.display = 'block';
             
         }
-
-        createButton("divInformation", newClientEventHandler, 'New Client');
-        createButton("divInformation", deleteClientEventHandler, 'Delete Client');
+        
         createButton("divInformation", updateClientEventHandler, 'Update Client');
+        //let type = localStorageObter("type");
+        if (type === "Admin") {
+            createButton("divInformation", newClientEventHandler, 'New Client');
+            createButton("divInformation", deleteClientEventHandler, 'Delete Client');
+            //createButton("divInformation", selectAllClientEventHandler, 'Select All');
+        }
+    }
+
+    selectAll(){
+        let self = this;
+        self.getClients();
+
+        let clientTable = document.createElement("table");
+        clientTable.setAttribute("id", "clientTable");
+        let th = tableLine(new Client(),true);
+        clientTable.appendChild(th);
+        this.clients.forEach(p=>{
+            let tr = tableLine(p);
+            clientTable.appendChild(tr);
+        });
+        replaceChilds("divInformation",clientTable);
+
+        var table = document.getElementById("clientTable");
+        var rows = table.getElementsByTagName("tr");
+
+        for(var i = 0; i < rows.length; i++){
+            var row = rows[i];
+
+            row.addEventListener("click", function(){
+            //Adicionar ao atual
+            selLinha(this, false); //Selecione apenas um
+            //selLinha(this, true); //Selecione quantos quiser
+            });
+        }
     }
     /**
      * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client através do verbo GET, usando pedidos assincronos e JSON
      */
     getClients() {
+        const self = this;
         let clients = this.clients;
         clients.length = 0;
-
         var tableElement = document.getElementById("clientTable");
         tableElement = document.createElement("table");
         tableElement.setAttribute("id", "clientTable");
@@ -147,6 +182,8 @@ class InformationClients {
                 info.forEach(p => {
                     clients.push(p);
                 });
+                localStorageGravar("clients",JSON.stringify(clients));
+                self.showClients("selectAll");
             }
         };
         xhr.send(tableElement);
@@ -172,8 +209,8 @@ class InformationClients {
                 info.forEach(p => {
                     clients.push(p);
                 });
-                localStorageGravar("client",JSON.stringify(clients));
-                self.showClients();
+                localStorageGravar("clients",JSON.stringify(clients));
+                self.showClients("selectById");
             }
         };
         xhr.send(tableElement);
@@ -234,7 +271,7 @@ class InformationClients {
                 self.getClientById(id);
                 //const newClient = new Client(xhr.response.id, client.name, client.username, client.password, client.birthDate, client.address, client.zipCode, client.documentId, client.email, client.idgender, client.phone);
                 //self.clients.push(newClient);
-                self.showClients();
+                self.showClients("insert");
             }
         }
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -248,9 +285,9 @@ class InformationClients {
         
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                self.clients[self.clients.findIndex(i => i.id === client.id)] = client;
+                //hself.clients[self.clients.findIndex(i => i.id === client.id)] = client;
                 self.getClientById(client.id);
-                self.showClients();
+                self.showClients("update");
             }
         }
         xhr.setRequestHeader('Content-Type', 'application/json');
@@ -264,7 +301,7 @@ class InformationClients {
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 self.clients.splice(self.clients.findIndex(i => i.id === client.id), 1);
-                self.showClients();
+                self.showClients("delete");
             }
         };
         xhr.setRequestHeader('Content-Type', 'application/json');
