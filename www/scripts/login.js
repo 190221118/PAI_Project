@@ -96,6 +96,8 @@ class Login {
                 }
                 else{
                     infoClients.getClients();
+                    infoProducts.getCategories();
+                    infoProducts.getProducts();
                 }
                 //localStorageGravar("client",JSON.stringify(infoClients.clients));
         }

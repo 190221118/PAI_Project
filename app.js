@@ -95,7 +95,7 @@ app.put("/products/:id", upload.any(), (req, res) => {
                 image: destinationPath,
                 id: productData.id
             };
-    requestHandlers.createUpdateProduct(prod, prod.id !== undefined ? true : false, (err, rows, results) => {
+    requestHandlers.createUpdateProduct(prod, prod.id !== null ? true : false, (err, rows, results) => {
         if (err) {
             console.log(err);
 

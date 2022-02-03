@@ -9,8 +9,8 @@ window.onload = function (event) {
     var infoClients = new InformationClients("divInformation");
     var infoProducts = new InformationProducts("divInformation");
     //infoClients.getClients();
-    infoProducts.getCategories();
-    infoProducts.getProducts();
+    //infoProducts.getCategories();
+    //infoProducts.getProducts();
     window.infoClients = infoClients;
     window.infoProducts = infoProducts;
 

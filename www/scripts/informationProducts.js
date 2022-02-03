@@ -6,8 +6,8 @@
 * @param {string} id - id do elemento HTML que contém a informação.
 * 
 * @property {string} id - id do elemento HTML que contém a informação.
-* @property {client[]} clients - Array de objetos do tipo client, para guardar todas as pessoas do nosso sistema
-  @property {string[]} genders - Array de objetos do tipo gender, para guardar todas as pessoas do nosso sistema
+* @property {product[]} products - Array de objetos do tipo products,
+  @property {categories[]} categories - Array de objetos do tipo ,categories
 */
 class InformationProducts {
     constructor(id) {
