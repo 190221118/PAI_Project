@@ -7,8 +7,12 @@
  */
 window.onload = function (event) {
     var infoClients = new InformationClients("divInformation");
+    var infoProducts = new InformationProducts("divInformation");
     //infoClients.getClients();
+    infoProducts.getCategories();
+    infoProducts.getProducts();
     window.infoClients = infoClients;
+    window.infoProducts = infoProducts;
 
     var login = new Login("login");
     login.logOff();
@@ -82,18 +86,8 @@ function selLinha(linha, multiplos){
     }
     linha.classList.toggle("selecionado");
 }
-/**
- * Função que retorna o id da linha selecionada
- */
-function selected(){
-    let table = document.getElementById("clientTable");
-	let selecteds = table.getElementsByClassName("selecionado");
-    //Verificar se eestá selecionado
-    if(selecteds.length < 1){
-  	    alert("Selecione pelo menos uma linha");
-        return false;
-    }
 
+function selectedClient(selecteds){
     for(var i = 0; i < selecteds.length; i++){
         var selected = selecteds[i];
         selected = selected.getElementsByTagName("td");
@@ -114,6 +108,43 @@ function selected(){
      
         document.getElementById('phone').value = selected[10].textContent;
     }
+}
+
+function selectedProduct(selecteds){
+    for(var i = 0; i < selecteds.length; i++){
+        var selected = selecteds[i];
+        selected = selected.getElementsByTagName("td");
+
+        document.getElementById('idProduct').value = selected[0].textContent;
+        document.getElementById("idProduct").setAttribute("readonly", "readonly");
+        document.getElementById('nameProduct').value = selected[1].textContent;
+        document.getElementById('descriptionProduct').value = selected[2].textContent;
+        var category = document.getElementById("categoryProduct");
+        document.getElementById('categoryProduct').options[category.selectedIndex].value = selected[3].textContent;
+        document.getElementById('priceProduct').value = selected[5].textContent;
+    }
+}
+
+/**
+ * Função que retorna o id da linha selecionada
+ */
+function selected(tableObj, tableName){
+    //let table = document.getElementById("clientTable");
+    let table = tableObj;
+	let selecteds = table.getElementsByClassName("selecionado");
+    //Verificar se eestá selecionado
+    if(selecteds.length < 1){
+  	    alert("Selecione pelo menos uma linha");
+        return false;
+    }
+
+    if(tableName === "clients"){
+        selectedClient(selecteds);
+    }
+    else if(tableName === "products"){
+        selectedProduct(selecteds);
+    }
+    
     return true;
 }
 
@@ -153,7 +184,13 @@ function localStorageObter(arg) {
 function localStorageLimpar(arg) { 
     localStorage.removeItem(arg);
     //document.getElementById("Data").value = ""; 
-} 
+}
+
+function cleanCanvas(){
+    let canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 //carregar imagem
 const input = document.getElementById('fileClient');

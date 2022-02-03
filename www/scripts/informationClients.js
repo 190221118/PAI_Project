@@ -28,6 +28,7 @@ class InformationClients {
         /** Limpar o conteúdo */
         document.getElementById("divInformation").style.display="none";    
         document.getElementById("formClient").style.display = "none";
+        document.getElementById("formProduct").style.display = "none";
         if (sessionStorageObter("username_login") === null) {
                 document.getElementById("formLogin").style.display = "block";
                 document.getElementById("menuLogin").style.display = "none";
@@ -58,6 +59,7 @@ class InformationClients {
             document.getElementById("divInformation").style.display="block";
         }
         document.getElementById("formClient").style.display = "none";
+        document.getElementById("formProduct").style.display = "none";
         document.getElementById("formLogin").style.display = "none"; 
 
         let cleanDiv= document.createElement("div");
@@ -85,8 +87,7 @@ class InformationClients {
             //selLinha(this, true); //Selecione quantos quiser
             });
         }
-
-        /** @todo Tarefa 2 */
+        
         /** Mostrar o conteúdo */
         
         function deleteClientEventHandler() {
@@ -101,6 +102,7 @@ class InformationClients {
 
         function updateClientEventHandler() {
             document.getElementById('formClient').action = 'javascript:infoClients.processingClient("update");';
+            cleanCanvas();
             loadClient();
         }
 
@@ -122,7 +124,7 @@ class InformationClients {
             self.genders.forEach ( (e) => {
                 document.getElementById('gender').options.add(new Option(e));
             });
-            if (selected())
+            if (selected(document.getElementById("clientTable"), "clients"))
             document.getElementById('formClient').style.display = 'block';
             
         }
@@ -223,17 +225,17 @@ class InformationClients {
         const client = new Client(id, name,username, password, birthDate, address, zipCode, documentId, email, idgender, phone);
         if (acao === 'create') {
             if (validadeForm(args)){
-                this.postClient(client);
+                this.putClient(client, false);
             } 
         } else if (acao === 'update') {
-            this.putClient(client);
+            this.putClient(client, true);
             
         } else if (acao === 'delete') {
             this.deleteClient(client);
         }
     }
 
-    postClient(client){
+    /*postClient(client){
         const self = this;
         const xhr = new XMLHttpRequest();
         xhr.responseType = 'json';
@@ -249,9 +251,9 @@ class InformationClients {
         }
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify(client));
-    }
+    }*/
 
-    putClient(client){
+    putClient(client, isUpdate){
         const self = this;
         let formData = new FormData();
         let f = document.getElementById("fileClient").files[0];
@@ -260,13 +262,20 @@ class InformationClients {
 
         const xhr = new XMLHttpRequest();
         xhr.responseType="json";
-        xhr.open('PUT', '/client/' + client.id);
+        xhr.open('PUT', '/clients/' + client.id);
         
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 //hself.clients[self.clients.findIndex(i => i.id === client.id)] = client;
-                self.getClientById(client.id);
-                self.showClients("update");
+                if(!isUpdate){
+                    let id = xhr.response.client.insertId;
+                    self.getClientById(id);
+                    self.showClients("insert");
+                }
+                else{
+                    self.getClientById(client.id);
+                    self.showClients("update");
+                }
             }
         }
         //xhr.setRequestHeader('Content-Type', 'application/json');
@@ -276,10 +285,10 @@ class InformationClients {
     deleteClient(client){
         const self = this;
         const xhr = new XMLHttpRequest();
-        xhr.open('PUT', '/client/' + client.id);
+        xhr.open('DELETE', '/clients/' + client.id);
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                self.clients.splice(self.clients.findIndex(i => i.id === client.id), 1);
+                self.clients.splice(self.clients.findIndex(i => i.clientId === client.id), 1);
                 self.showClients("delete");
             }
         };

@@ -48,7 +48,7 @@ th, td {
 	padding: 5px;
 } 
 
-#formClient {
+#formClient, #formProduct {
 	display: none;
 	width: 550px;
 	margin: 5px;
@@ -106,7 +106,7 @@ input {
 	text-align: left;
 }
 
-#clientTable{
+#clientTable, #productTable{
 	width:100%;
 	margin:0 auto;
 	border:0;
@@ -114,7 +114,7 @@ input {
 	border-spacing: 0;
 }
   
-#clientTable thead th{
+#clientTable thead th, #productTable thead th{
 	font-weight: bold;
 	background-color: black;
 	color:white;
@@ -122,33 +122,33 @@ input {
 	padding:5px 10px;
 }
   
-#clientTable tr td{
+#clientTable tr td, #productTable tr td{
 	padding:5px 10px;
 	text-align: center;
 	
 	cursor: pointer; /**importante para não mostrar cursor de texto**/
 }
   
-#clientTable tr td:last-child{
+#clientTable tr td:last-child, #productTable tr td:last-child{
 	text-align: right;
 }
 
 /**Cores**/
-#clientTable tr:nth-child(odd){
+#clientTable tr:nth-child(odd), #productTable tr:nth-child(odd){
 	background-color: #eee;
 }
 
 /**Cor quando passar por cima**/
-#clientTable tr:hover td{
+#clientTable tr:hover td, #productTable tr:hover td{
 	background-color: #feffb7;
 }
 
 /**Cor quando selecionado**/
-#clientTable tr.selecionado td{
+#clientTable tr.selecionado td, #productTable tr.selecionado td{
 	background-color: #aff7ff;
 }
 
-#fileInput{
+#fileInput, #productInput{
 	text-align: right;
 }
 

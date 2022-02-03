@@ -4,11 +4,17 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Final Project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Final Project</title>
+    
     <link rel="stylesheet" type="text/css" media="screen" href="styles/style.css" />
+    
     <script src="scripts/client.js"></script>
     <script src="scripts/informationClients.js"></script>
+    <script src="scripts/informationProducts.js"></script>
+    <script src="scripts/category.js"></script>
+    <script src="scripts/product.js"></script>
     <script src="scripts/login.js"></script>
     <script src="scripts/main.js"></script>
 </head>
@@ -18,6 +24,7 @@
         <ul class="menu">
             <li><a id="menuHome" href="javascript: infoClients.showHome();">Home</a></li>
             <li><a id="menuClient" href="javascript: infoClients.showClients('select');">Clients</a></li>
+            <li><a id="menuClient" href="javascript: infoProducts.showProducts('select');">Products</a></li>
             <li><a id="menuLogin" href="javascript: login.logOff();"></a></li>
         </ul>
     </nav>
@@ -26,8 +33,8 @@
             <h1 id="headerTitle">Home</h1>
             <!--<div class="content">    -->  
             <!--FORMULÁRIO DE LOGIN-->
-                <div id="login">
-                    <form id="formLogin" action="javascript:login.processingLogin();"> 
+            <div id="login">
+                <form id="formLogin" action="javascript:login.processingLogin();"> 
                     <h2>Login</h2> 
                     <p> 
                         <label class="labelLogin" for="username_login">Seu nome</label>
@@ -47,7 +54,7 @@
                     <p> 
                         <input class="inputLogin" type="submit" value="Logar" /> 
                     </p>
-                    </form>
+                </form>
                 <!-- </div> -->
             </div>
             <div id="divInformation"></div>
@@ -87,11 +94,35 @@
                     <input id="birthdate" type="date" placeholder="Introduza a data de nascimento">
                 </label>
                 <div id="fileInput">
-                    <input type="file" id="fileClient" onchange="inputChange(event)">
+                    <input type="file" id="fileClient" onchange="inputChange(event)" accept=".jpg, .jpeg, .png">
                     <canvas class="container" id="canvas" width="300" height="227"></canvas>
                 </div>
                 <input  id="Save" type="submit" value="Save" />
-                <input  id="clean" type="reset" value="clean" />
+                <input  id="clean" type="reset" value="clean" onclick="javascript:cleanCanvas()" />
+            </form>
+            <form id="formProduct"  action="javascript:infoProducts.processingProduct('create');">
+                <br/>
+                <label class="labelClient" for="id">Id:
+                    <input id="idProduct" type="text" />
+                </label>
+                <label class="labelClient" for="name">Name:
+                    <input id="nameProduct" type="text" placeholder="Introduza o nome">
+                </label>
+                <label class="labelClient" for="description">Description:
+                    <input id="descriptionProduct" type="text" placeholder="Introduza a descrição">
+                </label>
+                <label class="labelClient" for="category">Categoria:
+                    <select id="categoryProduct"></select>
+                </label>
+                <div id="productInput">
+                    <input type="file" id="imageProduct" name="productImage" onchange="inputChange(event)" accept=".jpg, .jpeg, .png">
+                    <canvas class="container" id="canvasProduct" width="300" height="227"></canvas>
+                </div>
+                <label class="labelClient" for="price">Price:
+                    <input id="priceProduct" type="number" placeholder="Introduza o preço">
+                </label>
+                <input  id="saveProduct" type="submit" value="Save" />
+                <input  id="cleanProduct" type="reset" value="clean" />
             </form>
         </article>
     </main>

@@ -23,38 +23,92 @@ app.use(express.static("www"));
 //app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static("www"));
 
-// Client
+// Secção do cliente
+
+// Chama a função para ir buscar todos os clientes
 app.get("/clients", requestHandlers.getClients);
 
+// Chama a função para ir buscar um cliente pelo seu id
 app.get("/clientById/:id", requestHandlers.getClientById);
-// post Client
-/** @todo Completar */
-app.post("/client", requestHandlers.createUpdateCliente);
 
-// put client
-/** @todo Completar */
-app.put("/client/:id", upload.any(), (req, res) => {
+// Chama a função para atualizar um cliente ou criar um novo
+app.put("/clients/:id", upload.any(), (req, res) => {
     let r = req.body.client;
     let clientData = JSON.parse(req.body.client);
+    let cli = {name: clientData.name ,
+               username:clientData.username,
+               password:clientData.password,
+               birthDate:clientData.birthDate,
+               address:clientData.address,
+               zipCode:clientData.zipCode,
+               documentId:clientData.documentId,
+               email:clientData.email,
+               gender:clientData.gender,
+               phone:clientData.phone,
+               id: clientData.id
+               //logo:destinationPath
+            };
     let destinationPath = path.join("clientImages",clientData.username+".jpg");
     req.files.length !=0 ? fs.writeFileSync(path.join("www", destinationPath), req.files[0].buffer) : console.log("Sem imagem.");
-    res.json({"message": "success", "client":clientData.username});
-}, requestHandlers.createUpdateCliente);
+    requestHandlers.createUpdateClient(cli, cli.id !== null ? true : false, (err, rows, results) => {
+        if (err) {
+            console.log(err);
 
-// app.post('/automoveis', upload.any(), (req, res) => {
-//     let autData = JSON.parse(req.body.aut);
-//     let destinationPath = path.join("serverImages",autData.modelo+".jpg");
-//     let newAut = {id:automoveis.length+1,marca:autData.marca,modelo:autData.modelo,logo:destinationPath}
-//     fs.writeFileSync(path.join("www", destinationPath), req.files[0].buffer);
-//     automoveis.push(newAut);
-//     res.json({"message": "success", "automovel":automoveis });
-// });
+            res.status(500).json({"message": "error"});
+        } else {
+            res.status(200).json({"message": "success", "client": rows, "results":results });
+        }
 
-// update client to inactive
-app.put("/client/:id", requestHandlers.removeCliente);
+    })
+});
 
-// login
+// Chama a função para remover um cliente
+app.delete("/clients/:id", requestHandlers.removeClient);
+
+// Chama a função para fazer login
 app.post("/postLogin/:username/:password", requestHandlers.postLogin);
+
+
+// Secção do produto
+
+// Chama a função para ir buscar todos os produtos
+app.get("/products", requestHandlers.getProducts);
+
+// Chama a função para ir buscar um cliente pelo seu id
+app.get("/productById/:id", requestHandlers.getProductById);
+
+// Chama a função para ir buscar todas as categorias de produtos
+app.get("/productcategories", requestHandlers.getCategories);
+
+// Chama a função para criar um novo produto
+app.put("/products/:id", upload.any(), (req, res) => {
+    let r = req.body.product;
+    let productData = JSON.parse(req.body.product);
+
+    let destinationPath = path.join("productsImages",productData.name+".jpg");
+    req.files.length !=0 ? fs.writeFileSync(path.join("www", destinationPath), req.files[0].buffer) : console.log("Sem imagem.");
+    
+    let prod = {name: productData.name ,
+                description:productData.description,
+                category:productData.category,
+                price:productData.price,
+                image: destinationPath,
+                id: productData.id
+            };
+    requestHandlers.createUpdateProduct(prod, prod.id !== undefined ? true : false, (err, rows, results) => {
+        if (err) {
+            console.log(err);
+
+            res.status(500).json({"message": "error"});
+        } else {
+            res.status(200).json({"message": "success", "product": rows, "results":results });
+        }
+
+    })
+});
+
+// Chama a função para remover um produto
+app.delete("/products/:id", requestHandlers.removeProduct);
 
 
 app.listen(8082, function () {
