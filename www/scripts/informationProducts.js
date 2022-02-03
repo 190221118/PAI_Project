@@ -106,6 +106,9 @@ class InformationProducts {
 
         function loadProduct(){
             document.getElementById('formProduct').reset();
+            document.getElementById('formClient').reset();
+            document.getElementById('categoryProduct').options.length = 0;
+
             self.categories.forEach ( (e) => {
                 document.getElementById('categoryProduct').options.add(new Option(e.productCategoryName));
             });
@@ -178,6 +181,7 @@ class InformationProducts {
 
     getCategories() {
         let categories = this.categories;
+        categories.length = 0;
         var xhr = new XMLHttpRequest();
         xhr.responseType="json";
         xhr.open("GET", "/productcategories", true);

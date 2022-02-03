@@ -1,5 +1,7 @@
 "use strict";
 
+//const { sendFile } = require("express/lib/response");
+
 /** 
 * @class Guarda toda informação necessaria na execução do exercicio 
 * @constructs InformationClients
@@ -121,9 +123,11 @@ class InformationClients {
 
         function loadClient(){
             document.getElementById('formClient').reset();
+            document.getElementById('gender').options.length = 0;
             self.genders.forEach ( (e) => {
-                document.getElementById('gender').options.add(new Option(e));
+                 document.getElementById('gender').options.add(new Option(e));
             });
+
             if (selected(document.getElementById("clientTable"), "clients"))
             document.getElementById('formClient').style.display = 'block';
             
