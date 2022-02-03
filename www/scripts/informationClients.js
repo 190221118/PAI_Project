@@ -20,26 +20,27 @@ class InformationClients {
     /**
      * coloca a palavra "home" no div titulo e limpa o div informação
      */
-    showHome() {
-        /** @todo Completar */
-         /** @todo Tarefa 1 */
-        /** Actualizar o título */
-        document.getElementById("headerTitle").textContent="Home";
+    // showHome() {
+    //     /** @todo Completar */
+    //      /** @todo Tarefa 1 */
+    //     /** Actualizar o título */
+    //     document.getElementById("headerTitle").textContent="Home";
 
-        /** @todo Tarefa 2 */
-        /** Limpar o conteúdo */
-        document.getElementById("divInformation").style.display="none";    
-        document.getElementById("formClient").style.display = "none";
-        document.getElementById("formProduct").style.display = "none";
-        if (sessionStorageObter("username_login") === null) {
-                document.getElementById("formLogin").style.display = "block";
-                document.getElementById("menuLogin").style.display = "none";
-        }
-        else {
-                document.getElementById("formLogin").style.display = "none";
-                document.getElementById("menuLogin").style.display = "block";
-        }
-    }
+    //     /** @todo Tarefa 2 */
+    //     /** Limpar o conteúdo */
+    //     document.getElementById("divInformation").style.display="none";    
+    //     document.getElementById("formClient").style.display = "none";
+    //     document.getElementById("formProduct").style.display = "none";
+    //     if (sessionStorageObter("username_login") === null) {
+    //             document.getElementById("formLogin").style.display = "block";
+    //             document.getElementById("menuLogin").style.display = "none";
+    //     }
+    //     else {
+    //             document.getElementById("formLogin").style.display = "none";
+    //             document.getElementById("menuLogin").style.display = "block";
+    //     }
+        
+    // }
     /**
      * coloca a palavra "Client" no div titulo e cria dinamicamente uma tabela com a informação dos clientes
      */
@@ -63,6 +64,8 @@ class InformationClients {
         document.getElementById("formClient").style.display = "none";
         document.getElementById("formProduct").style.display = "none";
         document.getElementById("formLogin").style.display = "none"; 
+        document.getElementById("divProductList").style.display = "none";
+        
 
         let cleanDiv= document.createElement("div");
         replaceChilds("divInformation",cleanDiv);
@@ -104,7 +107,8 @@ class InformationClients {
 
         function updateClientEventHandler() {
             document.getElementById('formClient').action = 'javascript:infoClients.processingClient("update");';
-            cleanCanvas();
+            cleanCanvasClient();
+            cleanCanvasProduct();
             loadClient();
         }
 
@@ -238,24 +242,6 @@ class InformationClients {
             this.deleteClient(client);
         }
     }
-
-    /*postClient(client){
-        const self = this;
-        const xhr = new XMLHttpRequest();
-        xhr.responseType = 'json';
-        xhr.open('POST', '/client');
-        xhr.onreadystatechange = function () {
-            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                let id = xhr.response.client.insertId;
-                self.getClientById(id);
-                //const newClient = new Client(xhr.response.id, client.name, client.username, client.password, client.birthDate, client.address, client.zipCode, client.documentId, client.email, client.idgender, client.phone);
-                //self.clients.push(newClient);
-                self.showClients("insert");
-            }
-        }
-        xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(client));
-    }*/
 
     putClient(client, isUpdate){
         const self = this;

@@ -22,7 +22,7 @@
 <body>
     <nav>
         <ul class="menu">
-            <li><a id="menuHome" href="javascript: infoClients.showHome();">Home</a></li>
+            <li><a id="menuHome" href="javascript: infoProducts.showHome();">Home</a></li>
             <li><a id="menuClient" href="javascript: infoClients.showClients('select');">Clients</a></li>
             <li><a id="menuClient" href="javascript: infoProducts.showProducts('select');">Products</a></li>
             <li><a id="menuLogin" href="javascript: login.logOff();"></a></li>
@@ -33,6 +33,7 @@
             <h1 id="headerTitle">Home</h1>
             <!--<div class="content">    -->  
             <!--FORMULÁRIO DE LOGIN-->
+            <div id="divProductList"></div>
             <div id="login">
                 <form id="formLogin" action="javascript:login.processingLogin();"> 
                     <h2>Login</h2> 
@@ -94,11 +95,11 @@
                     <input id="birthdate" type="date" placeholder="Introduza a data de nascimento">
                 </label>
                 <div id="fileInput">
-                    <input type="file" id="fileClient" onchange="inputChange(event)" accept=".jpg, .jpeg, .png">
+                    <input type="file" id="fileClient" onchange="inputChangeClient(event)" accept=".jpg, .jpeg, .png">
                     <canvas class="container" id="canvas" width="300" height="227"></canvas>
                 </div>
                 <input  id="Save" type="submit" value="Save" />
-                <input  id="clean" type="reset" value="clean" onclick="javascript:cleanCanvas()" />
+                <input  id="clean" type="reset" value="clean" onclick="javascript:cleanCanvasClient()" />
             </form>
             <form id="formProduct"  action="javascript:infoProducts.processingProduct('create');">
                 <br/>
@@ -115,14 +116,14 @@
                     <select id="categoryProduct"></select>
                 </label>
                 <div id="productInput">
-                    <input type="file" id="imageProduct" name="productImage" onchange="inputChange(event)" accept=".jpg, .jpeg, .png">
+                    <input type="file" id="imageProduct" name="productImage" onchange="inputChangeProduct(event)" accept=".jpg, .jpeg, .png">
                     <canvas class="container" id="canvasProduct" width="300" height="227"></canvas>
                 </div>
                 <label class="labelClient" for="price">Price:
                     <input id="priceProduct" type="number" placeholder="Introduza o preço">
                 </label>
                 <input  id="saveProduct" type="submit" value="Save" />
-                <input  id="cleanProduct" type="reset" value="clean" />
+                <input  id="cleanProduct" type="reset" value="clean" onclick="javascript:cleanCanvasProduct()"/>
             </form>
         </article>
     </main>

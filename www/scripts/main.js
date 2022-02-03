@@ -201,43 +201,53 @@ function localStorageLimpar(arg) {
     //document.getElementById("Data").value = ""; 
 }
 
-function cleanCanvas(){
+function cleanCanvasClient(){
     let canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
+function cleanCanvasProduct(){
+    let canvas = document.getElementById('canvasProduct');
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 //carregar imagem
-const input = document.getElementById('fileClient');
-const canvas = document.getElementById('canvas');
 
 const worker = new Worker('scripts/worker.js'); 
 
-worker.addEventListener('message',d=>{
-    let canvas = document.getElementById('canvas');
+worker.addEventListener('message', d=>{
+    const canvas = document.getElementById('canvas');
     const ctx = canvas.getContext('2d');
     const imgData = d.data; 
     ctx.putImageData(imgData,0,0);
 });
 
-function applyFilter(){
-    const canvas = document.getElementById('canvas');
+function applyFilter(c){
+    const canvas = document.getElementById(c);
     const canvasCtx = canvas.getContext('2d');
     const imgData = canvasCtx.getImageData(0,0, canvas.width, canvas.height);
     worker.postMessage(imgData);
 }
 
-function inputChange(e) {    
+function inputChangeClient(e) {    
     
     if (e.target.files.length === 0)return;
         const file=e.target.files[0];
-        processImage(file);
+        processImage(file,"canvas");
 }
 
-async function processImage(file){
+function inputChangeProduct(e) {    
+    
+    if (e.target.files.length === 0)return;
+        const file=e.target.files[0];
+        processImage(file,"canvasProduct");
+}
+
+async function processImage(file, img){
     const bitmap = await createImageBitmap(file);
     // Load an image of intrinsic size 300x227 in CSS pixels
-    const canvas = document.getElementById('canvas');
+    const canvas = document.getElementById(img);
     const canvasCtx = canvas.getContext('2d');
     bitmap.onload = drawImageActualSize(canvas.width,canvas.height,canvasCtx);
     
@@ -247,16 +257,16 @@ async function processImage(file){
         bitmap.resizeHeight =height;
         canvasCtx.drawImage(bitmap, 0, 0, width, height);
     }
-    applyFilter();
+    applyFilter(img);
 }
 
-function addDiv(marca, modelo, logo){
+function addDiv(category, product, image){
     let div = document.createElement("div");
-    div.textContent = marca + " " + modelo;
+    div.textContent = category + " " + product;
     let img = document.createElement("img");
-    img.src = logo;
+    img.src = image;
     img.style.height = "40px";
     img.style.width = "40px";
-    document.getElementById("marcasDisponiveis").appendChild(div);
-    document.getElementById("marcasDisponiveis").appendChild(img)
+    document.getElementById("divProductList").appendChild(div);
+    document.getElementById("divProductList").appendChild(img)
 }

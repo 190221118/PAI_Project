@@ -33,6 +33,19 @@ class InformationProducts {
         else {
                 document.getElementById("formLogin").style.display = "none";
                 document.getElementById("menuLogin").style.display = "block";
+
+                let cleanDiv= document.createElement("div");
+                replaceChilds("divProductList",cleanDiv);
+
+                document.getElementById("divProductList").style.display = "block";
+                
+                let p = JSON.parse(localStorage.getItem("products"));
+                if (p != null){
+                    for (var i=0; i <= p.length-1; i++){
+                    addDiv(p[i].productCategoryName, p[i].productName, p[i].productImg);
+                }
+           
+        }
         }
     }
     /**
@@ -41,6 +54,10 @@ class InformationProducts {
     showProducts(acao) {
         let self = this;
         let type = localStorageObter("type");
+
+        if (acao === "insert" || acao === "update" || acao === "delete") {
+            infoProducts.getProducts();
+        }
         
         /** Actualizar o título */
         document.getElementById("headerTitle").textContent="Products";
@@ -48,6 +65,7 @@ class InformationProducts {
         document.getElementById("formClient").style.display = "none";
         document.getElementById("formProduct").style.display = "none";
         document.getElementById("formLogin").style.display = "none"; 
+        document.getElementById("divProductList").style.display = "none";
 
         let cleanDiv= document.createElement("div");
         replaceChilds("divInformation",cleanDiv);
@@ -89,6 +107,8 @@ class InformationProducts {
 
         function updateProductEventHandler() {
             document.getElementById('formProduct').action = 'javascript:infoProducts.processingProduct("update");';
+            cleanCanvasClient();
+            cleanCanvasProduct();
             loadProduct();
         }
 
@@ -165,7 +185,7 @@ class InformationProducts {
         products.length = 0;
         var xhr = new XMLHttpRequest();
         xhr.responseType="json";
-        xhr.open('GET', '/getProductById/' + id, true);
+        xhr.open('GET', '/productById/' + id, true);
         xhr.onreadystatechange = function () {
             if (this.readyState === 4 && this.status === 200) {
                 let info = xhr.response.product;

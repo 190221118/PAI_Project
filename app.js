@@ -88,13 +88,19 @@ app.put("/products/:id", upload.any(), (req, res) => {
     let destinationPath = path.join("productsImages",productData.name+".jpg");
     req.files.length !=0 ? fs.writeFileSync(path.join("www", destinationPath), req.files[0].buffer) : console.log("Sem imagem.");
     
-    let prod = {name: productData.name ,
-                description:productData.description,
-                category:productData.category,
-                price:productData.price,
-                image: destinationPath,
-                id: productData.id
-            };
+    let prod = req.files.length !=0 ? {name: productData.name ,
+                                        description:productData.description,
+                                        category:productData.category,
+                                        price:productData.price,
+                                        image: destinationPath,
+                                        id: productData.id
+                                        }:{
+                                        name: productData.name ,
+                                        description:productData.description,
+                                        category:productData.category,
+                                        price:productData.price,
+                                        id: productData.id
+                                        };
     requestHandlers.createUpdateProduct(prod, prod.id !== null ? true : false, (err, rows, results) => {
         if (err) {
             console.log(err);
