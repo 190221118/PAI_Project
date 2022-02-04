@@ -102,25 +102,7 @@ function selectedClient(selecteds){
         document.getElementById('zipcode').value = selected[6].textContent;
         document.getElementById('documentId').value = selected[7].textContent;
         document.getElementById('email').value = selected[8].textContent;
-        
-        //document.getElementById('gender').value = selected[9].textContent;
-        let id = selected[0].textContent;
-        var comboGender = document.getElementById("gender");
-        var t = selected[9].textContent;
-        document.getElementById('gender').options[comboGender.selectedIndex].textContent = selected[9].textContent;
-        let clientes = JSON.parse(localStorageObter('clients'));
-        let cli;
-        if (clientes != null) {
-            clientes.forEach(c => {
-                if (c.clientId == id){
-                    cli = c;
-                }
-            });
-            document.getElementById('gender').options[comboGender.selectedIndex].textContent = cli.clientGender;
-        }
- 
-        //document.getElementById('gender').options[comboGender.selectedIndex].value = selected[9].textContent;
-     
+        document.getElementById('gender').value= selected[9].textContent;    
         document.getElementById('phone').value = selected[10].textContent;
     }
 }
