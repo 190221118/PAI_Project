@@ -244,11 +244,12 @@ async function processImage(file, img){
 
 function addDiv(category, product, image){
     let div = document.createElement("div");
+    div.style.display = "inline-block";
     div.textContent = category + " " + product;
     let img = document.createElement("img");
     img.src = image;
-    img.style.height = "40px";
-    img.style.width = "40px";
+    img.style.height = "100px";
+    img.style.width = "100px";
     document.getElementById("divProductList").appendChild(div);
     document.getElementById("divProductList").appendChild(img)
 }
