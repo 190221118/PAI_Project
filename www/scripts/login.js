@@ -93,6 +93,7 @@ class Login {
                 let type = localStorageObter("type");
                 if (type === "Client") {
                     infoClients.getClientById(id);
+                    infoProducts.getProducts();
                 }
                 else{
                     infoClients.getClients();

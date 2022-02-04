@@ -55,7 +55,7 @@ class InformationProducts {
         let self = this;
         let type = localStorageObter("type");
 
-        if (acao === "insert" || acao === "update" || acao === "delete") {
+        if (acao === "select") {
             infoProducts.getProducts();
         }
         
