@@ -221,7 +221,7 @@ function cleanCanvasProduct(){
 const worker = new Worker('scripts/worker.js'); 
 
 worker.addEventListener('message', d=>{
-    const canvas = document.getElementById('canvas');
+    const canvas = document.getElementById('canvasProduct');
     const ctx = canvas.getContext('2d');
     const imgData = d.data; 
     ctx.putImageData(imgData,0,0);
