@@ -16,11 +16,10 @@
   @param {string} phone - fone do cliente
 */
 class Client {
-    constructor(id, name, username, password, birthDate, address, zipCode, documentId, email, gender, phone) {
+    constructor(id, name, username, birthDate, address, zipCode, documentId, email, gender, phone) {
         this.id = id;
         this.name = name;
         this.username = username;
-        this.password = password;
         this.birthDate = birthDate;
         this.address = address;
         this.zipCode = zipCode;

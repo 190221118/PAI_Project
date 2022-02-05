@@ -37,7 +37,6 @@ app.put("/clients/:id", upload.any(), (req, res) => {
     let clientData = JSON.parse(req.body.client);
     let cli = {name: clientData.name ,
                username:clientData.username,
-               password:clientData.password,
                birthDate:clientData.birthDate,
                address:clientData.address,
                zipCode:clientData.zipCode,
@@ -46,10 +45,7 @@ app.put("/clients/:id", upload.any(), (req, res) => {
                gender:clientData.gender,
                phone:clientData.phone,
                id: clientData.id
-               //logo:destinationPath
             };
-    let destinationPath = path.join("clientImages",clientData.username+".jpg");
-    req.files.length !=0 ? fs.writeFileSync(path.join("www", destinationPath), req.files[0].buffer) : console.log("Sem imagem.");
     requestHandlers.createUpdateClient(cli, cli.id !== null ? true : false, (err, rows, results) => {
         if (err) {
             console.log(err);

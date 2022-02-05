@@ -47,6 +47,8 @@ class InformationClients {
     showClients(acao) {
         let self = this;
         let type = localStorageObter("type");
+
+        document.getElementById("catalogProducts").style.display = "none";
         
         // permissao para ver todos os clientes
         if (type === "Admin" && acao === "select") {
@@ -65,6 +67,7 @@ class InformationClients {
         document.getElementById("formProduct").style.display = "none";
         document.getElementById("formLogin").style.display = "none"; 
         document.getElementById("divProductList").style.display = "none";
+        document.getElementById("demo").style.display = "none";
         
 
         let cleanDiv= document.createElement("div");
@@ -122,7 +125,6 @@ class InformationClients {
             const button = document.getElementById('updateData');
             button.setAttribute('data-bs-toggle', 'modal');
             button.setAttribute('data-bs-target', '#myModal');
-            cleanCanvasClient();
             cleanCanvasProduct();
             loadClient("update");
         }
@@ -130,7 +132,6 @@ class InformationClients {
         function setupForm(){
             document.getElementById('formClient').style.display = 'block';
             document.getElementById('formClient').reset();
-            document.getElementById('fileClient').value = "";
             //document.getElementById('formClient').innerHTML = '';
             document.getElementById('gender').options.length = 0;
             document.getElementById("username").readOnly = false;
@@ -270,8 +271,6 @@ class InformationClients {
     putClient(client, isUpdate){
         const self = this;
         let formData = new FormData();
-        let f = document.getElementById("fileClient").files[0];
-        formData.append('file', document.getElementById("fileClient").files[0]);
         formData.append('client', JSON.stringify(client));
 
         const xhr = new XMLHttpRequest();

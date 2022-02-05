@@ -3,8 +3,8 @@
 const mysql = require("mysql");
 const options = require("./connection-options.json");
 
-var queryClients = "SELECT clientId, clientName, clientUsername, clientPassword, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A'";
-var queryClient = "SELECT clientId, clientName, clientUsername, clientPassword, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A' and clientId = ?";
+var queryClients = "SELECT clientId, clientName, clientUsername, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A'";
+var queryClient = "SELECT clientId, clientName, clientUsername, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A' and clientId = ?";
 var queryProducts = "SELECT p.productId,  p.productName,  p.productDescription, pc.productCategoryName,  p.productImg,  p.productPrice FROM products AS p INNER JOIN productcategories as pc on p.productCategoryId = pc.productCategoryId WHERE p.productIsEnabled = 1";
 var queryProduct = "SELECT p.productId,  p.productName,  p.productDescription, pc.productCategoryName,  p.productImg,  p.productPrice FROM products AS p INNER JOIN productcategories as pc on p.productCategoryId = pc.productCategoryId WHERE p.productIsEnabled = 1 and p.productId = ?";
 var queryCategories = "SELECT productCategoryId, productCategoryName FROM productcategories";
@@ -78,7 +78,8 @@ function createUpdateClient(client, isUpdate, result) {
     let gender = client.gender;
     let phone = client.phone;
     let birthdate = client.birthDate;
-    let sql = (isUpdate) ? "UPDATE clients SET clientName = ?, clientUsername = ?, clientPassword = md5(?), clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientPassword, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState, clientType) VALUES (?,?,md5(?),?,?,?,?,?,?,?,'A','Client')";
+    let password = client.password;
+    let sql = (isUpdate) ? "UPDATE clients SET clientName = ?, clientUsername = ?, clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState, clientType, clientPassword) VALUES (?,?,?,?,?,?,?,?,?,'A','Client', md5(?))";
     connection.connect(function (err) {
         if (err) {
             if(result != null){
@@ -89,8 +90,7 @@ function createUpdateClient(client, isUpdate, result) {
             }
         }
         else {
-            let password = client.password;
-            connection.query(sql, [ name, username, password, address, zipCode, documentId, email, gender, phone, birthdate, id], function (err, rows, results) {
+            connection.query(sql, [ name, username, address, zipCode, documentId, email, gender, phone, birthdate, password, id], function (err, rows, results) {
                 if (err) {
                     if(result != null){
                         result(err, null, null);

@@ -14,22 +14,19 @@ CREATE DATABASE 'lab';
 USE `lab`;
 DROP TABLE IF EXISTS clients;
 CREATE TABLE clients (
-  clientId int(11) NOT NULL AUTO_INCREMENT,
+  clientId int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   clientName varchar(255) NOT NULL,
-  clientUsername varchar(20) NOT NULL,
+  clientUsername varchar(20) NOT NULL UNIQUE,
   clientPassword varchar(50) NOT NULL,
   clientAddress varchar(255) NOT NULL,
   clientZipCode varchar(50) NOT NULL,
   clientDocument varchar(50) NOT NULL,
-  clientEmail varchar(100) NOT NULL,
+  clientEmail varchar(100) NOT NULL UNIQUE,
   clientGender varchar(1) NOT NULL,
   clientFone varchar(50) NOT NULL,
   clientBirthDate datetime NOT NULL,
   clientState varchar(1) NOT NULL,
-  clientType varchar(20) NOT NULL,
-  clientImage varchar(100),
-   PRIMARY KEY (clientId),
-   UNIQUE (clientUsername)
+  clientType varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
 SET GLOBAL log_bin_trust_function_creators = 1;

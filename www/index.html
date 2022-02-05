@@ -21,11 +21,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
-    
 </head>
 
 <body>
-    <nav>
+    <nav aria-label="Navigation">
         <ul class="menu">
             <li><a id="menuHome" href="javascript: infoProducts.showHome();">Home</a></li>
             <li><a id="menuClient" href="javascript: infoClients.showClients('select');">Clients</a></li>
@@ -82,155 +81,184 @@
             </section>
 
             
-            <div id="divProductList"></div>
+            <!-- <div id="divProductList"></div> -->
+
+            <section id="sectionCarousel">
+              <!-- Carousel -->
+              <div id="demo" class="carousel slide" data-bs-ride="carousel">
+                
+                <!-- The slideshow/carousel -->
+                <center>
+                  <div class="carousel-inner" id="divProductList">
+                  </div>
+                </center>
+                
+                <!-- Left and right controls/icons -->
+                <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev" aria-label="Previous image">
+                  <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next" aria-label="Next image">
+                  <span class="carousel-control-next-icon"></span>
+                </button>
+              </div>
+            </section>
+            
             <div id="divInformation"></div>
+
+            <section id="sectionCatalog">
+              <div id="catalogProducts" class="container bootstrap snipets">
+                <div class="row flow-offset-1" id="catalogProductsShow">
+                  
+                </div>
+              </div>
+            </section>
+            
+            <section id="sectionProductModal">
+              <div class="modal" id="myModal2">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+              
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="productModalTitle">Client</h4>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Exit Product Modal"></button>
+                    </div>
+              
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <form id="formProduct"  action="javascript:infoProducts.processingProduct('create');">
+                        <div class="form-group">
+                          <label for="idProduct" class="col-form-label">ID:</label>
+                            <input id="idProduct" type="text" class="form-control" aria-describedby="idProduct" readonly/>
+                        </div>
+                        <div class="form-group">
+                            <label for="nameProduct" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="nameProduct" aria-describedby="nameProduct" placeholder="Enter name">
+                        </div>
+                        <div class="form-group">
+                            <label for="descriptionProduct" class="col-form-label">Description:</label>
+                            <input type="text" class="form-control" id="descriptionProduct" aria-describedby="descriptionProduct" placeholder="Enter description">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoryProduct" class="col-form-label">Category:</label>
+                            <select id="categoryProduct" class="form-select" aria-describedby="categoryProduct"></select>
+                        </div>
+                        <div class="form-group">
+                          <label for="priceProduct" class="col-form-label">Price:</label>
+                          <input type="number" step=".01" class="form-control" id="priceProduct" aria-describedby="priceProduct" placeholder="Enter price">
+                        </div>
+                        <div style="height: 30px;"></div>
+                        <div id="productInput" class="form-group">
+                            <input type="file" id="imageProduct" name="productImage" class="form-control" onchange="inputChangeProduct(event)" accept=".jpg, .jpeg, .png" aria-label="imageFile">
+                            <center><canvas class="container canvasFile" id="canvasProduct"></canvas></center>                    
+                        </div>
+                        <button type="submit" class="btn btn-success" id="saveProduct" data-bs-dismiss="modal">Save</button>
+                        <button type="reset" class="btn btn-secondary" id="cleanProduct" onclick="javascript:cleanCanvasProduct()">Clean</button>
+                      </form>
+          
+                      <form id="deleteProduct" action="javascript:infoProducts.processingProduct('delete');">
+                        <div class="form-group">
+                          <label class="col-form-label">Are you sure you wanna delete this product?</label>
+                          <br>
+                          <center><button type="submit" class="btn btn-light" id="DeleteProduct" data-bs-dismiss="modal">Delete</button></center>
+                        </div>
+                      </form>
+                    </div>
+              
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+            </section>
+            
+            <section id="sectionClientModal">
+              <div class="modal" id="myModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+              
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="clientModalTitle">Client</h4>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Exit Client Modal"></button>
+                    </div>
+              
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                      <form id="formClient"  action="javascript:infoClients.processingClient('create');">
+                        <div class="form-group">
+                          <label for="id" class="col-form-label">ID:</label>
+                            <input id="id" type="text" class="form-control" aria-describedby="id" readonly/>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" aria-describedby="name" placeholder="Enter name">
+                        </div>
+                        <div class="form-group">
+                            <label for="username" class="col-form-label">Username:</label>
+                            <input type="text" class="form-control" id="username" aria-describedby="username" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" id="password" aria-describedby="password" placeholder="Enter password">
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="col-form-label">Address:</label>
+                            <input type="text" class="form-control" id="address" aria-describedby="address" placeholder="Enter address">
+                        </div>
+                        <div class="form-group">
+                            <label for="zipcode" class="col-form-label">Zipcode:</label>
+                            <input type="text" class="form-control" id="zipcode" aria-describedby="zipcode" placeholder="Enter zipcode">
+                        </div>
+                        <div class="form-group">
+                            <label for="documentId" class="col-form-label">Document ID:</label>
+                            <input type="text" class="form-control" id="documentId" aria-describedby="documentId" placeholder="Enter document id">
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="col-form-label">E-mail:</label>
+                            <input type="email" class="form-control" id="email" aria-describedby="email" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="gender" class="col-form-label">Gender:</label>
+                            <select id="gender" class="form-select" aria-describedby="gender"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone" class="col-form-label">Phone Number:</label>
+                            <input type="text" class="form-control" id="phone" aria-describedby="phone" placeholder="Enter phone number">
+                        </div>
+                        <div class="form-group">
+                            <label for="birthdate" class="col-form-label">Birthdate:</label>
+                            <input type="date" class="form-control" id="birthdate" aria-describedby="birthdate" placeholder="Enter birthdate">
+                        </div>
+                        <div style="height: 30px;"></div>
+        
+                        <button type="submit" class="btn btn-success" id="Save" data-bs-dismiss="modal">Save</button>
+                        <button type="reset" class="btn btn-secondary" id="clean">Clean</button>
+                      </form>
+        
+                      <form id="deleteClient" action="javascript:infoClients.processingClient('delete');">
+                        <div class="form-group">
+                          <label class="col-form-label">Are you sure you wanna delete this client?</label>
+                          <br>
+                          <center><button type="submit" class="btn btn-light" id="DeleteClient" data-bs-dismiss="modal">Delete</button></center>
+                        </div>
+                      </form>
+                    </div>
+              
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+            </section>
         </article>
     </main>
-
-    <div class="modal" id="myModal2">
-      <div class="modal-dialog">
-        <div class="modal-content">
-    
-          <!-- Modal Header -->
-          <div class="modal-header">
-            <h4 class="modal-title" id="productModalTitle">Client</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-    
-          <!-- Modal body -->
-          <div class="modal-body">
-            <form id="formProduct"  action="javascript:infoProducts.processingProduct('create');">
-              <div class="form-group">
-                <label for="idProduct" class="col-form-label">ID:</label>
-                  <input id="idProduct" type="text" class="form-control" readonly/>
-              </div>
-              <div class="form-group">
-                  <label for="nameProduct" class="col-form-label">Name:</label>
-                  <input type="text" class="form-control" id="nameProduct" placeholder="Enter name">
-              </div>
-              <div class="form-group">
-                  <label for="descriptionProduct" class="col-form-label">Description:</label>
-                  <input type="text" class="form-control" id="descriptionProduct" placeholder="Enter description">
-              </div>
-              <div class="form-group">
-                  <label for="categoryProduct" class="col-form-label">Category:</label>
-                  <select id="categoryProduct" class="form-select"></select>
-              </div>
-              <div class="form-group">
-                <label for="priceProduct" class="col-form-label">Price:</label>
-                <input type="number" step=".01" class="form-control" id="priceProduct" placeholder="Enter price">
-              </div>
-              <div style="height: 30px;"></div>
-              <div id="productInput" class="form-group">
-                  <input type="file" id="imageProduct" name="productImage" class="form-control" onchange="inputChangeProduct(event)" accept=".jpg, .jpeg, .png">
-                  <center><canvas class="container canvasFile" id="canvasProduct"></canvas></canvas></center>                    
-              </div>
-              <button type="submit" class="btn btn-success" id="saveProduct" data-bs-dismiss="modal">Save</button>
-              <button type="reset" class="btn btn-secondary" id="cleanProduct" onclick="javascript:cleanCanvasProduct()">Clean</button>
-            </form>
-
-            <form id="deleteProduct" action="javascript:infoProducts.processingProduct('delete');">
-              <div class="form-group">
-                <label class="col-form-label">Are you sure you wanna delete this?</label>
-                <br>
-                <center><button type="submit" class="btn btn-light" id="DeleteProduct" data-bs-dismiss="modal">Delete</button></center>
-              </div>
-            </form>
-          </div>
-    
-          <!-- Modal footer -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-          </div>
-    
-        </div>
-      </div>
-    </div>
-
-      <div class="modal" id="myModal">
-        <div class="modal-dialog">
-          <div class="modal-content">
-      
-            <!-- Modal Header -->
-            <div class="modal-header">
-              <h4 class="modal-title" id="clientModalTitle">Client</h4>
-              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-      
-            <!-- Modal body -->
-            <div class="modal-body">
-              <form id="formClient"  action="javascript:infoClients.processingClient('create');">
-                <div class="form-group">
-                  <label for="id" class="col-form-label">ID:</label>
-                    <input id="id" type="text" class="form-control" readonly/>
-                </div>
-                <div class="form-group">
-                    <label for="name" class="col-form-label">Name:</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter name">
-                </div>
-                <div class="form-group">
-                    <label for="username" class="col-form-label">Username:</label>
-                    <input type="text" class="form-control" id="username" placeholder="Enter username">
-                </div>
-                <div class="form-group">
-                    <label for="password" class="col-form-label">Password:</label>
-                    <input type="password" class="form-control" id="password" placeholder="Enter password">
-                </div>
-                <div class="form-group">
-                    <label for="address" class="col-form-label">Address:</label>
-                    <input type="text" class="form-control" id="address" placeholder="Enter address">
-                </div>
-                <div class="form-group">
-                    <label for="zipcode" class="col-form-label">Zipcode:</label>
-                    <input type="text" class="form-control" id="zipcode" placeholder="Enter zipcode">
-                </div>
-                <div class="form-group">
-                    <label for="documentId" class="col-form-label">Document ID:</label>
-                    <input type="text" class="form-control" id="documentId" placeholder="Enter document id">
-                </div>
-                <div class="form-group">
-                    <label for="email" class="col-form-label">E-mail:</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label for="gender" class="col-form-label">Gender:</label>
-                    <select id="gender" class="form-select"></select>
-                </div>
-                <div class="form-group">
-                    <label for="phone" class="col-form-label">Phone Number:</label>
-                    <input type="text" class="form-control" id="phone" placeholder="Enter phone number">
-                </div>
-                <div class="form-group">
-                    <label for="birthdate" class="col-form-label">Birthdate:</label>
-                    <input type="date" class="form-control" id="birthdate" placeholder="Enter birthdate">
-                </div>
-                <div style="height: 30px;"></div>
-                <div id="fileInput">
-                    <input type="file" id="fileClient" class="form-control" onchange="inputChangeClient(event)" accept=".jpg, .jpeg, .png">
-                    <center><canvas class="container canvasFile" id="canvas"></canvas></center>                    
-                </div>
-
-                <button type="submit" class="btn btn-success" id="Save" data-bs-dismiss="modal">Save</button>
-                <button type="reset" class="btn btn-secondary" id="clean" onclick="javascript:cleanCanvasClient()">Clean</button>
-              </form>
-
-              <form id="deleteClient" action="javascript:infoClients.processingClient('delete');">
-                <div class="form-group">
-                  <label class="col-form-label">Are you sure you wanna delete this?</label>
-                  <br>
-                  <center><button type="submit" class="btn btn-light" id="DeleteClient" data-bs-dismiss="modal">Delete</button></center>
-                </div>
-              </form>
-            </div>
-      
-            <!-- Modal footer -->
-            <div class="modal-footer">
-              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-            </div>
-      
-          </div>
-        </div>
-      </div>
 </body>
 
 </html>

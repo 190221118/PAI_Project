@@ -98,14 +98,13 @@ function selectedClient(selecteds){
         document.getElementById('name').value = selected[1].textContent;
         document.getElementById('username').value = selected[2].textContent;
         document.getElementById("username").setAttribute("readonly", "readonly");
-        document.getElementById('password').value = selected[3].textContent;
-        document.getElementById('birthdate').value = selected[4].textContent;
-        document.getElementById('address').value = selected[5].textContent;
-        document.getElementById('zipcode').value = selected[6].textContent;
-        document.getElementById('documentId').value = selected[7].textContent;
-        document.getElementById('email').value = selected[8].textContent;
-        document.getElementById('gender').value= selected[9].textContent;    
-        document.getElementById('phone').value = selected[10].textContent;
+        document.getElementById('birthdate').value = selected[3].textContent;
+        document.getElementById('address').value = selected[4].textContent;
+        document.getElementById('zipcode').value = selected[5].textContent;
+        document.getElementById('documentId').value = selected[6].textContent;
+        document.getElementById('email').value = selected[7].textContent;
+        document.getElementById('gender').value= selected[8].textContent;    
+        document.getElementById('phone').value = selected[9].textContent;
     }
 }
 
@@ -157,7 +156,7 @@ function selected(tableObj, tableName, type){
         selectedProduct(selecteds);
 
         button.setAttribute('data-bs-toggle', 'modal');
-        button.setAttribute('data-bs-target', '#myModal');
+        button.setAttribute('data-bs-target', '#myModal2');
     }
     
     return true;
@@ -211,11 +210,6 @@ function localStorageLimpar(arg) {
     //document.getElementById("Data").value = ""; 
 }
 
-function cleanCanvasClient(){
-    let canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-}
 function cleanCanvasProduct(){
     let canvas = document.getElementById('canvasProduct');
     const ctx = canvas.getContext('2d');
@@ -238,13 +232,6 @@ function applyFilter(c){
     const canvasCtx = canvas.getContext('2d');
     const imgData = canvasCtx.getImageData(0,0, canvas.width, canvas.height);
     worker.postMessage(imgData);
-}
-
-function inputChangeClient(e) {    
-    
-    if (e.target.files.length === 0)return;
-        const file=e.target.files[0];
-        processImage(file,"canvas");
 }
 
 function inputChangeProduct(e) {    
@@ -270,16 +257,59 @@ async function processImage(file, img){
     applyFilter(img);
 }
 
-function addDiv(category, product, image){
-    let div = document.createElement("div");
+function addDiv(category, product, image, count){
+    /*let div = document.createElement("div");
     div.style.display = "inline-block";
-    div.textContent = category + " " + product;
+    div.textContent = category + " " + product;*/
+
+    let div = document.createElement("div");
+    div.classList.add("carousel-item");
+    if(count == 0){
+        div.classList.add("active");
+    }
+    div.id = "divCarousel" + count;
+
     let img = document.createElement("img");
     img.src = image;
-    img.style.height = "100px";
-    img.style.width = "100px";
+    img.classList.add("d-block");
+    img.style.width = "100%";
+    img.setAttribute("alt", category + " - " + product);
+    
+    //document.getElementById("divProductList").appendChild(div);
     document.getElementById("divProductList").appendChild(div);
-    document.getElementById("divProductList").appendChild(img)
+    document.getElementById("divCarousel" + count).appendChild(img);
+}
+
+function addCatalogDiv(category, product, image, count){
+    /*let div = document.createElement("div");
+    div.style.display = "inline-block";
+    div.textContent = category + " " + product;*/
+
+    let div = document.createElement("div");
+    div.classList.add("col-xs-6", "col-md-4");
+    div.id = "divCatalog" + count;
+
+    let divInside = document.createElement("div");
+    divInside.classList.add("product", "tumbnail", "thumbnail-3");
+    divInside.id = "divCatalogProduct" + count;
+
+    let img = document.createElement("img");
+    img.src = image;
+    img.setAttribute("alt", category + " - " + product);
+
+    let divCaption = document.createElement("div");
+    divCaption.classList.add("caption");
+    divCaption.id = "divCaptionProduct" + count;
+
+    let textCaption = document.createElement("h6");
+    textCaption.textContent = category + " - " + product;
+
+    //document.getElementById("divProductList").appendChild(div);
+    document.getElementById("catalogProductsShow").appendChild(div);
+    document.getElementById("divCatalog" + count).appendChild(divInside);
+    document.getElementById("divCatalogProduct" + count).appendChild(img);
+    document.getElementById("divCatalogProduct" + count).appendChild(divCaption);
+    document.getElementById("divCaptionProduct" + count).appendChild(textCaption);
 }
 
 function isLoggedIn(){
@@ -288,10 +318,13 @@ function isLoggedIn(){
         document.getElementById("menuClient").style.display = "none";
         document.getElementById("menuProduct").style.display = "none";
         document.getElementById("menuLogin").style.display = "none";
+        document.getElementById("sectionLogin").style.display = "block";
     } else{
         document.getElementById("menuHome").style.display = "block";
-        document.getElementById("menuClient").style.display = "block";
         document.getElementById("menuProduct").style.display = "block";
+        document.getElementById("menuClient").style.display = "block";
         document.getElementById("menuLogin").style.display = "block";
+        document.getElementById("sectionLogin").style.display = "none";
     }
+    infoProducts.showHome();
 }

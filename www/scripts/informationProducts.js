@@ -14,6 +14,7 @@ class InformationProducts {
         this.id = id;
         this.products = [];
         this.categories = [];
+        this.countproducts = 0;
     }
     /**
      * coloca a palavra "home" no div titulo e limpa o div informação
@@ -26,6 +27,7 @@ class InformationProducts {
         document.getElementById("divInformation").style.display="none";    
         document.getElementById("formClient").style.display = "none";
         document.getElementById("formProduct").style.display = "none";
+        document.getElementById("catalogProducts").style.display = "none";
         if (sessionStorageObter("username_login") === null) {
                 document.getElementById("formLogin").style.display = "block";
                 document.getElementById("menuLogin").style.display = "none";
@@ -38,11 +40,12 @@ class InformationProducts {
                 replaceChilds("divProductList",cleanDiv);
 
                 document.getElementById("divProductList").style.display = "block";
+                document.getElementById("demo").style.display = "block";
                 
                 let p = JSON.parse(localStorage.getItem("products"));
                 if (p != null){
                     for (var i=0; i <= p.length-1; i++){
-                    addDiv(p[i].productCategoryName, p[i].productName, p[i].productImg);
+                    addDiv(p[i].productCategoryName, p[i].productName, p[i].productImg, [i]);
                 }
            
         }
@@ -61,115 +64,135 @@ class InformationProducts {
         
         /** Actualizar o título */
         document.getElementById("headerTitle").textContent="Products";
-
+    
         document.getElementById("formClient").style.display = "none";
         //document.getElementById("formProduct").style.display = "none";
         document.getElementById("formLogin").style.display = "none"; 
         document.getElementById("divProductList").style.display = "none";
+        document.getElementById("divInformation").style.display = "block";
+        document.getElementById("demo").style.display = "none";
+
+        document.getElementById("catalogProducts").style.display = "block";
 
         let cleanDiv= document.createElement("div");
         replaceChilds("divInformation",cleanDiv);
 
-        let productTable = document.createElement("table");
-        productTable.setAttribute("id", "productTable");
-        let th = tableLine(new Product(),true);
-        productTable.appendChild(th);
-        this.products.forEach(p=>{
-            let tr = tableLine(p);
-            productTable.appendChild(tr);
-        });
-        replaceChilds("divInformation",productTable);
-
-        var table = document.getElementById("productTable");
-        var rows = table.getElementsByTagName("tr");
-
-        for(var i = 0; i < rows.length; i++){
-            var row = rows[i];
-
-            row.addEventListener("click", function(){
-            //Adicionar ao atual
-            selLinha(this, false); //Selecione apenas um
-            //selLinha(this, true); //Selecione quantos quiser
+        if (type === "Admin"){
+            let productTable = document.createElement("table");
+            productTable.setAttribute("id", "productTable");
+            let th = tableLine(new Product(),true);
+            productTable.appendChild(th);
+            this.products.forEach(p=>{
+                let tr = tableLine(p);
+                productTable.appendChild(tr);
             });
-        }
-        
-        /** Mostrar o conteúdo */
-        
-        function deleteProductEventHandler() {
-            document.getElementById('formProduct').style.display = "none";
-            document.getElementById('deleteProduct').style.display = "block";
-            document.getElementById('deleteProduct').action = 'javascript:infoProducts.processingProduct("delete");';
-            document.getElementById("productModalTitle").innerHTML = "Delete Product";
-            loadProduct("delete");
-        }
+            replaceChilds("divInformation",productTable);
 
-        function newProductEventHandler() {
-            document.getElementById('formProduct').style.display = "block";
-            document.getElementById('deleteProduct').style.display = "none";
-            document.getElementById('formProduct').action = 'javascript:infoProducts.processingProduct("create");';
-            document.getElementById("productModalTitle").innerHTML = "New Product";
-            const button = document.getElementById('insertNew');
-            button.setAttribute('data-bs-toggle', 'modal');
-            button.setAttribute('data-bs-target', '#myModal2');
-            setupForm();
-        }
+            var table = document.getElementById("productTable");
+            var rows = table.getElementsByTagName("tr");
 
-        function updateProductEventHandler() {
-            document.getElementById('formProduct').style.display = "block";
-            document.getElementById('deleteProduct').style.display = "none";
-            document.getElementById('formProduct').action = 'javascript:infoProducts.processingProduct("update");';
-            document.getElementById("productModalTitle").innerHTML = "Update Product";
-            const button = document.getElementById('updateData');
-            button.setAttribute('data-bs-toggle', 'modal');
-            button.setAttribute('data-bs-target', '#myModal2');
-            cleanCanvasClient();
-            cleanCanvasProduct();
-            loadProduct("update");
-        }
+            for(var i = 0; i < rows.length; i++){
+                var row = rows[i];
 
-        function setupForm(){
-            document.getElementById('formProduct').style.display = 'block';
-            document.getElementById('formProduct').reset();
-            document.getElementById('imageProduct').value = "";
-            //document.getElementById('formClient').innerHTML = '';
-            document.getElementById('categoryProduct').options.length = 0;
-
-            self.categories.forEach ( (e) => {
-                document.getElementById('categoryProduct').options.add(new Option(e.productCategoryName));
-            });
-        }
-
-        function loadProduct(type){
-            document.getElementById('formProduct').reset();
-            document.getElementById('formClient').reset();
-            document.getElementById('categoryProduct').options.length = 0;
-
-            self.categories.forEach ( (e) => {
-                document.getElementById('categoryProduct').options.add(new Option(e.productCategoryName));
-            });
-
-            if(type === "delete"){
-                if (selected(document.getElementById("productTable"), "products", "delete"))
-                document.getElementById('formProduct').style.display = 'none';
-            }
-            else if(type === "update"){
-                if (selected(document.getElementById("productTable"), "products", "update"))
-                document.getElementById('formProduct').style.display = 'block';
+                row.addEventListener("click", function(){
+                //Adicionar ao atual
+                selLinha(this, false); //Selecione apenas um
+                //selLinha(this, true); //Selecione quantos quiser
+                });
             }
             
-        }
-        
-        var divButtons = document.createElement('div');
-        divButtons.id = 'divButtons';
-        document.getElementById("divInformation").appendChild(divButtons);
+            /** Mostrar o conteúdo */
+            
+            function deleteProductEventHandler() {
+                document.getElementById('formProduct').style.display = "none";
+                document.getElementById('deleteProduct').style.display = "block";
+                document.getElementById('deleteProduct').action = 'javascript:infoProducts.processingProduct("delete");';
+                document.getElementById("productModalTitle").innerHTML = "Delete Product";
+                loadProduct("delete");
+            }
 
-        createButton("divButtons", updateProductEventHandler, 'Update Product');
-        //let type = localStorageObter("type");
-        if (type === "Admin") {
-            createButton("divButtons", newProductEventHandler, 'New Product');
-            createButton("divButtons", deleteProductEventHandler, 'Delete Product');
-            //createButton("divInformation", selectAllClientEventHandler, 'Select All');
+            function newProductEventHandler() {
+                document.getElementById('formProduct').style.display = "block";
+                document.getElementById('deleteProduct').style.display = "none";
+                document.getElementById('formProduct').action = 'javascript:infoProducts.processingProduct("create");';
+                document.getElementById("productModalTitle").innerHTML = "New Product";
+                const button = document.getElementById('insertNew');
+                button.setAttribute('data-bs-toggle', 'modal');
+                button.setAttribute('data-bs-target', '#myModal2');
+                setupForm();
+            }
+
+            function updateProductEventHandler() {
+                document.getElementById('formProduct').style.display = "block";
+                document.getElementById('deleteProduct').style.display = "none";
+                document.getElementById('formProduct').action = 'javascript:infoProducts.processingProduct("update");';
+                document.getElementById("productModalTitle").innerHTML = "Update Product";
+                const button = document.getElementById('updateData');
+                button.setAttribute('data-bs-toggle', 'modal');
+                button.setAttribute('data-bs-target', '#myModal2');
+                cleanCanvasProduct();
+                loadProduct("update");
+            }
+
+            function setupForm(){
+                document.getElementById('formProduct').style.display = 'block';
+                document.getElementById('formProduct').reset();
+                document.getElementById('imageProduct').value = "";
+                //document.getElementById('formClient').innerHTML = '';
+                document.getElementById('categoryProduct').options.length = 0;
+
+                self.categories.forEach ( (e) => {
+                    document.getElementById('categoryProduct').options.add(new Option(e.productCategoryName));
+                });
+            }
+
+            function loadProduct(type){
+                document.getElementById('formProduct').reset();
+                document.getElementById('formClient').reset();
+                document.getElementById('categoryProduct').options.length = 0;
+
+                self.categories.forEach ( (e) => {
+                    document.getElementById('categoryProduct').options.add(new Option(e.productCategoryName));
+                });
+
+                if(type === "delete"){
+                    if (selected(document.getElementById("productTable"), "products", "delete"))
+                    document.getElementById('formProduct').style.display = 'none';
+                }
+                else if(type === "update"){
+                    if (selected(document.getElementById("productTable"), "products", "update"))
+                    document.getElementById('formProduct').style.display = 'block';
+                }
+                
+            }
+            
+            var divButtons = document.createElement('div');
+            divButtons.id = 'divButtons';
+            document.getElementById("divInformation").appendChild(divButtons);
+
+            createButton("divButtons", updateProductEventHandler, 'Update Product');
+            //let type = localStorageObter("type");
+            if (type === "Admin") {
+                createButton("divButtons", newProductEventHandler, 'New Product');
+                createButton("divButtons", deleteProductEventHandler, 'Delete Product');
+                //createButton("divInformation", selectAllClientEventHandler, 'Select All');
+            }
         }
+        else {
+            if(self.countproducts === 0){
+                
+                replaceChilds("divInformation",cleanDiv);
+                document.getElementById("demo").style.display = "none";
+                
+                let p = JSON.parse(localStorage.getItem("products"));
+                if (p != null){
+                    for (var i=0; i <= p.length-1; i++){
+                        addCatalogDiv(p[i].productCategoryName, p[i].productName, p[i].productImg, [i]);
+                    }
+                }
+            }
+        }
+        self.countproducts++;
     }
     /**
      * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client através do verbo GET, usando pedidos assincronos e JSON
