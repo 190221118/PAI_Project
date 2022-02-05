@@ -67,6 +67,7 @@ class Login {
      * Função que que remove a session storage 
     */
     logOff() {
+        isLoggedIn();
         sessionStorageLimpar("username_login");
         localStorageLimpar("id");
         localStorageLimpar("type");
@@ -74,12 +75,16 @@ class Login {
         document.getElementById("menuLogin").style.display = "none";
         document.getElementById("divInformation").style.display="none";    
         document.getElementById("formClient").style.display = "none";
+        document.getElementById("formClient").style.display = "none";
+        location.reload();
     }
 
     showHomeLogin() {
+        isLoggedIn();
         document.getElementById("headerTitle").textContent="Home";
         document.getElementById("divInformation").style.display="none";    
         document.getElementById("formClient").style.display = "none";
+        document.getElementById("sectionLogin").style.display = "none";
         if (sessionStorageObter("username_login") === null) {
                 document.getElementById("formLogin").style.display = "block";
                 document.getElementById("menuLogin").style.display = "none";
@@ -87,6 +92,7 @@ class Login {
         else {
                 document.getElementById("formLogin").style.display = "none";
                 document.getElementById("menuLogin").style.display = "block";
+                document.getElementById("sectionLogin").style.display = "none";
                 document.getElementById("menuLogin").textContent = "Log Off";
 
                 let id = localStorageObter("id");

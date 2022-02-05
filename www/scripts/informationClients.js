@@ -61,7 +61,7 @@ class InformationClients {
         else {
             document.getElementById("divInformation").style.display="block";
         }
-        document.getElementById("formClient").style.display = "none";
+        //document.getElementById("formClient").style.display = "none";
         document.getElementById("formProduct").style.display = "none";
         document.getElementById("formLogin").style.display = "none"; 
         document.getElementById("divProductList").style.display = "none";
@@ -96,20 +96,35 @@ class InformationClients {
         /** Mostrar o conteúdo */
         
         function deleteClientEventHandler() {
-            document.getElementById('formClient').action = 'javascript:infoClients.processingClient("delete");';
-            loadClient();
+            document.getElementById('formClient').style.display = "none";
+            document.getElementById('deleteClient').style.display = "block";
+            document.getElementById('deleteClient').action = 'javascript:infoClients.processingClient("delete");';
+            document.getElementById("clientModalTitle").innerHTML = "Delete Client";
+            loadClient("delete");
         }
 
         function newClientEventHandler() {
+            document.getElementById('formClient').style.display = "block";
+            document.getElementById('deleteClient').style.display = "none";
             document.getElementById('formClient').action = 'javascript:infoClients.processingClient("create");';
+            document.getElementById("clientModalTitle").innerHTML = "New Client";
+            const button = document.getElementById('insertNew');
+            button.setAttribute('data-bs-toggle', 'modal');
+            button.setAttribute('data-bs-target', '#myModal');
             setupForm();
         }
 
         function updateClientEventHandler() {
+            document.getElementById('formClient').style.display = "block";
+            document.getElementById('deleteClient').style.display = "none";
             document.getElementById('formClient').action = 'javascript:infoClients.processingClient("update");';
+            document.getElementById("clientModalTitle").innerHTML = "Update Client";
+            const button = document.getElementById('updateData');
+            button.setAttribute('data-bs-toggle', 'modal');
+            button.setAttribute('data-bs-target', '#myModal');
             cleanCanvasClient();
             cleanCanvasProduct();
-            loadClient();
+            loadClient("update");
         }
 
         function setupForm(){
@@ -125,23 +140,32 @@ class InformationClients {
             });
         }
 
-        function loadClient(){
+        function loadClient(type){
             document.getElementById('formClient').reset();
             document.getElementById('gender').options.length = 0;
             self.genders.forEach ( (e) => {
                  document.getElementById('gender').options.add(new Option(e));
             });
 
-            if (selected(document.getElementById("clientTable"), "clients"))
-            document.getElementById('formClient').style.display = 'block';
-            
+            if(type === "delete"){
+                if (selected(document.getElementById("clientTable"), "clients", "delete"))
+                document.getElementById('formClient').style.display = 'none';
+            }
+            else if(type === "update"){
+                if (selected(document.getElementById("clientTable"), "clients", "update"))
+                document.getElementById('formClient').style.display = 'block';
+            }
         }
         
-        createButton("divInformation", updateClientEventHandler, 'Update Client');
+        var divButtons = document.createElement('div');
+        divButtons.id = 'divButtons';
+        document.getElementById("divInformation").appendChild(divButtons);
+
+        createButton("divButtons", updateClientEventHandler, 'Update Client');
         //let type = localStorageObter("type");
         if (type === "Admin") {
-            createButton("divInformation", newClientEventHandler, 'New Client');
-            createButton("divInformation", deleteClientEventHandler, 'Delete Client');
+            createButton("divButtons", newClientEventHandler, 'New Client');
+            createButton("divButtons", deleteClientEventHandler, 'Delete Client');
             //createButton("divInformation", selectAllClientEventHandler, 'Select All');
         }
     }

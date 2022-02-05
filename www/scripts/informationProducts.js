@@ -63,7 +63,7 @@ class InformationProducts {
         document.getElementById("headerTitle").textContent="Products";
 
         document.getElementById("formClient").style.display = "none";
-        document.getElementById("formProduct").style.display = "none";
+        //document.getElementById("formProduct").style.display = "none";
         document.getElementById("formLogin").style.display = "none"; 
         document.getElementById("divProductList").style.display = "none";
 
@@ -96,20 +96,35 @@ class InformationProducts {
         /** Mostrar o conteúdo */
         
         function deleteProductEventHandler() {
-            document.getElementById('formProduct').action = 'javascript:infoProducts.processingProduct("delete");';
-            loadProduct();
+            document.getElementById('formProduct').style.display = "none";
+            document.getElementById('deleteProduct').style.display = "block";
+            document.getElementById('deleteProduct').action = 'javascript:infoProducts.processingProduct("delete");';
+            document.getElementById("productModalTitle").innerHTML = "Delete Product";
+            loadProduct("delete");
         }
 
         function newProductEventHandler() {
+            document.getElementById('formProduct').style.display = "block";
+            document.getElementById('deleteProduct').style.display = "none";
             document.getElementById('formProduct').action = 'javascript:infoProducts.processingProduct("create");';
+            document.getElementById("productModalTitle").innerHTML = "New Product";
+            const button = document.getElementById('insertNew');
+            button.setAttribute('data-bs-toggle', 'modal');
+            button.setAttribute('data-bs-target', '#myModal2');
             setupForm();
         }
 
         function updateProductEventHandler() {
+            document.getElementById('formProduct').style.display = "block";
+            document.getElementById('deleteProduct').style.display = "none";
             document.getElementById('formProduct').action = 'javascript:infoProducts.processingProduct("update");';
+            document.getElementById("productModalTitle").innerHTML = "Update Product";
+            const button = document.getElementById('updateData');
+            button.setAttribute('data-bs-toggle', 'modal');
+            button.setAttribute('data-bs-target', '#myModal2');
             cleanCanvasClient();
             cleanCanvasProduct();
-            loadProduct();
+            loadProduct("update");
         }
 
         function setupForm(){
@@ -124,7 +139,7 @@ class InformationProducts {
             });
         }
 
-        function loadProduct(){
+        function loadProduct(type){
             document.getElementById('formProduct').reset();
             document.getElementById('formClient').reset();
             document.getElementById('categoryProduct').options.length = 0;
@@ -132,16 +147,27 @@ class InformationProducts {
             self.categories.forEach ( (e) => {
                 document.getElementById('categoryProduct').options.add(new Option(e.productCategoryName));
             });
-            if (selected(document.getElementById("productTable"), "products"))
-            document.getElementById('formProduct').style.display = 'block';
+
+            if(type === "delete"){
+                if (selected(document.getElementById("productTable"), "products", "delete"))
+                document.getElementById('formProduct').style.display = 'none';
+            }
+            else if(type === "update"){
+                if (selected(document.getElementById("productTable"), "products", "update"))
+                document.getElementById('formProduct').style.display = 'block';
+            }
             
         }
         
-        createButton("divInformation", updateProductEventHandler, 'Update Product');
+        var divButtons = document.createElement('div');
+        divButtons.id = 'divButtons';
+        document.getElementById("divInformation").appendChild(divButtons);
+
+        createButton("divButtons", updateProductEventHandler, 'Update Product');
         //let type = localStorageObter("type");
         if (type === "Admin") {
-            createButton("divInformation", newProductEventHandler, 'New Product');
-            createButton("divInformation", deleteProductEventHandler, 'Delete Product');
+            createButton("divButtons", newProductEventHandler, 'New Product');
+            createButton("divButtons", deleteProductEventHandler, 'Delete Product');
             //createButton("divInformation", selectAllClientEventHandler, 'Select All');
         }
     }

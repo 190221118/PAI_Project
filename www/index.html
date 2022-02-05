@@ -17,6 +17,11 @@
     <script src="scripts/product.js"></script>
     <script src="scripts/login.js"></script>
     <script src="scripts/main.js"></script>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+    
 </head>
 
 <body>
@@ -24,109 +29,208 @@
         <ul class="menu">
             <li><a id="menuHome" href="javascript: infoProducts.showHome();">Home</a></li>
             <li><a id="menuClient" href="javascript: infoClients.showClients('select');">Clients</a></li>
-            <li><a id="menuClient" href="javascript: infoProducts.showProducts('select');">Products</a></li>
-            <li><a id="menuLogin" href="javascript: login.logOff();"></a></li>
+            <li><a id="menuProduct" href="javascript: infoProducts.showProducts('select');">Products</a></li>
+            <li><a id="menuLogin" href="javascript: login.logOff();">Log off</a></li>
         </ul>
     </nav>
     <main>
         <article>
-            <h1 id="headerTitle">Home</h1>
+            <h1 id="headerTitle">Welcome!!</h1>
+            <div style="height: 100px;"></div>
             <!--<div class="content">    -->  
             <!--FORMULÁRIO DE LOGIN-->
+            <section id="sectionLogin">
+                <div class="container py-5 h-100">
+                  <div class="row d-flex align-items-center justify-content-center h-100">
+                    <div class="col-md-8 col-lg-7 col-xl-6">
+                      <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" class="img-fluid" alt="Girl with a key that allows her to enter the website">
+                    </div>
+                    <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1" id="login">
+                      <form id="formLogin" action="javascript:login.processingLogin();">
+                        <h2>Login</h2>
+                        <!-- Username input -->
+                        <div class="form-outline mb-4">
+                          <input type="text" id="username_login" name="nome_login" required="required" class="form-control form-control-lg" />
+                          <label class="labelLogin" for="username_login">Username</label>
+                        </div>
+                        <!-- Password input -->
+                        <div class="form-outline mb-4">
+                          <input type="password" id="password_login" name="password_login" required="required" class="form-control form-control-lg" />
+                          <label class="labelLogin" for="password_login">Password</label>
+                        </div>
+              
+                        <div class="d-flex justify-content-around align-items-center mb-4">
+                          <!-- Checkbox -->
+                          <div class="form-check">
+                            <input
+                              class="form-check-input"
+                              type="checkbox"
+                              value=""
+                              id="manterlogado"
+                              checked
+                            />
+                            <label class="labelLogin" for="manterlogado"> Remember me </label>
+                          </div>
+                        </div>
+              
+                        <!-- Submit button -->
+                        <center><button type="submit" class="btn btn-primary">Sign in</button></center>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+            </section>
+
+            
             <div id="divProductList"></div>
-            <div id="login">
-                <form id="formLogin" action="javascript:login.processingLogin();"> 
-                    <h2>Login</h2> 
-                    <p> 
-                        <label class="labelLogin" for="username_login">Seu nome</label>
-                        <input class="inputLogin" id="username_login" name="nome_login" required="required" type="text" placeholder="ex. username"/>
-                    </p>
-
-                    <p> 
-                        <label class="labelLogin" for="password_login">Sua senha</label>
-                        <input class="inputLogin" id="password_login" name="password_login" required="required" type="password" placeholder="ex. senha" /> 
-                    </p>
-
-                    <p> 
-                        <input class="inputLogin" type="checkbox" name="manterlogado" id="manterlogado" value="" /> 
-                        <label class="labelLogin" for="manterlogado">Manter-me logado</label>
-                    </p>
-
-                    <p> 
-                        <input class="inputLogin" type="submit" value="Logar" /> 
-                    </p>
-                </form>
-                <!-- </div> -->
-            </div>
             <div id="divInformation"></div>
-            <form id="formClient"  action="javascript:infoClients.processingClient('create');">
-                <br/>
-                <label class="labelClient" for="id">Id:
-                    <input id="id" type="text" readonly/>
-                </label>
-                <label class="labelClient" for="name">Name:
-                    <input id="name" type="text" placeholder="Introduza o nome">
-                </label>
-                <label class="labelClient" for="username">UserName:
-                    <input id="username" type="text" placeholder="Introduza o username">
-                </label>
-                <label class="labelClient" for="password">Password:
-                    <input id="password" type="password" placeholder="Introduza a password">
-                </label>
-                <label class="labelClient" for="address">Address:
-                    <input id="address" type="text" placeholder="Introduza a morada">
-                </label>
-                <label class="labelClient" for="zipcode">ZipCode:
-                    <input id="zipcode" type="text" placeholder="Introduza o código postal">
-                </label>
-                <label class="labelClient" for="documentId">DocumentId:
-                    <input id="documentId" type="text" placeholder="Introduza o documento de identificação">
-                </label>
-                <label class="labelClient"  for="email">E-mail:
-                    <input id="email" type="text" placeholder="Introduza o email">
-                </label>
-                <label class="labelClient"  for="gender">Gender:
-                    <select id="gender"></select>
-                </label>
-                <label class="labelClient" for="phone">Phone Number:
-                    <input  id="phone" type="text" placeholder="Introduza número de telefone">
-                </label>
-                <label class="labelClient" for="birthdate">Birth date:
-                    <input id="birthdate" type="date" placeholder="Introduza a data de nascimento">
-                </label>
-                <div id="fileInput">
-                    <input type="file" id="fileClient" onchange="inputChangeClient(event)" accept=".jpg, .jpeg, .png">
-                    <canvas class="container" id="canvas" width="300" height="227"></canvas>
-                </div>
-                <input  id="Save" type="submit" value="Save" />
-                <input  id="clean" type="reset" value="clean" onclick="javascript:cleanCanvasClient()" />
-            </form>
-            <form id="formProduct"  action="javascript:infoProducts.processingProduct('create');">
-                <br/>
-                <label class="labelClient" for="id">Id:
-                    <input id="idProduct" type="text" />
-                </label>
-                <label class="labelClient" for="name">Name:
-                    <input id="nameProduct" type="text" placeholder="Introduza o nome">
-                </label>
-                <label class="labelClient" for="description">Description:
-                    <input id="descriptionProduct" type="text" placeholder="Introduza a descrição">
-                </label>
-                <label class="labelClient" for="category">Categoria:
-                    <select id="categoryProduct"></select>
-                </label>
-                <div id="productInput">
-                    <input type="file" id="imageProduct" name="productImage" onchange="inputChangeProduct(event)" accept=".jpg, .jpeg, .png">
-                    <canvas class="container" id="canvasProduct" width="300" height="227"></canvas>
-                </div>
-                <label class="labelClient" for="price">Price:
-                    <input id="priceProduct" type="number" placeholder="Introduza o preço">
-                </label>
-                <input  id="saveProduct" type="submit" value="Save" />
-                <input  id="cleanProduct" type="reset" value="clean" onclick="javascript:cleanCanvasProduct()"/>
-            </form>
         </article>
     </main>
+
+    <div class="modal" id="myModal2">
+      <div class="modal-dialog">
+        <div class="modal-content">
+    
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title" id="productModalTitle">Client</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+    
+          <!-- Modal body -->
+          <div class="modal-body">
+            <form id="formProduct"  action="javascript:infoProducts.processingProduct('create');">
+              <div class="form-group">
+                <label for="idProduct" class="col-form-label">ID:</label>
+                  <input id="idProduct" type="text" class="form-control" readonly/>
+              </div>
+              <div class="form-group">
+                  <label for="nameProduct" class="col-form-label">Name:</label>
+                  <input type="text" class="form-control" id="nameProduct" placeholder="Enter name">
+              </div>
+              <div class="form-group">
+                  <label for="descriptionProduct" class="col-form-label">Description:</label>
+                  <input type="text" class="form-control" id="descriptionProduct" placeholder="Enter description">
+              </div>
+              <div class="form-group">
+                  <label for="categoryProduct" class="col-form-label">Category:</label>
+                  <select id="categoryProduct" class="form-select"></select>
+              </div>
+              <div class="form-group">
+                <label for="priceProduct" class="col-form-label">Price:</label>
+                <input type="number" step=".01" class="form-control" id="priceProduct" placeholder="Enter price">
+              </div>
+              <div style="height: 30px;"></div>
+              <div id="productInput" class="form-group">
+                  <input type="file" id="imageProduct" name="productImage" class="form-control" onchange="inputChangeProduct(event)" accept=".jpg, .jpeg, .png">
+                  <center><canvas class="container canvasFile" id="canvasProduct"></canvas></canvas></center>                    
+              </div>
+              <button type="submit" class="btn btn-success" id="saveProduct" data-bs-dismiss="modal">Save</button>
+              <button type="reset" class="btn btn-secondary" id="cleanProduct" onclick="javascript:cleanCanvasProduct()">Clean</button>
+            </form>
+
+            <form id="deleteProduct" action="javascript:infoProducts.processingProduct('delete');">
+              <div class="form-group">
+                <label class="col-form-label">Are you sure you wanna delete this?</label>
+                <br>
+                <center><button type="submit" class="btn btn-light" id="DeleteProduct" data-bs-dismiss="modal">Delete</button></center>
+              </div>
+            </form>
+          </div>
+    
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+
+      <div class="modal" id="myModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title" id="clientModalTitle">Client</h4>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+              <form id="formClient"  action="javascript:infoClients.processingClient('create');">
+                <div class="form-group">
+                  <label for="id" class="col-form-label">ID:</label>
+                    <input id="id" type="text" class="form-control" readonly/>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="col-form-label">Name:</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter name">
+                </div>
+                <div class="form-group">
+                    <label for="username" class="col-form-label">Username:</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter username">
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-form-label">Password:</label>
+                    <input type="password" class="form-control" id="password" placeholder="Enter password">
+                </div>
+                <div class="form-group">
+                    <label for="address" class="col-form-label">Address:</label>
+                    <input type="text" class="form-control" id="address" placeholder="Enter address">
+                </div>
+                <div class="form-group">
+                    <label for="zipcode" class="col-form-label">Zipcode:</label>
+                    <input type="text" class="form-control" id="zipcode" placeholder="Enter zipcode">
+                </div>
+                <div class="form-group">
+                    <label for="documentId" class="col-form-label">Document ID:</label>
+                    <input type="text" class="form-control" id="documentId" placeholder="Enter document id">
+                </div>
+                <div class="form-group">
+                    <label for="email" class="col-form-label">E-mail:</label>
+                    <input type="email" class="form-control" id="email" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label for="gender" class="col-form-label">Gender:</label>
+                    <select id="gender" class="form-select"></select>
+                </div>
+                <div class="form-group">
+                    <label for="phone" class="col-form-label">Phone Number:</label>
+                    <input type="text" class="form-control" id="phone" placeholder="Enter phone number">
+                </div>
+                <div class="form-group">
+                    <label for="birthdate" class="col-form-label">Birthdate:</label>
+                    <input type="date" class="form-control" id="birthdate" placeholder="Enter birthdate">
+                </div>
+                <div style="height: 30px;"></div>
+                <div id="fileInput">
+                    <input type="file" id="fileClient" class="form-control" onchange="inputChangeClient(event)" accept=".jpg, .jpeg, .png">
+                    <center><canvas class="container canvasFile" id="canvas"></canvas></center>                    
+                </div>
+
+                <button type="submit" class="btn btn-success" id="Save" data-bs-dismiss="modal">Save</button>
+                <button type="reset" class="btn btn-secondary" id="clean" onclick="javascript:cleanCanvasClient()">Clean</button>
+              </form>
+
+              <form id="deleteClient" action="javascript:infoClients.processingClient('delete');">
+                <div class="form-group">
+                  <label class="col-form-label">Are you sure you wanna delete this?</label>
+                  <br>
+                  <center><button type="submit" class="btn btn-light" id="DeleteClient" data-bs-dismiss="modal">Delete</button></center>
+                </div>
+              </form>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+      
+          </div>
+        </div>
+      </div>
 </body>
 
 </html>

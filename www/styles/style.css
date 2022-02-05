@@ -38,7 +38,7 @@ table {
 }
 
 th, td {
-    text-align: left;
+    text-align: center !important;
 	padding: 8px;
 	border: 1px solid black;
 }
@@ -48,13 +48,13 @@ th, td {
 	padding: 5px;
 } 
 
-#formClient, #formProduct {
+/*#formClient, #formProduct {
 	display: none;
 	width: 550px;
 	margin: 5px;
 	align-content: center;
 	background:rgb(109, 109, 109);
-}
+}*/
 
 p{
 	margin-bottom:15px;
@@ -66,7 +66,6 @@ p{
 
 #login{
 	top: 0px;
-	width: 88%;   
 	padding: 18px 6% 60px 6%;
 	margin: 0 0 35px 0;
 	background: #f7f7f7;
@@ -85,13 +84,11 @@ p{
 }
 
 label {
-	color: white;
 	text-align: right;
 }
 input {
 	display: inline-block;
 	padding-left: 10px;
-	width: 250px;
 	text-align: left;
 }
 
@@ -101,13 +98,12 @@ input {
 	text-align: right;
 }
 
-.inputLogin {
-	outline: none;
-	text-align: left;
+.form-check {
+	padding-left: 0% !important;
 }
 
 #clientTable, #productTable{
-	width:100%;
+	width:80%;
 	margin:0 auto;
 	border:0;
 	box-shadow: 0 5px 30px darkgrey;
@@ -118,7 +114,7 @@ input {
 	font-weight: bold;
 	background-color: black;
 	color:white;
-	
+	text-align: center;
 	padding:5px 10px;
 }
   
@@ -140,12 +136,12 @@ input {
 
 /**Cor quando passar por cima**/
 #clientTable tr:hover td, #productTable tr:hover td{
-	background-color: #feffb7;
+	background-color: #d4d4d3;
 }
 
 /**Cor quando selecionado**/
 #clientTable tr.selecionado td, #productTable tr.selecionado td{
-	background-color: #aff7ff;
+	background-color: #d4d4d3;
 }
 
 #fileInput, #productInput{
@@ -157,4 +153,26 @@ input {
     max-height:227px;
     width: auto;
     height: auto;
+}
+
+.modal-dialog {
+    max-width: 30% !important;
+}
+
+#canvas, #canvasProduct {
+	margin-top: 30px;
+	width: 250px;
+	height: 177px;
+}
+
+#divButtons{
+	position: absolute;
+    top: 160px;
+    left: 12.7%;
+    margin-left: -50px;
+    height: 100px;
+}
+
+#divButtons input[type=button] {
+	margin-right: 10px;
 }

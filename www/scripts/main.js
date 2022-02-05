@@ -14,6 +14,8 @@ window.onload = function (event) {
     window.infoClients = infoClients;
     window.infoProducts = infoProducts;
 
+    isLoggedIn();
+
     var login = new Login("login");
     //login.logOff();
     window.login = login;
@@ -125,10 +127,20 @@ function selectedProduct(selecteds){
 /**
  * Função que retorna o id da linha selecionada
  */
-function selected(tableObj, tableName){
+function selected(tableObj, tableName, type){
     //let table = document.getElementById("clientTable");
     let table = tableObj;
 	let selecteds = table.getElementsByClassName("selecionado");
+    
+    let button = "";
+
+    if(type === "delete"){
+        button = document.getElementById('deleteData');
+    }
+    else if(type === "update"){
+        button = document.getElementById('updateData');
+    }
+
     //Verificar se eestá selecionado
     if(selecteds.length < 1){
   	    alert("Selecione pelo menos uma linha");
@@ -137,9 +149,15 @@ function selected(tableObj, tableName){
 
     if(tableName === "clients"){
         selectedClient(selecteds);
+        
+        button.setAttribute('data-bs-toggle', 'modal');
+        button.setAttribute('data-bs-target', '#myModal');
     }
     else if(tableName === "products"){
         selectedProduct(selecteds);
+
+        button.setAttribute('data-bs-toggle', 'modal');
+        button.setAttribute('data-bs-target', '#myModal');
     }
     
     return true;
@@ -154,6 +172,16 @@ function selected(tableObj, tableName){
  function createButton(fatherNodeName, eventHandler, value) {
     let fatherNode = document.getElementById(fatherNodeName);
     const button = document.createElement('input');
+    if(value.includes('New')){
+        button.classList.add("btn", "btn-success");
+        button.id = 'insertNew';
+    } else if (value.includes('Update')){
+        button.classList.add("btn", "btn-primary");
+        button.id = 'updateData';
+    } else if (value.includes('Delete')){
+        button.classList.add("btn", "btn-danger");
+        button.id = 'deleteData';
+    }
     button.type = 'button';
     button.value = value;
     button.addEventListener('click', eventHandler);
@@ -252,4 +280,18 @@ function addDiv(category, product, image){
     img.style.width = "100px";
     document.getElementById("divProductList").appendChild(div);
     document.getElementById("divProductList").appendChild(img)
+}
+
+function isLoggedIn(){
+    if (sessionStorageObter("username_login") === null) {
+        document.getElementById("menuHome").style.display = "none";
+        document.getElementById("menuClient").style.display = "none";
+        document.getElementById("menuProduct").style.display = "none";
+        document.getElementById("menuLogin").style.display = "none";
+    } else{
+        document.getElementById("menuHome").style.display = "block";
+        document.getElementById("menuClient").style.display = "block";
+        document.getElementById("menuProduct").style.display = "block";
+        document.getElementById("menuLogin").style.display = "block";
+    }
 }
