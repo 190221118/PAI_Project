@@ -3,40 +3,42 @@
 const mysql = require("mysql");
 const options = require("./connection-options.json");
 
-var queryClients = "SELECT clientId, clientName, clientUsername, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A'";
-var queryClient = "SELECT clientId, clientName, clientUsername, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A' and clientId = ?";
-var queryProducts = "SELECT p.productId,  p.productName,  p.productDescription, pc.productCategoryName,  p.productImg,  p.productPrice FROM products AS p INNER JOIN productcategories as pc on p.productCategoryId = pc.productCategoryId WHERE p.productIsEnabled = 1";
-var queryProduct = "SELECT p.productId,  p.productName,  p.productDescription, pc.productCategoryName,  p.productImg,  p.productPrice FROM products AS p INNER JOIN productcategories as pc on p.productCategoryId = pc.productCategoryId WHERE p.productIsEnabled = 1 and p.productId = ?";
-var queryCategories = "SELECT productCategoryId, productCategoryName FROM productcategories";
+const queryClients = "SELECT clientId, clientName, clientUsername, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A'";
+const queryClient = "SELECT clientId, clientName, clientUsername, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A' and clientId = ?";
+const queryProducts = "SELECT p.productId,  p.productName,  p.productDescription, pc.productCategoryName,  p.productImg,  p.productPrice FROM products AS p INNER JOIN productcategories as pc on p.productCategoryId = pc.productCategoryId WHERE p.productIsEnabled = 1";
+const queryProduct = "SELECT p.productId,  p.productName,  p.productDescription, pc.productCategoryName,  p.productImg,  p.productPrice FROM products AS p INNER JOIN productcategories as pc on p.productCategoryId = pc.productCategoryId WHERE p.productIsEnabled = 1 and p.productId = ?";
+const queryCategories = "SELECT productCategoryId, productCategoryName FROM productcategories";
 
+const sqlUpdateCliPass = "UPDATE clients SET clientName = ?, clientUsername = ?, clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ?, clientPassword = md5(?) WHERE clientId = ?";
+const sqlUpdateCli = "UPDATE clients SET clientName = ?, clientUsername = ?, clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ? WHERE clientId = ?";
 /**
  * Função para retornar a lista de pessoas da BD.
  * @param {*} req 
  * @param {*} res 
  */
 
-function getJsonMessage(err, rows, res, typeColumn){
+function getJsonMessage(err, rows, res, typeColumn) {
     if (err) {
-        res.json({"message": "error", "error": err });
-    } else if(typeColumn === "categories") {
-        res.json({"message": "success", "category": rows });
-    } else if(typeColumn === "clients" || typeColumn === "client") {
-        res.json({"message": "success", "client": rows });
-    } else if(typeColumn === "products" || typeColumn === "product") {
-        res.json({"message": "success", "product": rows });
+        res.json({ "message": "error", "error": err });
+    } else if (typeColumn === "categories") {
+        res.json({ "message": "success", "category": rows });
+    } else if (typeColumn === "clients" || typeColumn === "client") {
+        res.json({ "message": "success", "client": rows });
+    } else if (typeColumn === "products" || typeColumn === "product") {
+        res.json({ "message": "success", "product": rows });
     }
 }
 
-function createConnectionToDb(req, res, query, typeColumn){
+function createConnectionToDb(req, res, query, typeColumn) {
     var connection = mysql.createConnection(options);
     connection.connect();
-    
-    if(typeColumn === "client" || typeColumn === "product"){
+
+    if (typeColumn === "client" || typeColumn === "product") {
         connection.query(query, [req.params.id], function (err, rows) {
             getJsonMessage(err, rows, res, typeColumn);
         });
     }
-    else{
+    else {
         connection.query(query, function (err, rows) {
             getJsonMessage(err, rows, res, typeColumn);
         });
@@ -65,24 +67,33 @@ function getCategories(req, res) {
     createConnectionToDb(req, res, queryCategories, "categories");
 }
 
-function createUpdateClient(client, isUpdate, result) {
+function createUpdateClient(formClient, isUpdate, result) {
     /** @todo Completar */
     let connection = mysql.createConnection(options);
-    let id = client.id;
-    let name = client.name;
-    let username = client.username;
-    let address = client.address;
-    let zipCode = client.zipCode;
-    let documentId = client.documentId;
-    let email = client.email;
-    let gender = client.gender;
-    let phone = client.phone;
-    let birthdate = client.birthDate;
-    let password = client.password;
-    let sql = (isUpdate) ? "UPDATE clients SET clientName = ?, clientUsername = ?, clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ? WHERE clientId = ?" : "INSERT INTO clients(clientName, clientUsername, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState, clientType, clientPassword) VALUES (?,?,?,?,?,?,?,?,?,'A','Client', md5(?))";
+    let id = formClient.id;
+    let name = formClient.name;
+    let username = formClient.username;
+    let address = formClient.address;
+    let zipCode = formClient.zipCode;
+    let documentId = formClient.documentId;
+    let email = formClient.email;
+    let gender = formClient.gender;
+    let phone = formClient.phone;
+    let birthdate = formClient.birthDate;
+
+    let sqlUpdate = sqlUpdateCli;
+    let password = formClient.password;
+
+    if (isUpdate) {
+        if (password != null) {
+            sqlUpdate = sqlUpdateCliPass;
+        }
+    }
+
+    let sql = (isUpdate) ? sqlUpdate : "INSERT INTO clients(clientName, clientUsername, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState, clientType, clientPassword) VALUES (?,?,?,?,?,?,?,?,?,'A','Client', md5(?))";
     connection.connect(function (err) {
         if (err) {
-            if(result != null){
+            if (result != null) {
                 result(err, null, null);
             }
             else {
@@ -90,9 +101,11 @@ function createUpdateClient(client, isUpdate, result) {
             }
         }
         else {
-            connection.query(sql, [ name, username, address, zipCode, documentId, email, gender, phone, birthdate, password, id], function (err, rows, results) {
+            let params = password != null ? [name, username, address, zipCode, documentId, email, gender, phone, birthdate, password, id] : [name, username, address, zipCode, documentId, email, gender, phone, birthdate, id];
+
+            connection.query(sql, params, function (err, rows, results) {
                 if (err) {
-                    if(result != null){
+                    if (result != null) {
                         result(err, null, null);
                     }
                     else {
@@ -108,17 +121,17 @@ function createUpdateClient(client, isUpdate, result) {
 
 
 function removeClient(req, res) {
-    
+
     let query = "UPDATE clients SET clientState ='I' WHERE clientId = ?";
     let connection = mysql.createConnection(options);
-    
+
     connection.connect(function (err) {
         if (err) throw err;
         connection.query(query, [req.params.id], function (err, rows, results) {
             if (err) {
                 res.sendStatus(500);
             } else {
-                res.send({"message": "success", "client": rows, "results":results });
+                res.send({ "message": "success", "client": rows, "results": results });
             }
         });
     });
@@ -132,14 +145,14 @@ function postLogin(req, res) {
     connection.connect(function (err) {
         if (err) throw err;
 
-    let username = req.params.username;
-    let password = req.params.password;
+        let username = req.params.username;
+        let password = req.params.password;
 
-    connection.query(sql, [ username, password], function (err, rows, results) {
+        connection.query(sql, [username, password], function (err, rows, results) {
             if (err) {
                 res.sendStatus(500);
             } else {
-                res.send({"message": "success", "login": rows, "results":results} );
+                res.send({ "message": "success", "login": rows, "results": results });
             }
         });
     });
@@ -157,7 +170,7 @@ function createUpdateProduct(product, isUpdate, result) {
     let sql = (isUpdate) ? "UPDATE products SET productName = ?, productDescription = ?, productCategoryId = ? , productImg = ? , productPrice = ? WHERE productId = ?" : "INSERT INTO products(productName, productDescription, productCategoryId, productImg, productPrice, productIsEnabled) VALUES (?,?,?,?,?,1)";
     connection.connect(function (err) {
         if (err) {
-            if(result != null){
+            if (result != null) {
                 result(err, null, null);
             }
             else {
@@ -165,9 +178,9 @@ function createUpdateProduct(product, isUpdate, result) {
             }
         }
         else {
-            connection.query(sql, [ name, description, category, image, price, id], function (err, rows, results) {
+            connection.query(sql, [name, description, category, image, price, id], function (err, rows, results) {
                 if (err) {
-                    if(result != null){
+                    if (result != null) {
                         result(err, null, null);
                         console.log("entrou aqui");
                     }
@@ -185,17 +198,17 @@ function createUpdateProduct(product, isUpdate, result) {
 }
 
 function removeProduct(req, res) {
-    
+
     let query = 'UPDATE products SET productIsEnabled = 0 WHERE productId = ?';
     let connection = mysql.createConnection(options);
-    
+
     connection.connect(function (err) {
         if (err) throw err;
         connection.query(query, [req.params.id], function (err, rows, results) {
             if (err) {
                 res.sendStatus(500);
             } else {
-                res.send({"message": "success", "product": rows, "results":results });
+                res.send({ "message": "success", "product": rows, "results": results });
             }
         });
     });

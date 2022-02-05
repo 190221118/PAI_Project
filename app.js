@@ -33,9 +33,23 @@ app.get("/clientById/:id", requestHandlers.getClientById);
 
 // Chama a função para atualizar um cliente ou criar um novo
 app.put("/clients/:id", upload.any(), (req, res) => {
-    let r = req.body.client;
-    let clientData = JSON.parse(req.body.client);
-    let cli = {name: clientData.name ,
+    let r = req.body.formClient;
+    let clientData = JSON.parse(req.body.formClient);
+    let pass = clientData.password.trim().length;
+    let cli = clientData.password.trim().length != 0 ?
+            {  name: clientData.name ,
+               username:clientData.username,
+               birthDate:clientData.birthDate,
+               password:clientData.password,
+               address:clientData.address,
+               zipCode:clientData.zipCode,
+               documentId:clientData.documentId,
+               email:clientData.email,
+               gender:clientData.gender,
+               phone:clientData.phone,
+               id: clientData.id
+            } :{
+               name: clientData.name ,
                username:clientData.username,
                birthDate:clientData.birthDate,
                address:clientData.address,

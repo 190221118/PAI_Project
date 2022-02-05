@@ -255,38 +255,38 @@ class InformationClients {
         args.push(idgender);
         args.push(phone);
 
-        const client = new Client(id, name,username, password, birthDate, address, zipCode, documentId, email, idgender, phone);
+        const formclient = new FormClient(id, name,username, password, birthDate, address, zipCode, documentId, email, idgender, phone);
         if (acao === 'create') {
             if (validadeForm(args)){
-                this.putClient(client, false);
+                this.putClient(formclient, false);
             } 
         } else if (acao === 'update') {
-            this.putClient(client, true);
+            this.putClient(formclient, true);
             
         } else if (acao === 'delete') {
-            this.deleteClient(client);
+            this.deleteClient(formclient);
         }
     }
 
-    putClient(client, isUpdate){
+    putClient(formClient, isUpdate){
         const self = this;
         let formData = new FormData();
-        formData.append('client', JSON.stringify(client));
+        formData.append('formClient', JSON.stringify(formClient));
 
         const xhr = new XMLHttpRequest();
         xhr.responseType="json";
-        xhr.open('PUT', '/clients/' + client.id);
+        xhr.open('PUT', '/clients/' + formClient.id);
         
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                 //hself.clients[self.clients.findIndex(i => i.id === client.id)] = client;
                 if(!isUpdate){
-                    let id = xhr.response.client.insertId;
+                    let id = xhr.response.formClient.insertId;
                     self.getClientById(id);
                     self.showClients("insert");
                 }
                 else{
-                    self.getClientById(client.id);
+                    self.getClientById(formClient.id);
                     self.showClients("update");
                 }
             }
@@ -295,17 +295,17 @@ class InformationClients {
         xhr.send(formData);
     }
     
-    deleteClient(client){
+    deleteClient(formClient){
         const self = this;
         const xhr = new XMLHttpRequest();
-        xhr.open('DELETE', '/clients/' + client.id);
+        xhr.open('DELETE', '/clients/' + formClient.id);
         xhr.onreadystatechange = function () {
             if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                self.clients.splice(self.clients.findIndex(i => i.clientId === client.id), 1);
+                self.clients.splice(self.clients.findIndex(i => i.clientId === formClient.id), 1);
                 self.showClients("delete");
             }
         };
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(JSON.stringify(client));
+        xhr.send(JSON.stringify(formClient));
     }
 }
