@@ -109,6 +109,7 @@ function selectedClient(selecteds){
 }
 
 function selectedProduct(selecteds){
+    cleanCanvasProduct();
     for(var i = 0; i < selecteds.length; i++){
         var selected = selecteds[i];
         selected = selected.getElementsByTagName("td");
@@ -119,6 +120,7 @@ function selectedProduct(selecteds){
         document.getElementById('descriptionProduct').value = selected[2].textContent;
         var category = document.getElementById("categoryProduct");
         document.getElementById('categoryProduct').options[category.selectedIndex].textContent = selected[3].textContent;
+        document.getElementById('imagePathProduct').value= selected[4].textContent;
         document.getElementById('priceProduct').value = selected[5].textContent;
     }
 }
