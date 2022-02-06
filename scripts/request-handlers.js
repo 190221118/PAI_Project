@@ -182,14 +182,14 @@ function createUpdateProduct(product, isUpdate, result) {
                 if (err) {
                     if (result != null) {
                         result(err, null, null);
-                        console.log("entrou aqui");
+                        console.log("erro aqui");
                     }
                     else {
-                        console.log("entrou aqui2");
+                        console.log("erro aqui2");
                         throw err;
                     }
                 } else {
-                    console.log("entrou aqui3");
+                    console.log("sucesso aqui3");
                     result(err, rows, results);
                 }
             });

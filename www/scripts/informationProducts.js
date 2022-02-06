@@ -281,16 +281,18 @@ class InformationProducts {
         args.push(name);
         args.push(description);
         args.push(category);
-        args.push(image);
         args.push(price);
 
         const product = new Product(id, name,description, category, image, price);
         if (acao === 'create') {
+            args.push(image);
             if (validadeForm(args)){
                 this.putProduct(product, false);
             } 
         } else if (acao === 'update') {
-            this.putProduct(product, true);
+            if (validadeForm(args)){
+                this.putProduct(product, true);
+            }
             
         } else if (acao === 'delete') {
             this.deleteProduct(product);

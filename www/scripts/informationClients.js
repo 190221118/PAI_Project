@@ -246,7 +246,6 @@ class InformationClients {
         let args = [];
         args.push(name);
         args.push(username);
-        args.push(password);
         args.push(birthDate);
         args.push(address);
         args.push(zipCode);
@@ -257,11 +256,14 @@ class InformationClients {
 
         const formclient = new FormClient(id, name,username, password, birthDate, address, zipCode, documentId, email, idgender, phone);
         if (acao === 'create') {
+            args.push(password);
             if (validadeForm(args)){
                 this.putClient(formclient, false);
             } 
         } else if (acao === 'update') {
-            this.putClient(formclient, true);
+            if (validadeForm(args)){
+                this.putClient(formclient, true);
+            }
             
         } else if (acao === 'delete') {
             this.deleteClient(formclient);
