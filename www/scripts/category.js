@@ -1,10 +1,10 @@
 "use strict";
 
 /**
- * @class Estrutura com capacidade de armazenar a categoria
- * @constructs Categoria
- * @param {int} id - id da categoria
- * @param {string} name - nome da categoria
+ * @class Structure with capacity to store the category
+ * @constructs Category
+ * @param {int} id - category's id
+ * @param {string} name - category's name
  */
 class Category {
     constructor(id, name){

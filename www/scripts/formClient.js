@@ -1,19 +1,19 @@
 "use strict";
 
 /** 
-* @class Estrutura com capacidade de armazenar o cliente
+* @class Structure with capacity to store the client
 * @constructs FormClient
-* @param {int} id - id do cliente
-* @param {string} name - nome do cliente
-  @param {string} username - username do cliente
-  @param {string} password - nome do cliente
-* @param {Date} birthDate - data de nascimento da pessoa
-  @param {string} address - morada do cliente
-  @param {string} zipCode - cod postal do cliente
-  @param {string} documentId - documento do cliente
-  @param {string} email - email do cliente
-  @param {string} gender - sexo do cliente
-  @param {string} phone - fone do cliente
+* @param {int} id - client's id
+* @param {string} name - client's name
+  @param {string} username - client's username
+  @param {string} password - client's password
+* @param {Date} birthDate - client's birthdate
+  @param {string} address - client's address
+  @param {string} zipCode - client's zipcode
+  @param {string} documentId - client's document id
+  @param {string} email - client's email
+  @param {string} gender - client's gender
+  @param {string} phone - client's phone number
 */
 class FormClient {
     constructor(id, name, username, password, birthDate, address, zipCode, documentId, email, gender, phone) {

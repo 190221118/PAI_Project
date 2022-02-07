@@ -1,8 +1,10 @@
 "use strict";
 
+// Use of the mysql
 const mysql = require("mysql");
 const options = require("./connection-options.json");
 
+// Creation of the querys for the CRUD functionalities
 const queryClients = "SELECT clientId, clientName, clientUsername, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A'";
 const queryClient = "SELECT clientId, clientName, clientUsername, DATE_FORMAT(clientBirthDate,'%Y-%m-%d') AS clientBirthDate, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone  FROM clients WHERE clientState ='A' and clientId = ?";
 const queryProducts = "SELECT p.productId,  p.productName,  p.productDescription, pc.productCategoryName,  p.productImg,  p.productPrice FROM products AS p INNER JOIN productcategories as pc on p.productCategoryId = pc.productCategoryId WHERE p.productIsEnabled = 1";
@@ -11,8 +13,9 @@ const queryCategories = "SELECT productCategoryId, productCategoryName FROM prod
 
 const sqlUpdateCliPass = "UPDATE clients SET clientName = ?, clientUsername = ?, clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ?, clientPassword = md5(?) WHERE clientId = ?";
 const sqlUpdateCli = "UPDATE clients SET clientName = ?, clientUsername = ?, clientAddress = ?, clientZipCode = ?, clientDocument = ?, clientEmail = ? , clientGender = ?,  clientFone = ?, clientBirthDate = ? WHERE clientId = ?";
+
 /**
- * Função para retornar a lista de pessoas da BD.
+ * Function to return the json message obtained from the connection to the database
  * @param {*} req 
  * @param {*} res 
  */
@@ -29,6 +32,14 @@ function getJsonMessage(err, rows, res, typeColumn) {
     }
 }
 
+/**
+ * Function to create a connection to the database based on the selected query
+ * 
+ * @param {*} req - Variable with the request body
+ * @param {*} res - Variable with the response
+ * @param {*} query - Query to execute in the database
+ * @param {*} typeColumn - To know which response to obtain in the getJsonMessage function
+ */
 function createConnectionToDb(req, res, query, typeColumn) {
     var connection = mysql.createConnection(options);
     connection.connect();
@@ -45,30 +56,66 @@ function createConnectionToDb(req, res, query, typeColumn) {
     }
 }
 
-// Secção dos gets
 
+/**
+ * Function to get all clients
+ * 
+ * @param {*} req - Variable with the request body
+ * @param {*} res - Variable with the response 
+ */
 function getClients(req, res) {
     createConnectionToDb(req, res, queryClients, "clients");
 }
 
+/**
+ * Function to get only one client
+ * 
+ * @param {*} req - Variable with the request body
+ * @param {*} res - Variable with the response
+ */
 function getClientById(req, res) {
     createConnectionToDb(req, res, queryClient, "client");
 }
 
+/**
+ * Function to get all products
+ * 
+ * @param {*} req - Variable with the request body
+ * @param {*} res - Variable with the response
+ */
 function getProducts(req, res) {
     createConnectionToDb(req, res, queryProducts, "products");
 }
 
+/**
+ * Function to get only one product
+ * 
+ * @param {*} req - Variable with the request body
+ * @param {*} res - Variable with the response
+ */
 function getProductById(req, res) {
     createConnectionToDb(req, res, queryProduct, "product");
 }
 
+/**
+ * Function to get all categories
+ * 
+ * @param {*} req - Variable with the request body
+ * @param {*} res - Variable with the response
+ */
 function getCategories(req, res) {
     createConnectionToDb(req, res, queryCategories, "categories");
 }
 
+/**
+ * This function is used to update an existing client or create a new one based on the param "isUpdate"
+ * 
+ * @param {*} formClient - form with data about the client
+ * @param {*} isUpdate - if the operation is to update or create a new data
+ * @param {*} result - result from the execution of the query
+ */
 function createUpdateClient(formClient, isUpdate, result) {
-    /** @todo Completar */
+    // Declaration of variables
     let connection = mysql.createConnection(options);
     let id = formClient.id;
     let name = formClient.name;
@@ -84,12 +131,14 @@ function createUpdateClient(formClient, isUpdate, result) {
     let sqlUpdate = sqlUpdateCli;
     let password = formClient.password;
 
+    // Check if is update or not
     if (isUpdate) {
         if (password != null) {
             sqlUpdate = sqlUpdateCliPass;
         }
     }
 
+    // If is update use the sqlUpdate query created above otherwise execute the insert query
     let sql = (isUpdate) ? sqlUpdate : "INSERT INTO clients(clientName, clientUsername, clientAddress, clientZipCode, clientDocument, clientEmail, clientGender, clientFone, clientBirthDate, clientState, clientType, clientPassword) VALUES (?,?,?,?,?,?,?,?,?,'A','Client', md5(?))";
     connection.connect(function (err) {
         if (err) {
@@ -101,6 +150,7 @@ function createUpdateClient(formClient, isUpdate, result) {
             }
         }
         else {
+            // Insertion of the data in the following params
             let params = password != null ? [name, username, address, zipCode, documentId, email, gender, phone, birthdate, password, id] : [name, username, address, zipCode, documentId, email, gender, phone, birthdate, id];
 
             connection.query(sql, params, function (err, rows, results) {
@@ -120,8 +170,14 @@ function createUpdateClient(formClient, isUpdate, result) {
 }
 
 
+/**
+ * Function to remove (deactivate) a client from the database
+ * 
+ * @param {*} req - Variable with the request body
+ * @param {*} res - Variable with the response 
+ */
 function removeClient(req, res) {
-
+    // Query to set the state of an existing client to deactivated
     let query = "UPDATE clients SET clientState ='I' WHERE clientId = ?";
     let connection = mysql.createConnection(options);
 
@@ -137,8 +193,14 @@ function removeClient(req, res) {
     });
 }
 
+/**
+ * Function to login into the website using an existing user
+ * 
+ * @param {*} req - Variable with the request body
+ * @param {*} res - Variable with the response
+ */
 function postLogin(req, res) {
-
+    // Query to see if the login username and password match
     var connection = mysql.createConnection(options);
     let sql = "SELECT count(1) AS retorno, clientId AS id , IFNULL(clientType,'Client') AS type FROM clients  WHERE clientUsername = ? AND clientPassword = MD5(?) AND clientState <> 'I'";
 
@@ -158,7 +220,15 @@ function postLogin(req, res) {
     });
 }
 
+/**
+ * This function is used to update an existing product or create a new one based on the param "isUpdate"
+ * 
+ * @param {*} product - variable with all the data related to the product
+ * @param {*} isUpdate - if the operation is to update or create a new data
+ * @param {*} result - result from the execution of the query
+ */
 function createUpdateProduct(product, isUpdate, result) {
+    // Declaration of variables
     let connection = mysql.createConnection(options);
     let id = product.id;
     let name = product.name;
@@ -167,6 +237,7 @@ function createUpdateProduct(product, isUpdate, result) {
     let image = product.image;
     let price = product.price;
 
+    // If is update execute the update query otherwise execute the insert query
     let sql = (isUpdate) ? "UPDATE products SET productName = ?, productDescription = ?, productCategoryId = ? , productImg = ? , productPrice = ? WHERE productId = ?" : "INSERT INTO products(productName, productDescription, productCategoryId, productImg, productPrice, productIsEnabled) VALUES (?,?,?,?,?,1)";
     connection.connect(function (err) {
         if (err) {
@@ -178,6 +249,7 @@ function createUpdateProduct(product, isUpdate, result) {
             }
         }
         else {
+            // Insertion of the data in the following params
             connection.query(sql, [name, description, category, image, price, id], function (err, rows, results) {
                 if (err) {
                     if (result != null) {
@@ -197,6 +269,12 @@ function createUpdateProduct(product, isUpdate, result) {
     });
 }
 
+/**
+ * Function to remove (deactivate) a product from the database
+ * 
+ * @param {*} req - Variable with the request body
+ * @param {*} res - Variable with the response 
+ */
 function removeProduct(req, res) {
 
     let query = 'UPDATE products SET productIsEnabled = 0 WHERE productId = ?';
@@ -214,16 +292,7 @@ function removeProduct(req, res) {
     });
 }
 
-// module.exports.getClients = getClients;
-// module.exports.getClientById = getClientById;
-// module.exports.createUpdateCliente = createUpdateCliente;
-// module.exports.removeCliente = removeCliente;
-// module.exports.postLogin = postLogin;
-// module.exports.getProducts = getProducts;
-// module.exports.getCategories = getCategories;
-// module.exports.createUpdateProduct = createUpdateProduct;
-// module.exports.removeProduct = removeProduct;
-
+// Exports
 module.exports = {
     getClients: getClients,
     getClientById: getClientById,

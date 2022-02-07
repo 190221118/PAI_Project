@@ -1,12 +1,12 @@
 "use strict";
 
 /** 
-* @class Estrutura com capacidade de armazenar o login
+* @class Structure with capacity to store the login
 * @constructs Login
-  @param {string} id - id do elemento HTML que contém a informação.
+  @param {string} id - id of the HTML element that contains the information.
 
-  @property  {string} username - username do cliente
-  @property  {string} password - nome do cliente
+  @property  {string} username - client's username
+  @property  {string} password - client's password
 */
 class Login {
     constructor(id) {
@@ -15,8 +15,9 @@ class Login {
         this.password = password;
         
     }
+
     /**
-     * Função que insere ou atualiza o recurso pessoa com um pedido ao servidor NODE.JS através do verbo POST ou PUT, usando pedidos assincronos e JSON
+     * Function that inserts or updates the resource person with a request to the NODE.JS server through the POST or PUT verb, using asynchronous requests and JSON
      */
      processingLogin () {
 
@@ -33,8 +34,9 @@ class Login {
         }
         
     }
+
     /**
-     * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso de validar o login através do verbo GET, usando pedidos assincronos e JSON
+     * Function that has as main goal to request to the NODE.JS server the login validation resource through the GET verb, using asynchronous requests and JSON
      */
     postLogin(username, password) {
         let self = this;
@@ -63,8 +65,9 @@ class Login {
         };
         xhr.send();
     }
+
     /**
-     * Função que que remove a session storage 
+     * Function that removes session storage 
     */
     logOff() {
         isLoggedIn();
@@ -79,6 +82,9 @@ class Login {
         location.reload();
     }
 
+    /**
+     * Function to show the login form
+     */
     showHomeLogin() {
         isLoggedIn();
         document.getElementById("headerTitle").textContent="Home";

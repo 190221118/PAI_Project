@@ -81,7 +81,7 @@ CREATE TABLE `products` (
   FOREIGN KEY productCategoryId(productCategoryId) REFERENCES productcategories(productCategoryId)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf16;
 
--- Inserto into product categories default categories
+-- Insert into product categories default categories
 INSERT INTO `lab`.`productcategories` (`productCategoryName`) VALUES ('Blazers');
 INSERT INTO `lab`.`productcategories` (`productCategoryName`) VALUES ('Blusões e casacos');
 INSERT INTO `lab`.`productcategories` (`productCategoryName`) VALUES ('Sweatshirt');

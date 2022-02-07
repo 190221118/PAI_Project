@@ -3,13 +3,13 @@
 //const { sendFile } = require("express/lib/response");
 
 /** 
-* @class Guarda toda informação necessaria na execução do exercicio 
+* @class Saves all the information about the client
 * @constructs InformationClients
-* @param {string} id - id do elemento HTML que contém a informação.
+* @param {string} id - id of the HTML element that contains the information.
 * 
-* @property {string} id - id do elemento HTML que contém a informação.
-* @property {client[]} clients - Array de objetos do tipo client, para guardar todas as pessoas do nosso sistema
-  @property {string[]} genders - Array de objetos do tipo gender, para guardar todas as pessoas do nosso sistema
+* @property {string} id - id of the HTML element that contains the information.
+* @property {client[]} clients - Array of objects of type client, to store all the people of our system
+  @property {string[]} genders - Array of objects of the gender type, to store all the people in our system
 */
 class InformationClients {
     constructor(id) {
@@ -17,32 +17,12 @@ class InformationClients {
         this.clients = [];
         this.genders = ['F','M'];
     }
+    
     /**
-     * coloca a palavra "home" no div titulo e limpa o div informação
-     */
-    // showHome() {
-    //     /** @todo Completar */
-    //      /** @todo Tarefa 1 */
-    //     /** Actualizar o título */
-    //     document.getElementById("headerTitle").textContent="Home";
-
-    //     /** @todo Tarefa 2 */
-    //     /** Limpar o conteúdo */
-    //     document.getElementById("divInformation").style.display="none";    
-    //     document.getElementById("formClient").style.display = "none";
-    //     document.getElementById("formProduct").style.display = "none";
-    //     if (sessionStorageObter("username_login") === null) {
-    //             document.getElementById("formLogin").style.display = "block";
-    //             document.getElementById("menuLogin").style.display = "none";
-    //     }
-    //     else {
-    //             document.getElementById("formLogin").style.display = "none";
-    //             document.getElementById("menuLogin").style.display = "block";
-    //     }
-        
-    // }
-    /**
-     * coloca a palavra "Client" no div titulo e cria dinamicamente uma tabela com a informação dos clientes
+     * Show the clients table
+     * 
+     * @param {*} acao - if is delete, insert or update
+     * @returns 
      */
     showClients(acao) {
         let self = this;
@@ -50,11 +30,11 @@ class InformationClients {
 
         document.getElementById("catalogProducts").style.display = "none";
         
-        // permissao para ver todos os clientes
+        // permission to see all customers
         if (type === "Admin" && acao === "select") {
             infoClients.getClients();
         }
-        /** Actualizar o título */
+        /** Update the title */
         document.getElementById("headerTitle").textContent="Clients";
         if (sessionStorageObter("username_login")  === null) {
             document.getElementById("divInformation").style.display="none";
@@ -90,14 +70,17 @@ class InformationClients {
             var row = rows[i];
 
             row.addEventListener("click", function(){
-            //Adicionar ao atual
-            selLinha(this, false); //Selecione apenas um
-            //selLinha(this, true); //Selecione quantos quiser
+            //Add to the current
+            selLinha(this, false); //Select only one
+            //selLinha(this, true); //Select multiple
             });
         }
         
-        /** Mostrar o conteúdo */
+        // Show content
         
+        /**
+         * Function to handle the delete event
+         */
         function deleteClientEventHandler() {
             document.getElementById('formClient').style.display = "none";
             document.getElementById('deleteClient').style.display = "block";
@@ -106,6 +89,9 @@ class InformationClients {
             loadClient("delete");
         }
 
+        /**
+         * Function to handle the insert event
+         */
         function newClientEventHandler() {
             document.getElementById('formClient').style.display = "block";
             document.getElementById('deleteClient').style.display = "none";
@@ -117,6 +103,9 @@ class InformationClients {
             setupForm();
         }
 
+        /**
+         * Function to handle the update event
+         */
         function updateClientEventHandler() {
             document.getElementById('formClient').style.display = "block";
             document.getElementById('deleteClient').style.display = "none";
@@ -129,6 +118,9 @@ class InformationClients {
             loadClient("update");
         }
 
+        /**
+         * Function to set up the client's form
+         */
         function setupForm(){
             document.getElementById('formClient').style.display = 'block';
             document.getElementById('formClient').reset();
@@ -141,6 +133,11 @@ class InformationClients {
             });
         }
 
+        /**
+         * Function to load a client's information into a form
+         * 
+         * @param {*} type 
+         */
         function loadClient(type){
             document.getElementById('formClient').reset();
             document.getElementById('gender').options.length = 0;
@@ -170,8 +167,9 @@ class InformationClients {
             //createButton("divInformation", selectAllClientEventHandler, 'Select All');
         }
     }
+
     /**
-     * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client através do verbo GET, usando pedidos assincronos e JSON
+     * Function that has as main goal to request to the NODE.JS server the client resource through the GET verb, using asynchronous requests and JSON
      */
     getClients() {
         const self = this;
@@ -198,7 +196,7 @@ class InformationClients {
     }
 
     /**
-     * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client por id através do verbo GET, usando pedidos assincronos e JSON
+     * Function that has as main goal to request to the NODE.JS server the resource client by id through the GET verb, using asynchronous requests and JSON
      */
     getClientById(id) {
         const self = this;
@@ -225,8 +223,8 @@ class InformationClients {
     }
 
     /**
-     * Função que insere ou atualiza o recurso pessoa com um pedido ao servidor NODE.JS através do verbo POST ou PUT, usando pedidos assincronos e JSON
-     * @param {String} acao - controla qual a operação do CRUD queremos fazer
+     * Function that inserts or updates the resource person with a request to the NODE.JS server through the POST or PUT verb, using asynchronous requests and JSON
+     * @param {String} acao - controls which CRUD operation we want to do
      */
     processingClient (acao) {
 
@@ -270,6 +268,12 @@ class InformationClients {
         }
     }
 
+    /**
+     * Function to update or insert a new client
+     * 
+     * @param {*} formClient - client's form with all the information
+     * @param {*} isUpdate - if the action is update or insert
+     */
     putClient(formClient, isUpdate){
         const self = this;
         let formData = new FormData();
@@ -297,6 +301,11 @@ class InformationClients {
         xhr.send(formData);
     }
     
+    /**
+     * Function to delete an existing client
+     * 
+     * @param {*} formClient - client's form with all the information
+     */
     deleteClient(formClient){
         const self = this;
         const xhr = new XMLHttpRequest();

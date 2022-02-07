@@ -1,9 +1,10 @@
 "use strict";
+
 /**
- * Função que será executada quando a página estiver toda carregada, criando a variável global "info" com um objeto Information
- * Aproveitamos ainda para solicitar ao servidor o carregamento de dados de forma assincrona(AJAX)
+ * Function that will be executed when the page is fully loaded, creating the global variable "info" with an Information object
+ * We also take the opportunity to ask the server to load data asynchronously (AJAX)
  * @memberof window
- * @params {Event} event - objeto que representará o evento
+ * @params {Event} event - object that will represent the event
  */
 window.onload = function (event) {
     var infoClients = new InformationClients("divInformation");
@@ -23,8 +24,8 @@ window.onload = function (event) {
 };
 
 /**
- * Função que valida se os campos do formulario estao preenchidos (facilitador de DOM)
- * @param {string[]} args - array de argumentos
+ * Function that validates if the fields of the form are filled (DOM facilitator)
+ * @param {string[]} args - argument's array
  */
 function validadeForm(args) {
     let result = true;
@@ -38,10 +39,11 @@ function validadeForm(args) {
     }
     else {return true;}
 }
+
 /**
- * Função que substitui todos os elementos filhos de um elemento HTML por um novo elemento HTML (facilitador de DOM)
- * @param {string} id - id do elemento HTML para o qual se pretende substituir os filhos.
- * @param {HTMLElement} newSon - elemento HTML que será o novo filho.
+ * Function that replaces all the child elements of an HTML element with a new HTML element (DOM facilitator)
+ * @param {string} id - id of the HTML element for which you want to replace the children.
+ * @param {HTMLElement} newSon - HTML element that will be the new child.
  */
 function replaceChilds(id, newSon) {
     var no = document.getElementById(id);
@@ -52,9 +54,9 @@ function replaceChilds(id, newSon) {
 };
 
 /**
- * Função que recebe um qualquer objeto e retorna dinamicamente uma linha de tabela HTML com informação relativa ao estado das suas propriedades
- * @param {Object} object - objecto do qual vamos transformar o conteudo dos seus atributos em linhas
- * @param {boolean} headerFormat - controla de o formato é cabeçalho ou linha normal
+ * Function that receives any object and dynamically returns an HTML table row with information about the state of its properties
+ * @param {Object} object - object of which we are going to transform the content of its attributes into lines
+ * @param {boolean} headerFormat - controls whether the format is header or normal line
  */
 function tableLine(object, headerFormat) {
     var tr = document.createElement("tr");
@@ -75,9 +77,13 @@ function tableLine(object, headerFormat) {
 };
 
 /**
-Caso passe true, você pode selecionar multiplas linhas.
-Caso passe false, você só pode selecionar uma linha por vez.
-**/
+ * Function to select a line
+ * If true, then user can select multiple lines
+ * If false, then user can only select one line
+ * 
+ * @param {*} linha 
+ * @param {*} multiplos 
+ */
 function selLinha(linha, multiplos){
     if(!multiplos){
         var linhas = linha.parentElement.getElementsByTagName("tr");
@@ -89,6 +95,11 @@ function selLinha(linha, multiplos){
     linha.classList.toggle("selecionado");
 }
 
+/**
+ * Function to get all the information about the selected client
+ * 
+ * @param {*} selecteds 
+ */
 function selectedClient(selecteds){
     for(var i = 0; i < selecteds.length; i++){
         var selected = selecteds[i];
@@ -108,8 +119,13 @@ function selectedClient(selecteds){
     }
 }
 
+/**
+ * Function to get all the information of the selected product
+ * 
+ * @param {*} selecteds 
+ */
 function selectedProduct(selecteds){
-    cleanCanvasProduct();
+    cleanCanvasProduct(); // clear image product canvas
     for(var i = 0; i < selecteds.length; i++){
         var selected = selecteds[i];
         selected = selected.getElementsByTagName("td");
@@ -126,7 +142,12 @@ function selectedProduct(selecteds){
 }
 
 /**
- * Função que retorna o id da linha selecionada
+ * Function that returns the id of the selected line
+ * 
+ * @param {*} tableObj 
+ * @param {*} tableName - if it's the product's table or client's table
+ * @param {*} type - if the button clicked is for delete or update
+ * @returns 
  */
 function selected(tableObj, tableName, type){
     //let table = document.getElementById("clientTable");
@@ -142,7 +163,7 @@ function selected(tableObj, tableName, type){
         button = document.getElementById('updateData');
     }
 
-    //Verificar se eestá selecionado
+    //Check that it is selected
     if(selecteds.length < 1){
   	    alert("Selecione pelo menos uma linha");
         return false;
@@ -165,10 +186,10 @@ function selected(tableObj, tableName, type){
 }
 
 /**
- * Função genérica que cria um botão HTML, dá-lhe um evento e coloca-o na árvore de nós
- * @param {string} fatherNodeName - nó pai do botão
- * @param {function} eventHandler - evento do botão.
- * @param {String} value - texto do botão.
+ * Generic function that creates an HTML button, gives it an event and places it in the node tree
+ * @param {string} fatherNodeName - button parent node
+ * @param {function} eventHandler - button event.
+ * @param {String} value - button text
  */
  function createButton(fatherNodeName, eventHandler, value) {
     let fatherNode = document.getElementById(fatherNodeName);
@@ -188,37 +209,76 @@ function selected(tableObj, tableName, type){
     button.addEventListener('click', eventHandler);
     fatherNode.appendChild(button);
 }
-// session storage
+
+/**
+ * Function to save in the session storage
+ * @param {*} arg 
+ */
 function sessionStorageGravar(arg) { 
     var text = document.getElementById(arg).value; 
     sessionStorage.setItem(arg, text); 
 } 
+
+/**
+ * Function to select from the session storage
+ * 
+ * @param {*} arg 
+ * @returns 
+ */
 function sessionStorageObter(arg) { 
     return sessionStorage.getItem(arg); 
 } 
+
+/**
+ * Function to clean from the sesssion storage
+ * 
+ * @param {*} arg 
+ */
 function sessionStorageLimpar(arg) { 
     sessionStorage.removeItem(arg); 
     //document.getElementById("Data").value = ""; 
 } 
-// local storage
+
+/**
+ * Function to save in the local storage
+ * 
+ * @param {*} arg 
+ * @param {*} obj 
+ */
 function localStorageGravar(arg,obj) { 
     localStorage.setItem(arg, obj);
 } 
+
+/**
+ * Function to select from the local storage
+ * 
+ * @param {*} arg 
+ * @returns 
+ */
 function localStorageObter(arg) { 
     return localStorage.getItem(arg); 
 } 
+
+/**
+ * Function to clean from the local storage
+ * 
+ * @param {*} arg 
+ */
 function localStorageLimpar(arg) { 
     localStorage.removeItem(arg);
     //document.getElementById("Data").value = ""; 
 }
 
+/**
+ * Function to clean product's canvas
+ */
 function cleanCanvasProduct(){
     let canvas = document.getElementById('canvasProduct');
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-//carregar imagem
+// Load image
 
 const worker = new Worker('scripts/worker.js'); 
 
@@ -229,6 +289,11 @@ worker.addEventListener('message', d=>{
     ctx.putImageData(imgData,0,0);
 });
 
+/**
+ * Function to apply filter to the canvas
+ * 
+ * @param {*} c 
+ */
 function applyFilter(c){
     const canvas = document.getElementById(c);
     const canvasCtx = canvas.getContext('2d');
@@ -236,6 +301,12 @@ function applyFilter(c){
     worker.postMessage(imgData);
 }
 
+/**
+ * Function to process the image selected
+ * 
+ * @param {*} e 
+ * @returns 
+ */
 function inputChangeProduct(e) {    
     
     if (e.target.files.length === 0)return;
@@ -243,6 +314,12 @@ function inputChangeProduct(e) {
         processImage(file,"canvasProduct");
 }
 
+/**
+ * Function to process the image selected into the canvas
+ * 
+ * @param {*} file 
+ * @param {*} img 
+ */
 async function processImage(file, img){
     const bitmap = await createImageBitmap(file);
     // Load an image of intrinsic size 300x227 in CSS pixels
@@ -259,6 +336,14 @@ async function processImage(file, img){
     applyFilter(img);
 }
 
+/**
+ * Function to add the div to the homepage in order to add the carousel
+ * 
+ * @param {*} category 
+ * @param {*} product 
+ * @param {*} image 
+ * @param {*} count 
+ */
 function addDiv(category, product, image, count){
     /*let div = document.createElement("div");
     div.style.display = "inline-block";
@@ -282,6 +367,14 @@ function addDiv(category, product, image, count){
     document.getElementById("divCarousel" + count).appendChild(img);
 }
 
+/**
+ * Function to add the catalog div to the product's page (client only)
+ * 
+ * @param {*} category 
+ * @param {*} product 
+ * @param {*} image 
+ * @param {*} count 
+ */
 function addCatalogDiv(category, product, image, count){
     /*let div = document.createElement("div");
     div.style.display = "inline-block";
@@ -314,6 +407,9 @@ function addCatalogDiv(category, product, image, count){
     document.getElementById("divCaptionProduct" + count).appendChild(textCaption);
 }
 
+/**
+ * Function to check if the user is logged in
+ */
 function isLoggedIn(){
     if (sessionStorageObter("username_login") === null) {
         document.getElementById("menuHome").style.display = "none";

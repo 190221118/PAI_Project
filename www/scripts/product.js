@@ -1,14 +1,14 @@
 "use strict";
 
 /**
- * @class Estrutura com capacidade de armazenar o produto
- * @constructs Produto
- * @param {int} id - id do produto
- * @param {string} name - nome do produto
- * @param {string} description - descrição do produto
- * @param {int} category - id da categoria do produto
- * @param {string} image - imagem do produto
- * @param {float} price - preço do produto
+ * @class Structure with capacity to store the product
+ * @constructs Product
+ * @param {int} id - product's id
+ * @param {string} name - product's name
+ * @param {string} description - product's description
+ * @param {int} category - product's category id
+ * @param {string} image - product's image
+ * @param {float} price - product's price
  */
 class Product {
     constructor(id, name, description, category, image, price) {

@@ -1,3 +1,4 @@
+// Worker to post the selected image
 self.addEventListener('message', d =>{
   const imgData = d.data;
   const width = imgData.width;

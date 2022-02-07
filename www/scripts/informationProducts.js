@@ -1,13 +1,14 @@
 "use strict";
 
 /** 
-* @class  
+* @class  Saves all the information about the product
 * @constructs 
-* @param {string} id - id do elemento HTML que contém a informação.
+* @param {string} id - id of the HTML element that contains the information.
 * 
-* @property {string} id - id do elemento HTML que contém a informação.
-* @property {product[]} products - Array de objetos do tipo products,
-  @property {categories[]} categories - Array de objetos do tipo ,categories
+* @property {string} id - id of the HTML element that contains the information.
+* @property {product[]} products - Array of objects of the type products,
+  @property {categories[]} categories - Array of objects of the type categories
+  @property {int} countproducts - counter of products
 */
 class InformationProducts {
     constructor(id) {
@@ -16,14 +17,15 @@ class InformationProducts {
         this.categories = [];
         this.countproducts = 0;
     }
+    
     /**
-     * coloca a palavra "home" no div titulo e limpa o div informação
+     * Function to show the homepage
      */
     showHome() {
-        /** Actualizar o título */
+        /** Update the title */
         document.getElementById("headerTitle").textContent="Home";
 
-        /** Limpar o conteúdo */
+        /** Clear the content */
         document.getElementById("divInformation").style.display="none";    
         document.getElementById("formClient").style.display = "none";
         document.getElementById("formProduct").style.display = "none";
@@ -51,8 +53,11 @@ class InformationProducts {
         }
         }
     }
+    
     /**
-     * coloca a palavra "Client" no div titulo e cria dinamicamente uma tabela com a informação dos clientes
+     * Show the products table
+     * 
+     * @param {*} acao - if is delete, insert or update
      */
     showProducts(acao) {
         let self = this;
@@ -62,7 +67,6 @@ class InformationProducts {
             infoProducts.getProducts();
         }
         
-        /** Actualizar o título */
         document.getElementById("headerTitle").textContent="Products";
     
         document.getElementById("formClient").style.display = "none";
@@ -95,14 +99,17 @@ class InformationProducts {
                 var row = rows[i];
 
                 row.addEventListener("click", function(){
-                //Adicionar ao atual
-                selLinha(this, false); //Selecione apenas um
-                //selLinha(this, true); //Selecione quantos quiser
+                //Add to the current
+                selLinha(this, false); //Select only one
+                //selLinha(this, true); //Select multiple
                 });
             }
             
-            /** Mostrar o conteúdo */
+            // Show content
             
+            /**
+             * Function to handle the delete event
+             */
             function deleteProductEventHandler() {
                 document.getElementById('formProduct').style.display = "none";
                 document.getElementById('deleteProduct').style.display = "block";
@@ -111,6 +118,9 @@ class InformationProducts {
                 loadProduct("delete");
             }
 
+            /**
+             * Function to handle the insert event
+             */
             function newProductEventHandler() {
                 document.getElementById('formProduct').style.display = "block";
                 document.getElementById('deleteProduct').style.display = "none";
@@ -122,6 +132,9 @@ class InformationProducts {
                 setupForm();
             }
 
+            /**
+             * Function to handle the update event
+             */
             function updateProductEventHandler() {
                 document.getElementById('formProduct').style.display = "block";
                 document.getElementById('deleteProduct').style.display = "none";
@@ -134,6 +147,9 @@ class InformationProducts {
                 loadProduct("update");
             }
 
+            /**
+             * Function to set up the product's form
+             */
             function setupForm(){
                 document.getElementById('formProduct').style.display = 'block';
                 document.getElementById('formProduct').reset();
@@ -146,6 +162,11 @@ class InformationProducts {
                 });
             }
 
+            /**
+             * Function to load a product's information into a form
+             * 
+             * @param {*} type 
+             */
             function loadProduct(type){
                 document.getElementById('formProduct').reset();
                 document.getElementById('formClient').reset();
@@ -194,8 +215,9 @@ class InformationProducts {
         }
         self.countproducts++;
     }
+    
     /**
-     * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client através do verbo GET, usando pedidos assincronos e JSON
+     * Function that has as main goal to request to the NODE.JS server the product resource through the GET verb, using asynchronous requests and JSON
      */
     getProducts() {
         const self = this;
@@ -222,7 +244,9 @@ class InformationProducts {
     }
 
     /**
-     * Função que que tem como principal objetivo solicitar ao servidor NODE.JS o recurso client por id através do verbo GET, usando pedidos assincronos e JSON
+     * Function that has as main goal to request to the NODE.JS server the resource product by id through the GET verb, using asynchronous requests and JSON
+     * 
+     * @param {*} id 
      */
     getProductById(id) {
         const self = this;
@@ -248,6 +272,9 @@ class InformationProducts {
         xhr.send(tableElement);
     }
 
+    /**
+     * Function that has as main goal to request to the NODE.JS server the resource categpru by id through the GET verb, using asynchronous requests and JSON
+     */
     getCategories() {
         let categories = this.categories;
         categories.length = 0;
@@ -266,8 +293,8 @@ class InformationProducts {
     }
 
     /**
-     * Função que insere ou atualiza o recurso pessoa com um pedido ao servidor NODE.JS através do verbo POST ou PUT, usando pedidos assincronos e JSON
-     * @param {String} acao - controla qual a operação do CRUD queremos fazer
+     * Function that inserts or updates the resource person with a request to the NODE.JS server through the POST or PUT verb, using asynchronous requests and JSON
+     * @param {String} acao - controls which CRUD operation we want to do
      */
     processingProduct (acao) {
         const id = parseInt(document.getElementById('idProduct').value);
@@ -299,6 +326,12 @@ class InformationProducts {
         }
     }
 
+    /**
+     * Function to update or insert a new product
+     * 
+     * @param {*} product - product's form with all the information
+     * @param {*} isUpdate - if the action is update or insert
+     */
     putProduct(product, isUpdate){
         const self = this;
         let formData = new FormData();
@@ -335,6 +368,11 @@ class InformationProducts {
         xhr.send(formData);
     }
     
+    /**
+     * Function to delete an existing product
+     * 
+     * @param {*} product - product's form with all the information
+     */
     deleteProduct(product){
         const self = this;
         const xhr = new XMLHttpRequest();
