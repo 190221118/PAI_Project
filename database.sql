@@ -8,6 +8,8 @@
  * this file. If not, please write to: , or visit :
  * 
  * Authors: Nicole Vieira (201700124) and Yasmin Hage (202100778)
+ *
+ * Emails: 201700124@estudantes.ips.pt and 202100778@estudantes.ips.pt 
  */
  
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
