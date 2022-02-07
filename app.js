@@ -1,11 +1,30 @@
+/* 
+ * Copyright (C) 1883 Thomas Edison - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the XYZ license, which unfortunately won't be
+ * written for another century.
+ *
+ * You should have received a copy of the XYZ license with
+ * this file. If not, please write to: , or visit :
+ * 
+ * Authors: Nicole Vieira (201700124) and Yasmin Hage (202100778)
+ */
+
 "use strict";
+
+// Use express
 const express = require("express");
+// Use request handles
 const requestHandlers = require("./scripts/request-handlers.js");
+// Use body parser
 const bodyParser = require("body-parser");
 
 const app = express();
+// Use multer
 const multer = require('multer');
+// Use path
 const path = require('path');
+// Use fs
 const fs = require('fs');
 
 app.use(express.json());
@@ -23,15 +42,15 @@ app.use(express.static("www"));
 //app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(express.static("www"));
 
-// Secção do cliente
+// Client's section
 
-// Chama a função para ir buscar todos os clientes
+// Calls a function to get all clients
 app.get("/clients", requestHandlers.getClients);
 
-// Chama a função para ir buscar um cliente pelo seu id
+// Calls a function to get a client by his id
 app.get("/clientById/:id", requestHandlers.getClientById);
 
-// Chama a função para atualizar um cliente ou criar um novo
+// Call a function to update or create a new client
 app.put("/clients/:id", upload.any(), (req, res) => {
     let r = req.body.formClient;
     let clientData = JSON.parse(req.body.formClient);
@@ -72,25 +91,25 @@ app.put("/clients/:id", upload.any(), (req, res) => {
     })
 });
 
-// Chama a função para remover um cliente
+// Calls a function to remove a client
 app.delete("/clients/:id", requestHandlers.removeClient);
 
-// Chama a função para fazer login
+// Calls a function to login into the website
 app.post("/postLogin/:username/:password", requestHandlers.postLogin);
 
 
-// Secção do produto
+// Product section
 
-// Chama a função para ir buscar todos os produtos
+// Calls a function to get all products
 app.get("/products", requestHandlers.getProducts);
 
-// Chama a função para ir buscar um cliente pelo seu id
+// Calls a function to a product by his id
 app.get("/productById/:id", requestHandlers.getProductById);
 
-// Chama a função para ir buscar todas as categorias de produtos
+// Calls a function to get all categories
 app.get("/productcategories", requestHandlers.getCategories);
 
-// Chama a função para criar um novo produto
+// Calls a function to updte or create a new product
 app.put("/products/:id", upload.any(), (req, res) => {
     let r = req.body.product;
     let productData = JSON.parse(req.body.product);
@@ -124,7 +143,7 @@ app.put("/products/:id", upload.any(), (req, res) => {
     })
 });
 
-// Chama a função para remover um produto
+// Calls a function to remove a product
 app.delete("/products/:id", requestHandlers.removeProduct);
 
 

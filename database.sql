@@ -1,3 +1,15 @@
+/* 
+ * Copyright (C) 1883 Thomas Edison - All Rights Reserved
+ * You may use, distribute and modify this code under the
+ * terms of the XYZ license, which unfortunately won't be
+ * written for another century.
+ *
+ * You should have received a copy of the XYZ license with
+ * this file. If not, please write to: , or visit :
+ * 
+ * Authors: Nicole Vieira (201700124) and Yasmin Hage (202100778)
+ */
+ 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
